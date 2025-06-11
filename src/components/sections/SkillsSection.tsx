@@ -32,12 +32,27 @@ const SkillsSection: React.FC = () => {
   ];
 
   return (
-    <section id="skills" className="py-20 bg-secondary/30">
+    <section 
+      id="skills" 
+      className="py-20 transition-all duration-500"
+      style={{ backgroundColor: 'var(--surface)' }}
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-foreground mb-4">Skills & Expertise</h2>
-          <div className="w-24 h-1 bg-primary mx-auto"></div>
-          <p className="text-muted-foreground mt-6 max-w-2xl mx-auto">
+          <h2 
+            className="text-4xl font-bold mb-4"
+            style={{ color: 'var(--foreground)' }}
+          >
+            Skills & Expertise
+          </h2>
+          <div 
+            className="w-24 h-1 mx-auto rounded-full"
+            style={{ backgroundColor: 'var(--primary)' }}
+          ></div>
+          <p 
+            className="mt-6 max-w-2xl mx-auto"
+            style={{ color: 'var(--muted-foreground)' }}
+          >
             Proficient in modern technologies with a focus on creating scalable, 
             efficient solutions that drive business growth.
           </p>
@@ -45,18 +60,22 @@ const SkillsSection: React.FC = () => {
 
         {/* Skill Categories Tabs */}
         <div className="flex justify-center mb-12">
-          <div className="bg-card rounded-xl p-2 shadow-lg border border-border">
+          <div className="glass-strong rounded-2xl p-2 shadow-xl">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+                className={`px-6 py-4 rounded-xl font-medium transition-all duration-300 ${
                   activeTab === tab.id
-                    ? 'bg-primary text-primary-foreground shadow-md'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                    ? 'glass shadow-lg scale-105'
+                    : 'hover:glass-subtle'
                 }`}
+                style={{
+                  color: activeTab === tab.id ? 'var(--primary)' : 'var(--muted-foreground)',
+                  backgroundColor: activeTab === tab.id ? 'var(--glass-bg)' : 'transparent'
+                }}
               >
-                <span className="mr-2">{tab.icon}</span>
+                <span className="mr-2 text-lg">{tab.icon}</span>
                 {tab.label}
               </button>
             ))}
@@ -65,23 +84,94 @@ const SkillsSection: React.FC = () => {
 
         {/* Skills Grid */}
         <div className="grid md:grid-cols-2 gap-8">
-          {skills[activeTab as keyof typeof skills].map((skill) => (
-            <div key={skill.name} className="bg-card rounded-xl p-6 shadow-lg border border-border hover:shadow-xl transition-shadow duration-300">
-              <div className="flex items-center mb-4">
-                <span className="text-2xl mr-3">{skill.icon}</span>
-                <h3 className="text-lg font-semibold text-card-foreground">{skill.name}</h3>
+          {skills[activeTab as keyof typeof skills].map((skill, index) => (
+            <div 
+              key={skill.name} 
+              className="card-glass rounded-2xl p-6 hover:scale-105 transition-all duration-300"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <div className="flex items-center mb-6">
+                <div className="text-3xl mr-4 glass-subtle rounded-xl p-3">
+                  {skill.icon}
+                </div>
+                <h3 
+                  className="text-lg font-semibold"
+                  style={{ color: 'var(--card-foreground)' }}
+                >
+                  {skill.name}
+                </h3>
               </div>
-              <div className="w-full bg-muted rounded-full h-3">
+              
+              {/* Progress Bar Container */}
+              <div className="relative">
                 <div 
-                  className="bg-gradient-to-r from-primary to-primary/80 h-3 rounded-full transition-all duration-1000 ease-out"
-                  style={{ width: `${skill.level}%` }}
-                ></div>
+                  className="w-full h-4 glass-subtle rounded-full overflow-hidden"
+                  style={{ backgroundColor: 'var(--glass-bg)' }}
+                >
+                  <div 
+                    className="h-4 rounded-full transition-all duration-1000 ease-out relative overflow-hidden"
+                    style={{ 
+                      width: `${skill.level}%`,
+                      background: `linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%)`
+                    }}
+                  >
+                    {/* Animated shimmer effect */}
+                    <div 
+                      className="absolute inset-0 opacity-30"
+                      style={{
+                        background: 'linear-gradient(90deg, transparent 0%, var(--background) 50%, transparent 100%)',
+                        animation: 'shimmer 2s infinite'
+                      }}
+                    ></div>
+                  </div>
+                </div>
+                
+                {/* Percentage Display */}
+                <div className="flex justify-between items-center mt-3">
+                  <span 
+                    className="text-sm font-medium"
+                    style={{ color: 'var(--muted-foreground)' }}
+                  >
+                    Proficiency
+                  </span>
+                  <span 
+                    className="text-sm font-bold glass-subtle px-3 py-1 rounded-full"
+                    style={{ color: 'var(--primary)' }}
+                  >
+                    {skill.level}%
+                  </span>
+                </div>
               </div>
-              <p className="text-right text-sm text-muted-foreground mt-2">{skill.level}%</p>
             </div>
           ))}
         </div>
+
+        {/* Floating decorative elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute glass-subtle rounded-full animate-float"
+              style={{
+                width: `${Math.random() * 20 + 10}px`,
+                height: `${Math.random() * 20 + 10}px`,
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 5}s`,
+                animationDuration: `${4 + Math.random() * 2}s`,
+                opacity: 0.3
+              }}
+            />
+          ))}
+        </div>
       </div>
+
+      <style jsx>{`
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+      `}</style>
     </section>
   );
 };

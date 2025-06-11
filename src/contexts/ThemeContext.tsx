@@ -50,7 +50,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Prevent hydration mismatch by showing loading state
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-white dark:bg-slate-900">
+      <div className="min-h-screen bg-slate-900">
         <div className="animate-pulse">
           {children}
         </div>

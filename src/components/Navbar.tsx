@@ -54,9 +54,9 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+    <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${
       isScrolled 
-        ? 'bg-background/95 backdrop-blur-md shadow-lg border-b border-border' 
+        ? 'glass-strong shadow-lg' 
         : 'bg-transparent'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -65,39 +65,42 @@ const Navbar: React.FC = () => {
           <div className="flex-shrink-0">
             <button 
               onClick={() => scrollToSection('#hero')}
-              className={`text-2xl font-bold tracking-wider transition-colors duration-300 ${
-                isScrolled ? 'text-foreground' : 'text-white'
-              }`}
+              className="text-2xl font-bold tracking-wider transition-all duration-300 hover:scale-105"
+              style={{ color: 'var(--foreground)' }}
             >
               ESSERTAIZE
             </button>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-2">
             {navItems.map((item) => (
               <button
                 key={item.label}
                 onClick={() => scrollToSection(item.href)}
-                className={`relative px-3 py-2 text-sm font-medium transition-all duration-300 ${
+                className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-lg ${
                   activeSection === item.href.replace('#', '')
-                    ? isScrolled 
-                      ? 'text-primary' 
-                      : 'text-primary-foreground'
-                    : isScrolled 
-                      ? 'text-muted-foreground hover:text-foreground' 
-                      : 'text-white/90 hover:text-white'
+                    ? 'glass text-primary' 
+                    : 'hover:glass-subtle'
                 }`}
+                style={{ 
+                  color: activeSection === item.href.replace('#', '') 
+                    ? 'var(--primary)' 
+                    : 'var(--muted-foreground)' 
+                }}
               >
                 {item.label}
                 {activeSection === item.href.replace('#', '') && (
-                  <span className={`absolute bottom-0 left-0 w-full h-0.5 ${
-                    isScrolled ? 'bg-primary' : 'bg-primary-foreground'
-                  }`}></span>
+                  <span 
+                    className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 rounded-full"
+                    style={{ backgroundColor: 'var(--primary)' }}
+                  ></span>
                 )}
               </button>
             ))}
-            <ThemeToggle />
+            <div className="ml-4">
+              <ThemeToggle />
+            </div>
           </div>
 
           {/* Mobile menu button & theme toggle */}
@@ -105,9 +108,8 @@ const Navbar: React.FC = () => {
             <ThemeToggle />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={`p-2 transition-colors duration-300 ${
-                isScrolled ? 'text-foreground' : 'text-white'
-              }`}
+              className="p-2 rounded-lg glass-subtle transition-all duration-300 hover:glass"
+              style={{ color: 'var(--foreground)' }}
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {isMenuOpen ? (
@@ -122,12 +124,13 @@ const Navbar: React.FC = () => {
 
         {/* Mobile menu */}
         {isMenuOpen && (
-          <div className="md:hidden bg-card/95 backdrop-blur-md rounded-lg mt-2 py-4 shadow-lg border border-border">
+          <div className="md:hidden glass-strong rounded-xl mt-2 py-4 shadow-xl animate-fade-in-up">
             {navItems.map((item) => (
               <button
                 key={item.label}
                 onClick={() => scrollToSection(item.href)}
-                className="block w-full text-left px-4 py-2 text-card-foreground hover:bg-accent transition-colors duration-200"
+                className="block w-full text-left px-4 py-3 transition-all duration-200 hover:glass-subtle rounded-lg mx-2"
+                style={{ color: 'var(--card-foreground)' }}
               >
                 {item.label}
               </button>
