@@ -1,6 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { ThemeProvider } from '@/contexts/ThemeContext';
+import ClientThemeProvider from '@/components/ClientThemeProvider';
 
 export const metadata: Metadata = {
   title: 'ESSERTAIZE - Portfolio',
@@ -15,9 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className="antialiased">
-        <ThemeProvider>
+        <ClientThemeProvider>
           {children}
-        </ThemeProvider>
+        </ClientThemeProvider>
       </body>
     </html>
   );
