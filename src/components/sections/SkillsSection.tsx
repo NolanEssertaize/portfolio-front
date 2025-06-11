@@ -17,18 +17,11 @@ const SkillsSection: React.FC = () => {
       { name: 'PostgreSQL', level: 85, icon: '🐘' },
       { name: 'API Development', level: 90, icon: '🔌' },
     ],
-    ai: [
-      { name: 'OpenAI API', level: 85, icon: '🤖' },
-      { name: 'LangChain', level: 75, icon: '🔗' },
-      { name: 'Machine Learning', level: 70, icon: '🧠' },
-      { name: 'Chatbot Development', level: 90, icon: '💬' },
-    ],
   };
 
   const tabs = [
     { id: 'frontend', label: 'Frontend', icon: '🎨' },
     { id: 'backend', label: 'Backend', icon: '⚙️' },
-    { id: 'ai', label: 'AI & ML', icon: '🤖' },
   ];
 
   return (

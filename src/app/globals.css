@@ -86,35 +86,6 @@
   --ring: var(--predominant);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  
-  /* Custom color utilities */
-  --color-predominant: var(--predominant);
-  --color-surface: var(--surface);
-  --color-surface-glass: var(--surface-glass);
-  --color-mountain-primary: var(--mountain-primary);
-  --color-mountain-secondary: var(--mountain-secondary);
-  --color-mountain-tertiary: var(--mountain-tertiary);
-  --color-glass-bg: var(--glass-bg);
-  --color-glass-border: var(--glass-border);
-  --color-glass-shadow: var(--glass-shadow);
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
@@ -123,7 +94,7 @@ body {
   min-height: 100vh;
 }
 
-.glass {
+.glass-effect {
   background: var(--glass-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -131,15 +102,15 @@ body {
   box-shadow: 0 8px 32px var(--glass-shadow);
 }
 
-.glass-strong {
+.glass-effect-strong {
   background: var(--surface-glass);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px) saturate(150%);
   border: 1px solid var(--glass-border);
   box-shadow: 0 12px 40px var(--glass-shadow);
 }
 
-.glass-subtle {
+.glass-effect-subtle {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
@@ -246,7 +217,11 @@ html {
 }
 
 .btn-glass {
-  @apply glass;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px var(--glass-shadow);
   transition: all 0.3s ease;
 }
 
@@ -257,7 +232,11 @@ html {
 }
 
 .card-glass {
-  @apply glass-strong;
+  background: var(--surface-glass);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 12px 40px var(--glass-shadow);
   transition: all 0.3s ease;
 }
 

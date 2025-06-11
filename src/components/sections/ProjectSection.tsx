@@ -1,27 +1,27 @@
 const ProjectsSection: React.FC = () => {
   const projects = [
     {
-      title: 'AI-Powered E-commerce Platform',
-      description: 'Full-stack e-commerce solution with AI product recommendations and chatbot support.',
-      technologies: ['Next.js', 'Node.js', 'PostgreSQL', 'OpenAI API'],
+      title: 'AI-Powered Portfolio',
+      description: 'Full-stack portfolio with chatbot support powered by AI.',
+      technologies: ['Next.js', 'Node.js', 'PostgreSQL', 'Fast API'],
       image: '/api/placeholder/600/400',
-      github: '#',
+      github: 'https://github.com/NolanEssertaize/portfolio-front',
       demo: '#',
       featured: true,
     },
     {
-      title: 'Real-time Collaboration Tool',
-      description: 'Modern workspace application with real-time editing and team collaboration features.',
-      technologies: ['React', 'Socket.io', 'Express', 'MongoDB'],
+      title: 'CS50 Course',
+      description: 'The CS50 Introduction and all his side project he include',
+      technologies: ['C', 'C++', 'Algorithm', 'HTML', 'CSS', 'MP3', 'PNG', 'JPEG'],
       image: '/api/placeholder/600/400',
-      github: '#',
+      github: 'https://github.com/code50/163408317/tree/main/CS50_Introduction',
       demo: '#',
       featured: false,
     },
     {
-      title: 'Smart Analytics Dashboard',
-      description: 'Interactive dashboard with data visualization and predictive analytics capabilities.',
-      technologies: ['Vue.js', 'Python', 'D3.js', 'FastAPI'],
+      title: 'TCP/IP Server BAC+2',
+      description: 'Build a TCP/IP Server on an raspberry pi that is connected to a strength captor that is capturing pull-up motion and registering on a mobile app',
+      technologies: ['Java', 'RS232', 'Team'],
       image: '/api/placeholder/600/400',
       github: '#',
       demo: '#',
@@ -156,6 +156,7 @@ const ProjectsSection: React.FC = () => {
                 {/* Action Buttons */}
                 <div className="flex space-x-4">
                   <a 
+                    target="_blank"
                     href={project.github}
                     className="flex items-center glass-subtle hover:glass px-4 py-2 rounded-xl transition-all duration-300 group"
                     style={{ color: 'var(--muted-foreground)' }}

@@ -49,7 +49,7 @@ const AboutSection: React.FC = () => {
                   className="text-3xl font-bold"
                   style={{ color: 'var(--primary)' }}
                 >
-                  3+
+                  1+
                 </div>
                 <div 
                   className="text-sm"
@@ -63,7 +63,7 @@ const AboutSection: React.FC = () => {
                   className="text-3xl font-bold"
                   style={{ color: 'var(--primary)' }}
                 >
-                  50+
+                  10+
                 </div>
                 <div 
                   className="text-sm"
@@ -83,7 +83,7 @@ const AboutSection: React.FC = () => {
                   className="text-sm"
                   style={{ color: 'var(--muted-foreground)' }}
                 >
-                  Client Satisfaction
+                  Overhall Satisfaction
                 </div>
               </div>
             </div>
