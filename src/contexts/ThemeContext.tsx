@@ -47,19 +47,24 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme(newTheme);
   };
 
+  // Always provide the context, even during loading
+  const contextValue = { theme, toggleTheme, setTheme };
+
   // Prevent hydration mismatch by showing loading state
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-slate-900">
-        <div className="animate-pulse">
-          {children}
+      <ThemeContext.Provider value={contextValue}>
+        <div className="min-h-screen bg-slate-900">
+          <div className="animate-pulse">
+            {children}
+          </div>
         </div>
-      </div>
+      </ThemeContext.Provider>
     );
   }
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
+    <ThemeContext.Provider value={contextValue}>
       <div className="animate-theme-transition">{children}</div>
     </ThemeContext.Provider>
   );
