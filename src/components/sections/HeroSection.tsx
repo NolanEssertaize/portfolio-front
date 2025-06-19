@@ -30,7 +30,7 @@ const HeroSection: React.FC = () => {
       parallaxSpeed: 0.8,
       direction: 'left',
       position: { left: '0%', bottom: '-20%' },
-      size: { width: '90%', height: 'auto' },
+      size: { width: '60%', height: 'auto' },
       colorFilter: 'var(--secondary)'
     },
     {
@@ -38,8 +38,8 @@ const HeroSection: React.FC = () => {
       zIndex: 8,
       parallaxSpeed: 0.8,
       direction: 'right',
-      position: { right: '-20%', bottom: '0%' },
-      size: { width: '90%', height: 'auto' },
+      position: { right: '-50%', bottom: '0%' },
+      size: { width: '60%', height: 'auto' },
       colorFilter: 'var(--secondary)'
     },
     
