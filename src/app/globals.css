@@ -61,8 +61,8 @@
 
 [data-theme="dark"] {
   --predominant: #F6EDCD;
-  --background: #0B243C;
-  --surface: rgba(11, 36, 60, 0.8);
+  --background: hsl(209, 69%, 14%);
+  --surface: #0b243ccc;
   --surface-glass: rgba(11, 36, 60, 0.4);
   --mountain-primary: #2C4A4A;
   --mountain-secondary: #1F3838;

@@ -23,23 +23,14 @@ const HeroSection: React.FC = () => {
   }
 
   const mountainLayers = [
-    {
-      src: '/background1.png',
-      zIndex: 10,
-      parallaxSpeed: 0,
-      direction: 'left',
-      position: { left: '-20%', right:'-80%', bottom: '0%'},
-      size: { width: '60%', height: 'auto' },
-      colorFilter: 'var(--primary)' 
-    },
     
     {
       src: '/background2left.png',
       zIndex: 8,
       parallaxSpeed: 0.8,
       direction: 'left',
-      position: { left: '-20%', bottom: '0%' },
-      size: { width: '60%', height: 'auto' },
+      position: { left: '0%', bottom: '-20%' },
+      size: { width: '90%', height: 'auto' },
       colorFilter: 'var(--secondary)'
     },
     {
@@ -47,8 +38,8 @@ const HeroSection: React.FC = () => {
       zIndex: 8,
       parallaxSpeed: 0.8,
       direction: 'right',
-      position: { right: '-50%', bottom: '0%' },
-      size: { width: '70%', height: 'auto' },
+      position: { right: '-20%', bottom: '0%' },
+      size: { width: '90%', height: 'auto' },
       colorFilter: 'var(--secondary)'
     },
     
@@ -58,7 +49,7 @@ const HeroSection: React.FC = () => {
       parallaxSpeed: 0.4,
       direction: 'left',
       position: { left: '-40%', bottom: '0%' },
-      size: { width: '110%', height: 'auto' },
+      size: { width: '150%', height: 'auto' },
       colorFilter: 'var(--secondary)'
     },
     {
@@ -67,7 +58,7 @@ const HeroSection: React.FC = () => {
       parallaxSpeed: 0.4,
       direction: 'right',
       position: { right: '-40%', bottom: '0%' },
-      size: { width: '110%', height: 'auto' },
+      size: { width: '90%', height: 'auto' },
       colorFilter: 'var(--secondary)'
     },
   ];
@@ -183,67 +174,13 @@ const HeroSection: React.FC = () => {
         </div>
       </div>
 
-      {/* Sun/Moon in the sky */}
-      <div 
-        className="absolute transition-all duration-500"
-        style={{
-          top: '15%',
-          right: '15%',
-          transform: `translateY(${scrollY * 0.2}px)`,
-          zIndex: 2
-        }}
-      >
-        <div 
-          className="w-20 h-20 rounded-full transition-all duration-500 glass"
-          style={{
-            background: 'var(--glass-bg)',
-            boxShadow: '0 0 40px var(--primary), inset 0 0 20px var(--glass-border)'
-          }}
-        >
-          {/* Sun rays for light theme */}
-          <div className="absolute inset-0 dark:opacity-0 transition-opacity duration-500">
-            {[...Array(12)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-0.5 h-8 rounded-full"
-                style={{
-                  backgroundColor: 'var(--primary)',
-                  transformOrigin: '2px 40px',
-                  transform: `rotate(${i * 30}deg)`,
-                  opacity: 0.6,
-                  left: '50%',
-                  top: '50%',
-                  marginLeft: '-1px',
-                  marginTop: '-40px'
-                }}
-              />
-            ))}
-          </div>
-          
-          {/* Moon craters for dark theme */}
-          <div className="absolute inset-0 opacity-0 dark:opacity-100 transition-opacity duration-500">
-            <div 
-              className="absolute w-3 h-3 rounded-full top-4 right-5"
-              style={{ backgroundColor: 'var(--mountain-secondary)' }}
-            />
-            <div 
-              className="absolute w-2 h-2 rounded-full top-8 right-7"
-              style={{ backgroundColor: 'var(--mountain-secondary)' }}
-            />
-            <div 
-              className="absolute w-1.5 h-1.5 rounded-full top-10 right-4"
-              style={{ backgroundColor: 'var(--mountain-secondary)' }}
-            />
-          </div>
-        </div>
-      </div>
-
       {/* Hero Content */}
       <div className="relative flex items-center justify-center h-full text-center px-4" style={{ zIndex: 15}}>
         <div className="max-w-4xl mx-auto">
           <div 
             className="glass-strong rounded-3xl p-8 mb-8"
             style={{
+              position:'',
               transform: `translateY(${scrollY * 0.1}px)`, // Réduit le parallax du contenu
             }}
           >
