@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "setup:deepseek": "node setup-deepseek.js",
+    "test:deepseek": "node test-deepseek.js",
+    "chat:reset": "rm -f .env.local && echo 'Configuration reset. Run npm run setup:deepseek'"
   },
   "dependencies": {
     "next": "15.3.3",
@@ -23,5 +26,23 @@
     "eslint-config-next": "15.3.3",
     "tailwindcss": "^4",
     "typescript": "^5"
-  }
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "portfolio",
+    "nextjs",
+    "ai-chatbot",
+    "deepseek",
+    "react",
+    "typescript"
+  ],
+  "description": "Portfolio moderne avec chatbot IA intégré utilisant l'API DeepSeek",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NolanEssertaize/portfolio-front"
+  },
+  "author": "ESSERTAIZE",
+  "license": "MIT"
 }
