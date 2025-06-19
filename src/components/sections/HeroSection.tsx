@@ -38,7 +38,7 @@ const HeroSection: React.FC = () => {
       parallaxSpeed: 0.8,
       direction: 'left',
       position: { left: '0%', bottom: '-20%' },
-      size: { width: '60vw', height: '80vh' },
+      size: { width: '45vw', height: '80vh' },
     },
     {
       src: '/background2right.png',
@@ -53,8 +53,8 @@ const HeroSection: React.FC = () => {
       zIndex: 4,
       parallaxSpeed: 0.4,
       direction: 'left',
-      position: { left: '-20%', bottom: '0%' },
-      size: { width: '80vw', height: '100vh' },
+      position: { left: '-30%', bottom: '0%' },
+      size: { width: '90vw', height: '100vh' },
     },
     {
       src: '/background4right.png',

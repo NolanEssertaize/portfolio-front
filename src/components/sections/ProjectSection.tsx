@@ -1,4 +1,32 @@
+'use client';
+import { useState, useEffect } from 'react';
+
 const ProjectsSection: React.FC = () => {
+  const [mounted, setMounted] = useState(false);
+  const [floatingElements, setFloatingElements] = useState<Array<{
+    width: number;
+    height: number;
+    left: number;
+    top: number;
+    animationDelay: number;
+    animationDuration: number;
+  }>>([]);
+
+  // Generate random values only on client-side
+  useEffect(() => {
+    const elements = Array.from({ length: 8 }, () => ({
+      width: Math.random() * 20 + 8,
+      height: Math.random() * 20 + 8,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      animationDelay: Math.random() * 3,
+      animationDuration: 3 + Math.random() * 2,
+    }));
+    
+    setFloatingElements(elements);
+    setMounted(true);
+  }, []);
+
   const projects = [
     {
       title: 'AI-Powered Portfolio',
@@ -96,23 +124,25 @@ const ProjectsSection: React.FC = () => {
                     }}
                   ></div>
                   
-                  {/* Animated Background Pattern */}
-                  <div className="absolute inset-0 opacity-20">
-                    {[...Array(8)].map((_, i) => (
-                      <div
-                        key={i}
-                        className="absolute glass-subtle rounded-full animate-float"
-                        style={{
-                          width: `${Math.random() * 20 + 8}px`,
-                          height: `${Math.random() * 20 + 8}px`,
-                          left: `${Math.random() * 100}%`,
-                          top: `${Math.random() * 100}%`,
-                          animationDelay: `${Math.random() * 3}s`,
-                          animationDuration: `${3 + Math.random() * 2}s`,
-                        }}
-                      />
-                    ))}
-                  </div>
+                  {/* Animated Background Pattern - Only render on client */}
+                  {mounted && (
+                    <div className="absolute inset-0 opacity-20">
+                      {floatingElements.map((element, i) => (
+                        <div
+                          key={i}
+                          className="absolute glass-subtle rounded-full animate-float"
+                          style={{
+                            width: `${element.width}px`,
+                            height: `${element.height}px`,
+                            left: `${element.left}%`,
+                            top: `${element.top}%`,
+                            animationDelay: `${element.animationDelay}s`,
+                            animationDuration: `${element.animationDuration}s`,
+                          }}
+                        />
+                      ))}
+                    </div>
+                  )}
                   
                   {/* Hover Overlay */}
                   <div 
@@ -207,7 +237,7 @@ const ProjectsSection: React.FC = () => {
                 </div>
               </div>
 
-              {/* Decorative Elements */}
+              {/* Decorative Elements - Static positions to avoid hydration mismatch */}
               <div className="absolute -top-2 -right-2 w-4 h-4 glass-subtle rounded-full animate-float opacity-50"></div>
               <div className="absolute -bottom-3 -left-3 w-6 h-6 glass-subtle rounded-full animate-float animation-delay-300 opacity-30"></div>
             </div>
