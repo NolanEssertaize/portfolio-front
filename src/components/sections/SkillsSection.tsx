@@ -23,22 +23,29 @@ const SkillsSection: React.FC = () => {
 
   const skills = {
     frontend: [
-      { name: 'React/Next.js', level: 95, icon: '⚛️' },
-      { name: 'TypeScript', level: 90, icon: '🔷' },
-      { name: 'Tailwind CSS', level: 95, icon: '🎨' },
-      { name: 'JavaScript', level: 95, icon: '🟨' },
+      { name: 'React/Next.js', level: 60, icon: '⚛️' },
+      { name: 'TypeScript', level: 60, icon: '🔷' },
+      { name: 'Tailwind CSS', level: 40, icon: '🎨' },
+      { name: 'JavaScript', level: 60, icon: '🟨' },
     ],
     backend: [
-      { name: 'Node.js', level: 85, icon: '🟢' },
+      { name: 'Node.js', level: 40, icon: '🟢' },
       { name: 'Python', level: 80, icon: '🐍' },
-      { name: 'PostgreSQL', level: 85, icon: '🐘' },
+      { name: 'Databases', level: 50, icon: '🐘' },
       { name: 'API Development', level: 90, icon: '🔌' },
+    ],
+    devops: [
+      { name: 'Nginx', level: 40, icon: '🔗' },
+      { name: 'Environnement', level: 30, icon: '🛠️' },
+      { name: 'Deploy', level: 20, icon: '🌐' },
+      { name: 'Hardware', level: 50, icon: '🖥️' },
     ],
   };
 
   const tabs = [
     { id: 'frontend', label: 'Frontend', icon: '🎨' },
     { id: 'backend', label: 'Backend', icon: '⚙️' },
+    { id: 'devops', label: 'Devops', icon: '🗄️' },
   ];
 
   return (
