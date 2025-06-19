@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 
 const HeroSection: React.FC = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -14,57 +13,60 @@ const HeroSection: React.FC = () => {
     if (!mounted) return;
     
     const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [mounted]);
 
   if (!mounted) {
-    return <div className="h-screen" style={{ backgroundColor: 'var(--background)' }}></div>;
+    return (
+      <div className="h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--background)' }}>
+        <div className="glass-strong rounded-3xl p-8">
+          <div className="animate-pulse">
+            <div className="h-8 bg-current opacity-20 rounded mb-4"></div>
+            <div className="h-4 bg-current opacity-20 rounded mb-2"></div>
+            <div className="h-4 bg-current opacity-20 rounded w-3/4"></div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const mountainLayers = [
-    
     {
       src: '/background2left.png',
       zIndex: 8,
       parallaxSpeed: 0.8,
       direction: 'left',
       position: { left: '0%', bottom: '-20%' },
-      size: { width: '60%', height: 'auto' },
-      colorFilter: 'var(--secondary)'
+      size: { width: '60vw', height: '80vh' },
     },
     {
       src: '/background2right.png',
       zIndex: 8,
       parallaxSpeed: 0.8,
       direction: 'right',
-      position: { right: '-50%', bottom: '0%' },
-      size: { width: '60%', height: 'auto' },
-      colorFilter: 'var(--secondary)'
+      position: { right: '-30%', bottom: '0%' },
+      size: { width: '60vw', height: '80vh' },
     },
-    
     {
       src: '/background4left.png',
       zIndex: 4,
       parallaxSpeed: 0.4,
       direction: 'left',
-      position: { left: '-40%', bottom: '0%' },
-      size: { width: '150%', height: 'auto' },
-      colorFilter: 'var(--secondary)'
+      position: { left: '-20%', bottom: '0%' },
+      size: { width: '80vw', height: '100vh' },
     },
     {
       src: '/background4right.png',
       zIndex: 4,
       parallaxSpeed: 0.4,
       direction: 'right',
-      position: { right: '-40%', bottom: '0%' },
-      size: { width: '90%', height: 'auto' },
-      colorFilter: 'var(--secondary)'
+      position: { right: '-20%', bottom: '0%' },
+      size: { width: '70vw', height: '90vh' },
     },
   ];
 
   const calculateTransform = (layer: typeof mountainLayers[0]) => {
-    const baseTransform = layer.position.transform || '';
     let parallaxTransform = '';
 
     switch (layer.direction) {
@@ -75,14 +77,13 @@ const HeroSection: React.FC = () => {
         parallaxTransform = `translateX(${scrollY * layer.parallaxSpeed}px)`;
         break;
       case 'center':
-        // Middle mountain moves farther down
         parallaxTransform = `translateY(${scrollY * layer.parallaxSpeed}px)`;
         break;
       default:
         parallaxTransform = `translateY(${scrollY * layer.parallaxSpeed}px)`;
     }
 
-    return baseTransform ? `${baseTransform} ${parallaxTransform}` : parallaxTransform;
+    return parallaxTransform;
   };
 
   return (
@@ -103,44 +104,26 @@ const HeroSection: React.FC = () => {
       <div className="absolute inset-0">
         {mountainLayers.map((layer, index) => (
           <div
-            key={index}
-            className="absolute transition-transform duration-75 ease-out"
+            key={`mountain-${index}`}
+            className="absolute will-change-transform"
             style={{
               zIndex: layer.zIndex,
               ...layer.position,
+              ...layer.size,
               transform: calculateTransform(layer),
-              filter: `brightness(${1 - (mountainLayers.length - layer.zIndex) * 0.1})`,
+              backgroundImage: `url(${layer.src})`,
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: layer.direction === 'left' ? 'left bottom' : 'right bottom',
+              opacity: layer.zIndex === 10 ? 1 : 0.8 - (10 - layer.zIndex) * 0.1,
+              filter: `
+                brightness(${layer.zIndex === 10 ? 1 : 0.7 + (layer.zIndex * 0.05)}) 
+                hue-rotate(${(10 - layer.zIndex) * 15}deg)
+                saturate(${layer.zIndex === 10 ? 1 : 0.6 + (layer.zIndex * 0.06)})
+              `,
+              transition: 'transform 0.1s ease-out'
             }}
-          >
-            <Image
-              src={layer.src}
-              alt={`Mountain layer ${index + 1}`}
-              width={1920} // Largeur de référence pour les images
-              height={1080} // Hauteur de référence
-              className="object-contain transition-all duration-500"
-              style={{
-                width: layer.size.width,
-                height: layer.size.height,
-                opacity: layer.zIndex === 10 ? 1 : 0.8 - (10 - layer.zIndex) * 0.1, // Premier plan à 100% d'opacité
-                filter: `
-                  brightness(${layer.zIndex === 10 ? 1 : 0.7 + (layer.zIndex * 0.05)}) 
-                  hue-rotate(${(10 - layer.zIndex) * 15}deg)
-                  saturate(${layer.zIndex === 10 ? 1 : 0.6 + (layer.zIndex * 0.06)})
-                `
-              }}
-              priority={layer.zIndex >= 8} // Priorité pour les plans de premier plan
-              quality={layer.zIndex >= 6 ? 90 : 75} // Qualité plus élevée pour les plans proches
-              placeholder="blur"
-              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
-              onError={(e) => {
-                // Hide layer if image fails to load
-                const target = e.target as HTMLElement;
-                if (target.parentElement) {
-                  target.parentElement.style.display = 'none';
-                }
-              }}
-            />
-          </div>
+          />
         ))}
       </div>
 
@@ -159,15 +142,15 @@ const HeroSection: React.FC = () => {
         <div className="absolute inset-0">
           {[...Array(15)].map((_, i) => (
             <div
-              key={i}
+              key={`particle-${i}`}
               className="absolute w-1 h-1 rounded-full animate-float glass opacity-20"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 80}%`,
-                animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${4 + Math.random() * 3}s`,
+                left: `${20 + (i * 5) % 60}%`,
+                top: `${10 + (i * 7) % 70}%`,
+                animationDelay: `${(i * 0.5) % 5}s`,
+                animationDuration: `${4 + (i % 3)}s`,
                 backgroundColor: 'var(--primary)',
-                transform: `translateY(${scrollY * (0.05 + Math.random() * 0.1)}px)`,
+                transform: `translateY(${scrollY * (0.05 + (i * 0.01) % 0.1)}px)`,
               }}
             />
           ))}
@@ -175,13 +158,12 @@ const HeroSection: React.FC = () => {
       </div>
 
       {/* Hero Content */}
-      <div className="relative flex items-center justify-center h-full text-center px-4" style={{ zIndex: 15}}>
+      <div className="relative flex items-center justify-center h-full text-center px-4" style={{ zIndex: 15 }}>
         <div className="max-w-4xl mx-auto">
           <div 
             className="glass-strong rounded-3xl p-8 mb-8"
             style={{
-              position:'',
-              transform: `translateY(${scrollY * 0.1}px)`, // Réduit le parallax du contenu
+              transform: `translateY(${scrollY * 0.1}px)`,
             }}
           >
             <h1 
@@ -205,11 +187,16 @@ const HeroSection: React.FC = () => {
           </div>
           
           <button 
-            onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={() => {
+              const aboutSection = document.getElementById('about');
+              if (aboutSection) {
+                aboutSection.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
             className="btn-glass px-8 py-4 rounded-full font-medium animate-fade-in-up animation-delay-900"
             style={{ 
               color: 'var(--foreground)',
-              transform: `translateY(${scrollY * 0.1}px)`, // Réduit le parallax du bouton
+              transform: `translateY(${scrollY * 0.1}px)`,
             }}
           >
             Discover My Work

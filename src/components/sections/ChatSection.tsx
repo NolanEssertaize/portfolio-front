@@ -2,7 +2,6 @@
 import { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 
-
 interface Message {
   id: string;
   content: string;
@@ -22,19 +21,35 @@ const ChatSection: React.FC = () => {
   const [apiKey, setApiKey] = useState('');
   const [hasValidApiKey, setHasValidApiKey] = useState(false);
   const [serverHasApiKey, setServerHasApiKey] = useState(false);
+  const [showApiKeyInput, setShowApiKeyInput] = useState(false);
+  const [apiCheckComplete, setApiCheckComplete] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Check if server has API key
-    fetch('/api/chat')
-      .then(res => res.json())
-      .then(data => {
-        console.log('Server API check:', data);
-        if (data.hasApiKey) {
-          setServerHasApiKey(true);
-          setHasValidApiKey(true);
-        } else {
-          // Check localStorage for user API key
+    // Only check API once when component mounts
+    if (!apiCheckComplete) {
+      fetch('/api/chat')
+        .then(res => res.json())
+        .then(data => {
+          console.log('Server API check:', data);
+          if (data.hasApiKey) {
+            setServerHasApiKey(true);
+            setHasValidApiKey(true);
+          } else {
+            // Check localStorage for user API key
+            const savedApiKey = localStorage.getItem('DEEPSEEK_API_KEY');
+            if (savedApiKey) {
+              setApiKey(savedApiKey);
+              setHasValidApiKey(true);
+            } else {
+              setShowApiKeyInput(true);
+            }
+          }
+          setApiCheckComplete(true);
+        })
+        .catch(err => {
+          console.error('Error checking server API key:', err);
+          // Fallback to localStorage check
           const savedApiKey = localStorage.getItem('DEEPSEEK_API_KEY');
           if (savedApiKey) {
             setApiKey(savedApiKey);
@@ -42,40 +57,30 @@ const ChatSection: React.FC = () => {
           } else {
             setShowApiKeyInput(true);
           }
-        }
-      })
-      .catch(err => {
-        console.error('Error checking server API key:', err);
-        // Fallback to localStorage check
-        const savedApiKey = localStorage.getItem('DEEPSEEK_API_KEY');
-        if (savedApiKey) {
-          setApiKey(savedApiKey);
-          setHasValidApiKey(true);
-        } else {
-          setShowApiKeyInput(true);
-        }
-      });
+          setApiCheckComplete(true);
+        });
 
-    // Charger l'historique des messages depuis localStorage
-    const savedMessages = localStorage.getItem('chat_history');
-    if (savedMessages) {
-      try {
-        const parsedMessages = JSON.parse(savedMessages);
-        setMessages(parsedMessages.map((msg: any) => ({
-          ...msg,
-          timestamp: new Date(msg.timestamp)
-        })));
-      } catch (error) {
-        console.error('Erreur lors du chargement de l\'historique:', error);
+      // Load message history once
+      const savedMessages = localStorage.getItem('chat_history');
+      if (savedMessages) {
+        try {
+          const parsedMessages = JSON.parse(savedMessages);
+          setMessages(parsedMessages.map((msg: any) => ({
+            ...msg,
+            timestamp: new Date(msg.timestamp)
+          })));
+        } catch (error) {
+          console.error('Error loading chat history:', error);
+        }
       }
     }
-  }, []);
+  }, [apiCheckComplete]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Sauvegarder l'historique dans localStorage à chaque changement
+  // Save history to localStorage when messages change
   useEffect(() => {
     if (messages.length > 0) {
       localStorage.setItem('chat_history', JSON.stringify(messages));
@@ -89,7 +94,6 @@ const ChatSection: React.FC = () => {
       setShowApiKeyInput(false);
     }
   };
-
 
   const clearHistory = () => {
     setMessages([]);
@@ -117,7 +121,7 @@ const ChatSection: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Préparer l'historique pour l'API (format simplifié)
+      // Prepare history for API (simplified format)
       const chatHistory: ChatMessage[] = messages.map(msg => ({
         role: msg.role,
         content: msg.content
@@ -143,7 +147,7 @@ const ChatSection: React.FC = () => {
           setHasValidApiKey(false);
           setServerHasApiKey(false);
         }
-        throw new Error(data.message || 'Erreur de communication');
+        throw new Error(data.message || 'Communication error');
       }
 
       const assistantMessage: Message = {
@@ -160,10 +164,10 @@ const ChatSection: React.FC = () => {
       }
 
     } catch (error) {
-      console.error('Erreur chat:', error);
+      console.error('Chat error:', error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: `Erreur: ${error instanceof Error ? error.message : 'Une erreur est survenue'}`,
+        content: `Error: ${error instanceof Error ? error.message : 'An unexpected error occurred'}`,
         role: 'assistant',
         timestamp: new Date()
       };
@@ -200,8 +204,46 @@ const ChatSection: React.FC = () => {
           </p>
         </div>
 
+        {/* API Key Input Modal */}
+        {showApiKeyInput && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="card-glass rounded-3xl p-8 max-w-md mx-4">
+              <h3 className="text-xl font-bold mb-4" style={{ color: 'var(--foreground)' }}>
+                DeepSeek API Key Required
+              </h3>
+              <p className="mb-6" style={{ color: 'var(--muted-foreground)' }}>
+                To use the AI chat, please provide your free DeepSeek API key.
+              </p>
+              <input
+                type="text"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                placeholder="sk-..."
+                className="w-full glass rounded-xl px-4 py-3 mb-4"
+                style={{ color: 'var(--foreground)' }}
+              />
+              <div className="flex space-x-4">
+                <button
+                  onClick={saveApiKey}
+                  className="flex-1 btn-glass px-4 py-2 rounded-xl"
+                  style={{ color: 'var(--primary)' }}
+                >
+                  Save & Continue
+                </button>
+                <button
+                  onClick={() => setShowApiKeyInput(false)}
+                  className="glass-subtle px-4 py-2 rounded-xl"
+                  style={{ color: 'var(--muted-foreground)' }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="card-glass rounded-3xl shadow-2xl overflow-hidden">
-          {/* Header avec gestion API Key */}
+          {/* Header */}
           <div className="glass-strong p-4 border-b flex justify-between items-center" style={{ borderColor: 'var(--glass-border)' }}>
             <div className="flex items-center space-x-3">
               <div className="glass rounded-full p-2">
@@ -223,12 +265,22 @@ const ChatSection: React.FC = () => {
             </div>
             
             <div className="flex items-center space-x-2">
+              {!hasValidApiKey && (
+                <button
+                  onClick={() => setShowApiKeyInput(true)}
+                  className="glass-subtle p-2 rounded-lg text-xs"
+                  style={{ color: 'var(--primary)' }}
+                  title="Configure API Key"
+                >
+                  🔑 Setup
+                </button>
+              )}
               {messages.length > 0 && (
                 <button
                   onClick={clearHistory}
                   className="glass-subtle p-2 rounded-lg text-xs"
                   style={{ color: 'var(--muted-foreground)' }}
-                  title="Effacer l'historique"
+                  title="Clear history"
                 >
                   🗑️ Clear
                 </button>
@@ -236,7 +288,7 @@ const ChatSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Zone des messages */}
+          {/* Messages Area */}
           <div 
             className="h-[500px] p-6 overflow-y-auto relative"
             style={{ 
@@ -244,16 +296,15 @@ const ChatSection: React.FC = () => {
             }}
           >
             <div className="space-y-6">
-              {/* Message de bienvenue */}
+              {/* Welcome message */}
               {messages.length === 0 && (
                 <div className="flex items-start space-x-4 animate-fade-in-up">
                   <div className="glass rounded-full p-3 flex-shrink-0">
                     <span className="text-2xl">🤖</span>
                   </div>
-                  <div className="glass rounded-2xl p-4 max-w-2xl border-l-4" style={{ borderLeftColor: 'var(--primary)' }}> {/* Changement: max-w-xs -> max-w-2xl */}
+                  <div className="glass rounded-2xl p-4 max-w-2xl border-l-4" style={{ borderLeftColor: 'var(--primary)' }}>
                     <ReactMarkdown 
                       components={{
-                        // Personnalisation des éléments markdown
                         h1: ({children}) => <h1 className="text-lg font-bold mb-2" style={{ color: 'var(--primary)' }}>{children}</h1>,
                         h2: ({children}) => <h2 className="text-base font-semibold mb-2" style={{ color: 'var(--primary)' }}>{children}</h2>,
                         h3: ({children}) => <h3 className="text-sm font-semibold mb-1" style={{ color: 'var(--primary)' }}>{children}</h3>,
@@ -274,7 +325,7 @@ const ChatSection: React.FC = () => {
                 </div>
               )}
               
-              {/* Messages de conversation */}
+              {/* Conversation messages */}
               {messages.map((msg) => (
                 <div 
                   key={msg.id} 
@@ -284,14 +335,13 @@ const ChatSection: React.FC = () => {
                     <span className="text-2xl">{msg.role === 'user' ? '👤' : '🤖'}</span>
                   </div>
                   <div 
-                    className={`glass rounded-2xl p-4 max-w-4xl border-l-4 ${msg.role === 'user' ? 'border-r-4 border-l-0' : ''}`} // Changement: max-w-sm -> max-w-4xl
+                    className={`glass rounded-2xl p-4 max-w-4xl border-l-4 ${msg.role === 'user' ? 'border-r-4 border-l-0' : ''}`}
                     style={{ 
                       borderLeftColor: msg.role === 'user' ? 'transparent' : 'var(--primary)',
                       borderRightColor: msg.role === 'user' ? 'var(--accent)' : 'transparent'
                     }}
                   >
                     {msg.role === 'assistant' ? (
-                      // Rendu markdown pour les réponses de l'assistant
                       <ReactMarkdown 
                         components={{
                           h1: ({children}) => <h1 className="text-lg font-bold mb-3 mt-4 first:mt-0" style={{ color: 'var(--primary)' }}>{children}</h1>,
@@ -310,7 +360,6 @@ const ChatSection: React.FC = () => {
                         {msg.content}
                       </ReactMarkdown>
                     ) : (
-                      // Texte simple pour les messages utilisateur
                       <p 
                         className="text-sm leading-relaxed whitespace-pre-wrap"
                         style={{ color: 'var(--card-foreground)' }}
@@ -328,7 +377,7 @@ const ChatSection: React.FC = () => {
                 </div>
               ))}
 
-              {/* Indicateur de frappe */}
+              {/* Typing indicator */}
               {isLoading && (
                 <div className="flex items-start space-x-4">
                   <div className="glass rounded-full p-3 flex-shrink-0">
@@ -348,14 +397,14 @@ const ChatSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Zone de saisie */}
+          {/* Input Area */}
           <div className="p-6 glass-strong border-t" style={{ borderColor: 'var(--glass-border)' }}>
             <form onSubmit={handleSendMessage} className="flex space-x-4">
               <input
                 type="text"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder={hasValidApiKey ? "Ask your questions ..." : "Please contact support"}
+                placeholder={hasValidApiKey ? "Ask your questions..." : "Please configure API key first"}
                 className="flex-1 glass rounded-xl px-4 py-3 text-sm focus:outline-none transition-all duration-300"
                 style={{ 
                   color: 'var(--foreground)',
@@ -396,7 +445,7 @@ const ChatSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Fonctionnalités */}
+        {/* Features */}
         <div className="grid md:grid-cols-3 gap-6 mt-12">
           <div className="text-center card-glass rounded-2xl p-6 hover:scale-105 transition-all duration-300">
             <div className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center glass-subtle">

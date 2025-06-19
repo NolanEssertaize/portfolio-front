@@ -244,3 +244,44 @@ html {
   transform: translateY(-5px);
   box-shadow: 0 20px 50px var(--glass-shadow);
 }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+@supports (-webkit-backdrop-filter: blur(10px)) {
+  .glass-effect,
+  .glass-effect-strong,
+  .glass-effect-subtle,
+  .btn-glass,
+  .card-glass {
+    -webkit-backdrop-filter: blur(15px);
+  }
+}
+
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+.animate-float,
+.animate-fade-in-up,
+.glass-effect,
+.card-glass {
+  will-change: transform;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+}

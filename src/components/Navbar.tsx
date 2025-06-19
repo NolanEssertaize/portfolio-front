@@ -10,6 +10,7 @@ interface NavItem {
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
+  const [isScrolling, setIsScrolling] = useState(false);
 
   const navItems: NavItem[] = [
     { label: 'Home', href: '#hero' },
@@ -20,32 +21,49 @@ const Navbar: React.FC = () => {
   ];
 
   useEffect(() => {
+    let scrollTimeout: NodeJS.Timeout;
+    
     const handleScroll = () => {
-      const sections = ['hero', 'about', 'skills', 'projects', 'chat'];
-      const currentSection = sections.find(section => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top <= 100 && rect.bottom >= 100;
-        }
-        return false;
-      });
+      // Don't update active section if we're programmatically scrolling
+      if (isScrolling) return;
       
-      if (currentSection) {
-        setActiveSection(currentSection);
-      }
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const sections = ['hero', 'about', 'skills', 'projects', 'chat'];
+        const currentSection = sections.find(section => {
+          const element = document.getElementById(section);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            return rect.top <= 100 && rect.bottom >= 100;
+          }
+          return false;
+        });
+        
+        if (currentSection && currentSection !== activeSection) {
+          setActiveSection(currentSection);
+        }
+      }, 100);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout);
+    };
+  }, [activeSection, isScrolling]);
 
   const scrollToSection = (href: string) => {
     const targetId = href.replace('#', '');
     const element = document.getElementById(targetId);
     if (element) {
+      setIsScrolling(true);
       element.scrollIntoView({ behavior: 'smooth' });
       setIsMenuOpen(false);
+      
+      // Reset scrolling flag after animation completes
+      setTimeout(() => {
+        setIsScrolling(false);
+      }, 1000);
     }
   };
 

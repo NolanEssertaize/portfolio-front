@@ -14,6 +14,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        {/* Prevent scroll restoration */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+              }
+              // Ensure we start at the top
+              window.addEventListener('beforeunload', function() {
+                window.scrollTo(0, 0);
+              });
+            `,
+          }}
+        />
+      </head>
       <body className="antialiased">
         <ClientThemeProvider>
           {children}
