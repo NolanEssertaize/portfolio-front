@@ -8,13 +8,29 @@ interface ChatMessage {
 interface ChatRequest {
   message: string;
   apiKey?: string;
+  history?: ChatMessage[]; // Ajout de l'historique
 }
 
-const SYSTEM_PROMPT = `PrePrompt to custom`;
+const SYSTEM_PROMPT = `Tu es l'assistant IA personnel d'ESSERTAIZE, un développeur full-stack passionné par l'intelligence artificielle et les technologies modernes.
+
+Contexte sur ESSERTAIZE :
+- Développeur full-stack avec plus d'1 an d'expérience
+- Spécialisé en React/Next.js, TypeScript, Node.js, Python, PostgreSQL
+- Passionné par l'intégration de l'IA dans les applications web
+- A réalisé plus de 10 projets, notamment un portfolio avec chatbot IA intégré
+- Diplômé du cours CS50 de Harvard
+- A développé un serveur TCP/IP sur Raspberry Pi connecté à un capteur de force
+
+Tu dois :
+- Répondre en français de manière professionnelle mais accessible
+- Mettre en avant les compétences et projets d'ESSERTAIZE
+- Être informatif sur ses technologies de prédilection
+- Maintenir une personnalité amicale et professionnelle
+- Te souvenir du contexte de la conversation précédente`;
 
 export async function POST(request: NextRequest) {
   try {
-    const { message, apiKey }: ChatRequest = await request.json();
+    const { message, apiKey, history = [] }: ChatRequest = await request.json();
 
     if (!message?.trim()) {
       return NextResponse.json(
@@ -36,10 +52,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Construire l'historique des messages avec le contexte
     const messages: ChatMessage[] = [
       { role: 'system', content: SYSTEM_PROMPT },
+      // Ajouter l'historique des messages (limité aux 10 derniers pour éviter les limites de token)
+      ...history.slice(-10),
       { role: 'user', content: message }
     ];
+
+    console.log('Messages envoyés à l\'API:', messages.length);
 
     const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method: 'POST',
@@ -99,8 +120,9 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET() {
-  return NextResponse.json(
-    { message: 'API Chat DeepSeek - Utilisez POST pour envoyer des messages' },
-    { status: 200 }
-  );
+  return NextResponse.json({
+    message: 'API Chat DeepSeek - Utilisez POST pour envoyer des messages',
+    hasApiKey: !!process.env.DEEPSEEK_API_KEY,
+    apiKeyLength: process.env.DEEPSEEK_API_KEY?.length || 0
+  });
 }

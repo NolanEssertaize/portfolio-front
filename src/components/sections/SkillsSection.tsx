@@ -1,8 +1,25 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const SkillsSection: React.FC = () => {
   const [activeTab, setActiveTab] = useState('frontend');
+  const [mounted, setMounted] = useState(false);
+
+  // Pre-defined positions to avoid hydration mismatch
+  const floatingElements = [
+    { width: 15, height: 15, left: 10, top: 20, delay: 0, duration: 4 },
+    { width: 20, height: 18, left: 80, top: 15, delay: 1, duration: 5 },
+    { width: 12, height: 12, left: 25, top: 70, delay: 2, duration: 3.5 },
+    { width: 18, height: 16, left: 60, top: 80, delay: 0.5, duration: 4.5 },
+    { width: 14, height: 22, left: 90, top: 40, delay: 1.5, duration: 4.2 },
+    { width: 16, height: 14, left: 40, top: 30, delay: 3, duration: 3.8 },
+    { width: 13, height: 20, left: 70, top: 60, delay: 2.5, duration: 4.8 },
+    { width: 19, height: 17, left: 15, top: 85, delay: 4, duration: 3.2 },
+  ];
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const skills = {
     frontend: [
@@ -27,7 +44,7 @@ const SkillsSection: React.FC = () => {
   return (
     <section 
       id="skills" 
-      className="py-20 transition-all duration-500"
+      className="py-20 transition-all duration-500 relative"
       style={{ backgroundColor: 'var(--surface)' }}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -139,24 +156,26 @@ const SkillsSection: React.FC = () => {
           ))}
         </div>
 
-        {/* Floating decorative elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute glass-subtle rounded-full animate-float"
-              style={{
-                width: `${Math.random() * 20 + 10}px`,
-                height: `${Math.random() * 20 + 10}px`,
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${4 + Math.random() * 2}s`,
-                opacity: 0.3
-              }}
-            />
-          ))}
-        </div>
+        {/* Floating decorative elements - only render on client to avoid hydration mismatch */}
+        {mounted && (
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {floatingElements.map((element, i) => (
+              <div
+                key={i}
+                className="absolute glass-subtle rounded-full animate-float"
+                style={{
+                  width: `${element.width}px`,
+                  height: `${element.height}px`,
+                  left: `${element.left}%`,
+                  top: `${element.top}%`,
+                  animationDelay: `${element.delay}s`,
+                  animationDuration: `${element.duration}s`,
+                  opacity: 0.3
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       <style jsx>{`

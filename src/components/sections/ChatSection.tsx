@@ -8,6 +8,11 @@ interface Message {
   timestamp: Date;
 }
 
+interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
 const ChatSection: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState('');
@@ -15,18 +20,65 @@ const ChatSection: React.FC = () => {
   const [apiKey, setApiKey] = useState('');
   const [showApiKeyInput, setShowApiKeyInput] = useState(false);
   const [hasValidApiKey, setHasValidApiKey] = useState(false);
+  const [serverHasApiKey, setServerHasApiKey] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const savedApiKey = localStorage.getItem('DEEPSEEK_API_KEY');
-    if (savedApiKey) {
-      setApiKey(savedApiKey);
-      setHasValidApiKey(true);
+    // Check if server has API key
+    fetch('/api/chat')
+      .then(res => res.json())
+      .then(data => {
+        console.log('Server API check:', data);
+        if (data.hasApiKey) {
+          setServerHasApiKey(true);
+          setHasValidApiKey(true);
+        } else {
+          // Check localStorage for user API key
+          const savedApiKey = localStorage.getItem('DEEPSEEK_API_KEY');
+          if (savedApiKey) {
+            setApiKey(savedApiKey);
+            setHasValidApiKey(true);
+          } else {
+            setShowApiKeyInput(true);
+          }
+        }
+      })
+      .catch(err => {
+        console.error('Error checking server API key:', err);
+        // Fallback to localStorage check
+        const savedApiKey = localStorage.getItem('DEEPSEEK_API_KEY');
+        if (savedApiKey) {
+          setApiKey(savedApiKey);
+          setHasValidApiKey(true);
+        } else {
+          setShowApiKeyInput(true);
+        }
+      });
+
+    // Charger l'historique des messages depuis localStorage
+    const savedMessages = localStorage.getItem('chat_history');
+    if (savedMessages) {
+      try {
+        const parsedMessages = JSON.parse(savedMessages);
+        setMessages(parsedMessages.map((msg: any) => ({
+          ...msg,
+          timestamp: new Date(msg.timestamp)
+        })));
+      } catch (error) {
+        console.error('Erreur lors du chargement de l\'historique:', error);
+      }
     }
   }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  // Sauvegarder l'historique dans localStorage à chaque changement
+  useEffect(() => {
+    if (messages.length > 0) {
+      localStorage.setItem('chat_history', JSON.stringify(messages));
+    }
   }, [messages]);
 
   const saveApiKey = () => {
@@ -41,7 +93,13 @@ const ChatSection: React.FC = () => {
     localStorage.removeItem('DEEPSEEK_API_KEY');
     setApiKey('');
     setHasValidApiKey(false);
+    setServerHasApiKey(false);
     setShowApiKeyInput(true);
+  };
+
+  const clearHistory = () => {
+    setMessages([]);
+    localStorage.removeItem('chat_history');
   };
 
   const handleSendMessage = async (e: React.FormEvent) => {
@@ -65,6 +123,12 @@ const ChatSection: React.FC = () => {
     setIsLoading(true);
 
     try {
+      // Préparer l'historique pour l'API (format simplifié)
+      const chatHistory: ChatMessage[] = messages.map(msg => ({
+        role: msg.role,
+        content: msg.content
+      }));
+
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
@@ -72,7 +136,8 @@ const ChatSection: React.FC = () => {
         },
         body: JSON.stringify({
           message: userMessage.content,
-          apiKey: apiKey || undefined
+          apiKey: serverHasApiKey ? undefined : apiKey,
+          history: chatHistory // Envoyer l'historique
         })
       });
 
@@ -82,6 +147,7 @@ const ChatSection: React.FC = () => {
         if (data.needsApiKey) {
           setShowApiKeyInput(true);
           setHasValidApiKey(false);
+          setServerHasApiKey(false);
         }
         throw new Error(data.message || 'Erreur de communication');
       }
@@ -137,7 +203,7 @@ const ChatSection: React.FC = () => {
             style={{ color: 'var(--muted-foreground)' }}
           >
             Posez-moi des questions sur mon travail, mes compétences ou mes projets. 
-            Ce chatbot est alimenté par l&apos;API DeepSeek.
+            Ce chatbot est alimenté par l&apos;API DeepSeek et garde la mémoire de notre conversation.
           </p>
         </div>
 
@@ -210,31 +276,50 @@ const ChatSection: React.FC = () => {
                   Assistant ESSERTAIZE
                 </h3>
                 <p className="text-xs" style={{ color: 'var(--muted-foreground)' }}>
-                  {hasValidApiKey ? 'Connecté à DeepSeek' : 'Configuration requise'}
+                  {serverHasApiKey 
+                    ? 'Connecté à DeepSeek (Serveur)' 
+                    : hasValidApiKey 
+                      ? 'Connecté à DeepSeek (Client)' 
+                      : 'Configuration requise'
+                  } • {messages.length} messages
                 </p>
               </div>
             </div>
             
-            {hasValidApiKey && (
-              <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2">
+              {messages.length > 0 && (
                 <button
-                  onClick={() => setShowApiKeyInput(true)}
+                  onClick={clearHistory}
                   className="glass-subtle p-2 rounded-lg text-xs"
                   style={{ color: 'var(--muted-foreground)' }}
-                  title="Changer la clé API"
+                  title="Effacer l'historique"
                 >
-                  ⚙️
+                  🗑️ Effacer
                 </button>
-                <button
-                  onClick={removeApiKey}
-                  className="glass-subtle p-2 rounded-lg text-xs"
-                  style={{ color: 'var(--muted-foreground)' }}
-                  title="Supprimer la clé API"
-                >
-                  🗑️
-                </button>
-              </div>
-            )}
+              )}
+              {hasValidApiKey && (
+                <>
+                  <button
+                    onClick={() => setShowApiKeyInput(true)}
+                    className="glass-subtle p-2 rounded-lg text-xs"
+                    style={{ color: 'var(--muted-foreground)' }}
+                    title="Changer la clé API"
+                  >
+                    ⚙️
+                  </button>
+                  {!serverHasApiKey && (
+                    <button
+                      onClick={removeApiKey}
+                      className="glass-subtle p-2 rounded-lg text-xs"
+                      style={{ color: 'var(--muted-foreground)' }}
+                      title="Supprimer la clé API"
+                    >
+                      🗑️
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
           </div>
 
           {/* Zone des messages */}
@@ -258,6 +343,8 @@ const ChatSection: React.FC = () => {
                     >
                       Salut ! Je suis l&apos;assistant IA d&apos;ESSERTAIZE. 
                       N&apos;hésitez pas à me poser des questions sur ses projets, compétences ou expérience !
+                      <br /><br />
+                      <em>💡 Je garde maintenant la mémoire de notre conversation.</em>
                     </p>
                   </div>
                 </div>
@@ -370,10 +457,10 @@ const ChatSection: React.FC = () => {
               <span className="text-3xl">🧠</span>
             </div>
             <h3 className="font-semibold mb-3" style={{ color: 'var(--foreground)' }}>
-              Powered by DeepSeek
+              Mémoire Contextuelle
             </h3>
             <p className="text-sm leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
-              Utilise l&apos;API DeepSeek gratuite pour des réponses intelligentes
+              Se souvient de votre conversation et peut faire référence aux messages précédents
             </p>
           </div>
           
@@ -382,10 +469,10 @@ const ChatSection: React.FC = () => {
               <span className="text-3xl">🔐</span>
             </div>
             <h3 className="font-semibold mb-3" style={{ color: 'var(--foreground)' }}>
-              Sécurisé
+              Historique Local
             </h3>
             <p className="text-sm leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
-              Votre clé API est stockée localement dans votre navigateur
+              Votre historique est sauvegardé localement dans votre navigateur
             </p>
           </div>
           
@@ -394,10 +481,10 @@ const ChatSection: React.FC = () => {
               <span className="text-3xl">💬</span>
             </div>
             <h3 className="font-semibold mb-3" style={{ color: 'var(--foreground)' }}>
-              Contextuel
+              Powered by DeepSeek
             </h3>
             <p className="text-sm leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
-              Connaît les projets et compétences d&apos;ESSERTAIZE
+              Alimenté par l&apos;API DeepSeek avec un contexte personnalisé sur ESSERTAIZE
             </p>
           </div>
         </div>
