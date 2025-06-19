@@ -2,9 +2,9 @@ const ProjectsSection: React.FC = () => {
   const projects = [
     {
       title: 'AI-Powered Portfolio',
-      description: 'Full-stack portfolio with chatbot support powered by AI.',
-      technologies: ['Next.js', 'Node.js', 'PostgreSQL', 'Fast API'],
-      image: '/public/ProjectAI.png',
+      description: 'Full-stack portfolio with chatbot support powered by AI. I have built the server that contain that portfolio, bought credit for that DeepSeek API, and the domain name',
+      technologies: ['Next.js', 'Node.js', 'PostgreSQL', 'Fast API', 'Nginx', 'UbuntuServer'],
+      image: '/ProjectAI.png',
       github: 'https://github.com/NolanEssertaize/portfolio-front',
       demo: '#',
       featured: true,
@@ -13,7 +13,7 @@ const ProjectsSection: React.FC = () => {
       title: 'CS50 Course',
       description: 'The CS50 Introduction and all his side project he include',
       technologies: ['C', 'C++', 'Algorithm', 'HTML', 'CSS', 'MP3', 'PNG', 'JPEG'],
-      image: '/public/CS50.png',
+      image: '/CS50.png',
       github: 'https://github.com/code50/163408317/tree/main/CS50_Introduction',
       demo: '#',
       featured: false,
@@ -22,10 +22,11 @@ const ProjectsSection: React.FC = () => {
       title: 'TCP/IP Server BAC+2',
       description: 'Build a TCP/IP Server on an raspberry pi that is connected to a strength captor that is capturing pull-up motion and registering on a mobile app',
       technologies: ['Java', 'RS232', 'Team'],
-      image: '/public/TCPIP.png',
+      image: '/TCPIP.png',
       github: '#',
       demo: '#',
       featured: false,
+      gradient: 'from-orange-500 to-red-600',
     },
   ];
 
@@ -67,26 +68,43 @@ const ProjectsSection: React.FC = () => {
             >
               {/* Project Image/Visual */}
               <div className={`relative ${project.featured ? 'lg:order-2' : ''}`}>
-                <div 
-                  className="aspect-video flex items-center justify-center glass-subtle relative overflow-hidden"
-                  style={{ 
-                    background: `linear-gradient(135deg, var(--mountain-primary), var(--mountain-secondary))` 
-                  }}
-                >
-                  {/* Placeholder Project Visual */}
-                  <div className="text-6xl opacity-30 transform group-hover:scale-110 transition-transform duration-500">
-                    🚀
-                  </div>
+                <div className="aspect-video relative overflow-hidden">
+                  {/* Background Image with Unified Color Overlay */}
+                  <div 
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-500"
+                    style={{ 
+                      backgroundImage: `url(${project.image})`,
+                    }}
+                  ></div>
+                  
+                  {/* Unified Color Overlay for Theme Consistency */}
+                  <div 
+                    className="absolute inset-0 transition-all duration-500"
+                    style={{ 
+                      background: `linear-gradient(135deg, var(--mountain-primary), var(--mountain-secondary))`,
+                      mixBlendMode: 'multiply',
+                      opacity: 0.7
+                    }}
+                  ></div>
+                  
+                  {/* Additional Theme-Aware Overlay */}
+                  <div 
+                    className="absolute inset-0 transition-all duration-500"
+                    style={{ 
+                      background: `linear-gradient(45deg, transparent 30%, var(--glass-bg) 70%)`,
+                      opacity: 0.8
+                    }}
+                  ></div>
                   
                   {/* Animated Background Pattern */}
                   <div className="absolute inset-0 opacity-20">
-                    {[...Array(12)].map((_, i) => (
+                    {[...Array(8)].map((_, i) => (
                       <div
                         key={i}
                         className="absolute glass-subtle rounded-full animate-float"
                         style={{
-                          width: `${Math.random() * 30 + 10}px`,
-                          height: `${Math.random() * 30 + 10}px`,
+                          width: `${Math.random() * 20 + 8}px`,
+                          height: `${Math.random() * 20 + 8}px`,
                           left: `${Math.random() * 100}%`,
                           top: `${Math.random() * 100}%`,
                           animationDelay: `${Math.random() * 3}s`,
@@ -98,16 +116,26 @@ const ProjectsSection: React.FC = () => {
                   
                   {/* Hover Overlay */}
                   <div 
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center"
-                    style={{ backgroundColor: 'var(--glass-bg)' }}
+                    className="absolute inset-0 opacity-0 group-hover:opacity-0 transition-all duration-500 flex items-center justify-center"
+                    style={{ background: '' }}
                   >
-                    <div className="glass rounded-full p-4">
-                      <svg className="w-8 h-8" fill="none" stroke="var(--primary)" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                      </svg>
-                    </div>
                   </div>
+
+                  {/* Corner Badge for Featured Project */}
+                  {project.featured && (
+                    <div className="absolute top-4 right-4">
+                      <div 
+                        className="glass-strong text-xs font-semibold px-3 py-1 rounded-full border transform rotate-12"
+                        style={{ 
+                          color: 'var(--primary)',
+                          borderColor: 'var(--primary)',
+                          backgroundColor: 'var(--glass-bg)'
+                        }}
+                      >
+                        ⭐ Featured
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
               

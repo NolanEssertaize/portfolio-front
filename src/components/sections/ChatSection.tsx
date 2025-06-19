@@ -1,5 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+
 
 interface Message {
   id: string;
@@ -18,7 +20,6 @@ const ChatSection: React.FC = () => {
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [apiKey, setApiKey] = useState('');
-  const [showApiKeyInput, setShowApiKeyInput] = useState(false);
   const [hasValidApiKey, setHasValidApiKey] = useState(false);
   const [serverHasApiKey, setServerHasApiKey] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -89,13 +90,6 @@ const ChatSection: React.FC = () => {
     }
   };
 
-  const removeApiKey = () => {
-    localStorage.removeItem('DEEPSEEK_API_KEY');
-    setApiKey('');
-    setHasValidApiKey(false);
-    setServerHasApiKey(false);
-    setShowApiKeyInput(true);
-  };
 
   const clearHistory = () => {
     setMessages([]);
@@ -137,7 +131,7 @@ const ChatSection: React.FC = () => {
         body: JSON.stringify({
           message: userMessage.content,
           apiKey: serverHasApiKey ? undefined : apiKey,
-          history: chatHistory // Envoyer l'historique
+          history: chatHistory
         })
       });
 
@@ -161,7 +155,6 @@ const ChatSection: React.FC = () => {
 
       setMessages(prev => [...prev, assistantMessage]);
 
-      // Si la requête a réussi avec une nouvelle clé, la sauvegarder
       if (apiKey && !hasValidApiKey) {
         saveApiKey();
       }
@@ -192,7 +185,7 @@ const ChatSection: React.FC = () => {
             className="text-4xl font-bold mb-4"
             style={{ color: 'var(--foreground)' }}
           >
-            Assistant IA
+            AI Assistant
           </h2>
           <div 
             className="w-24 h-1 mx-auto rounded-full"
@@ -202,8 +195,8 @@ const ChatSection: React.FC = () => {
             className="mt-6 max-w-2xl mx-auto"
             style={{ color: 'var(--muted-foreground)' }}
           >
-            Posez-moi des questions sur mon travail, mes compétences ou mes projets. 
-            Ce chatbot est alimenté par l&apos;API DeepSeek et garde la mémoire de notre conversation.
+            Ask me questions about my work, skills or projects. 
+            This chatbot is powered by DeepSeek API and keeps memory of our conversation.
           </p>
         </div>
 
@@ -216,14 +209,14 @@ const ChatSection: React.FC = () => {
               </div>
               <div>
                 <h3 className="font-semibold" style={{ color: 'var(--foreground)' }}>
-                  Assistant ESSERTAIZE
+                  ESSERTAIZE Assistant
                 </h3>
                 <p className="text-xs" style={{ color: 'var(--muted-foreground)' }}>
                   {serverHasApiKey 
-                    ? 'Connecté' 
+                    ? 'Connected' 
                     : hasValidApiKey 
-                      ? 'Connecté' 
-                      : 'Configuration requise'
+                      ? 'Connected' 
+                      : 'Configuration required'
                   } • {messages.length} messages
                 </p>
               </div>
@@ -237,7 +230,7 @@ const ChatSection: React.FC = () => {
                   style={{ color: 'var(--muted-foreground)' }}
                   title="Effacer l'historique"
                 >
-                  🗑️ Effacer
+                  🗑️ Clear
                 </button>
               )}  
             </div>
@@ -245,7 +238,7 @@ const ChatSection: React.FC = () => {
 
           {/* Zone des messages */}
           <div 
-            className="h-96 p-6 overflow-y-auto relative"
+            className="h-[500px] p-6 overflow-y-auto relative"
             style={{ 
               background: `linear-gradient(to bottom, var(--glass-bg), var(--surface-glass))` 
             }}
@@ -257,16 +250,26 @@ const ChatSection: React.FC = () => {
                   <div className="glass rounded-full p-3 flex-shrink-0">
                     <span className="text-2xl">🤖</span>
                   </div>
-                  <div className="glass rounded-2xl p-4 max-w-xs border-l-4" style={{ borderLeftColor: 'var(--primary)' }}>
-                    <p 
-                      className="text-sm leading-relaxed"
-                      style={{ color: 'var(--card-foreground)' }}
+                  <div className="glass rounded-2xl p-4 max-w-2xl border-l-4" style={{ borderLeftColor: 'var(--primary)' }}> {/* Changement: max-w-xs -> max-w-2xl */}
+                    <ReactMarkdown 
+                      components={{
+                        // Personnalisation des éléments markdown
+                        h1: ({children}) => <h1 className="text-lg font-bold mb-2" style={{ color: 'var(--primary)' }}>{children}</h1>,
+                        h2: ({children}) => <h2 className="text-base font-semibold mb-2" style={{ color: 'var(--primary)' }}>{children}</h2>,
+                        h3: ({children}) => <h3 className="text-sm font-semibold mb-1" style={{ color: 'var(--primary)' }}>{children}</h3>,
+                        strong: ({children}) => <strong className="font-semibold" style={{ color: 'var(--primary)' }}>{children}</strong>,
+                        em: ({children}) => <em className="italic" style={{ color: 'var(--accent-foreground)' }}>{children}</em>,
+                        ul: ({children}) => <ul className="list-disc list-inside space-y-1 my-2">{children}</ul>,
+                        ol: ({children}) => <ol className="list-decimal list-inside space-y-1 my-2">{children}</ol>,
+                        li: ({children}) => <li className="text-sm" style={{ color: 'var(--muted-foreground)' }}>{children}</li>,
+                        p: ({children}) => <p className="mb-2 last:mb-0">{children}</p>,
+                        code: ({children}) => <code className="glass-subtle px-1 py-0.5 rounded text-xs font-mono" style={{ backgroundColor: 'var(--glass-bg)', color: 'var(--primary)' }}>{children}</code>,
+                      }}
                     >
-                      Salut ! Je suis l&apos;assistant IA d&apos;ESSERTAIZE. 
-                      N&apos;hésitez pas à me poser des questions sur ses projets, compétences ou expérience !
-                      <br /><br />
-                      <em>💡 Je garde maintenant la mémoire de notre conversation.</em>
-                    </p>
+                      Hi! I'm ESSERTAIZE's AI assistant. Feel free to ask me questions about his projects, skills or experience!
+                      
+                      💡 I now keep memory of our conversation.
+                    </ReactMarkdown>
                   </div>
                 </div>
               )}
@@ -281,20 +284,42 @@ const ChatSection: React.FC = () => {
                     <span className="text-2xl">{msg.role === 'user' ? '👤' : '🤖'}</span>
                   </div>
                   <div 
-                    className={`glass rounded-2xl p-4 max-w-sm border-l-4 ${msg.role === 'user' ? 'border-r-4 border-l-0' : ''}`}
+                    className={`glass rounded-2xl p-4 max-w-4xl border-l-4 ${msg.role === 'user' ? 'border-r-4 border-l-0' : ''}`} // Changement: max-w-sm -> max-w-4xl
                     style={{ 
                       borderLeftColor: msg.role === 'user' ? 'transparent' : 'var(--primary)',
                       borderRightColor: msg.role === 'user' ? 'var(--accent)' : 'transparent'
                     }}
                   >
+                    {msg.role === 'assistant' ? (
+                      // Rendu markdown pour les réponses de l'assistant
+                      <ReactMarkdown 
+                        components={{
+                          h1: ({children}) => <h1 className="text-lg font-bold mb-3 mt-4 first:mt-0" style={{ color: 'var(--primary)' }}>{children}</h1>,
+                          h2: ({children}) => <h2 className="text-base font-semibold mb-2 mt-3 first:mt-0" style={{ color: 'var(--primary)' }}>{children}</h2>,
+                          h3: ({children}) => <h3 className="text-sm font-semibold mb-2 mt-2 first:mt-0" style={{ color: 'var(--primary)' }}>{children}</h3>,
+                          strong: ({children}) => <strong className="font-semibold" style={{ color: 'var(--primary)' }}>{children}</strong>,
+                          em: ({children}) => <em className="italic" style={{ color: 'var(--accent-foreground)' }}>{children}</em>,
+                          ul: ({children}) => <ul className="list-disc list-inside space-y-1 my-3 ml-2">{children}</ul>,
+                          ol: ({children}) => <ol className="list-decimal list-inside space-y-1 my-3 ml-2">{children}</ol>,
+                          li: ({children}) => <li className="text-sm leading-relaxed" style={{ color: 'var(--card-foreground)' }}>{children}</li>,
+                          p: ({children}) => <p className="mb-3 last:mb-0 leading-relaxed">{children}</p>,
+                          code: ({children}) => <code className="glass-subtle px-2 py-1 rounded text-xs font-mono" style={{ backgroundColor: 'var(--glass-bg)', color: 'var(--primary)' }}>{children}</code>,
+                          blockquote: ({children}) => <blockquote className="border-l-4 pl-4 my-3 italic" style={{ borderLeftColor: 'var(--primary)', color: 'var(--muted-foreground)' }}>{children}</blockquote>,
+                        }}
+                      >
+                        {msg.content}
+                      </ReactMarkdown>
+                    ) : (
+                      // Texte simple pour les messages utilisateur
+                      <p 
+                        className="text-sm leading-relaxed whitespace-pre-wrap"
+                        style={{ color: 'var(--card-foreground)' }}
+                      >
+                        {msg.content}
+                      </p>
+                    )}
                     <p 
-                      className="text-sm leading-relaxed whitespace-pre-wrap"
-                      style={{ color: 'var(--card-foreground)' }}
-                    >
-                      {msg.content}
-                    </p>
-                    <p 
-                      className="text-xs mt-2 opacity-70"
+                      className="text-xs mt-3 opacity-70"
                       style={{ color: 'var(--muted-foreground)' }}
                     >
                       {msg.timestamp.toLocaleTimeString()}
@@ -330,7 +355,7 @@ const ChatSection: React.FC = () => {
                 type="text"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder={hasValidApiKey ? "Posez votre question..." : "Configurez d'abord votre clé API"}
+                placeholder={hasValidApiKey ? "Ask your questions ..." : "Please contact support"}
                 className="flex-1 glass rounded-xl px-4 py-3 text-sm focus:outline-none transition-all duration-300"
                 style={{ 
                   color: 'var(--foreground)',
@@ -356,14 +381,14 @@ const ChatSection: React.FC = () => {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    <span>Envoi</span>
+                    <span>Send</span>
                   </div>
                 ) : (
                   <div className="flex items-center space-x-2">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                     </svg>
-                    <span>Envoyer</span>
+                    <span>Send</span>
                   </div>
                 )}
               </button>
@@ -378,10 +403,10 @@ const ChatSection: React.FC = () => {
               <span className="text-3xl">🧠</span>
             </div>
             <h3 className="font-semibold mb-3" style={{ color: 'var(--foreground)' }}>
-              Mémoire Contextuelle
+              Contextual Memory
             </h3>
             <p className="text-sm leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
-              Se souvient de votre conversation et peut faire référence aux messages précédents
+              Remembers your conversation and can reference previous messages
             </p>
           </div>
           
@@ -390,10 +415,10 @@ const ChatSection: React.FC = () => {
               <span className="text-3xl">🔐</span>
             </div>
             <h3 className="font-semibold mb-3" style={{ color: 'var(--foreground)' }}>
-              Historique Local
+              Local History
             </h3>
             <p className="text-sm leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
-              Votre historique est sauvegardé localement dans votre navigateur
+              Your history is saved locally in your browser
             </p>
           </div>
           
@@ -405,7 +430,7 @@ const ChatSection: React.FC = () => {
               Powered by DeepSeek
             </h3>
             <p className="text-sm leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
-              Alimenté par l&apos;API DeepSeek avec un contexte personnalisé sur ESSERTAIZE
+              Powered by DeepSeek API with personalized context about ESSERTAIZE
             </p>
           </div>
         </div>
