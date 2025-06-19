@@ -207,63 +207,6 @@ const ChatSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Configuration API Key */}
-        {showApiKeyInput && (
-          <div className="mb-6 card-glass rounded-2xl p-6">
-            <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--foreground)' }}>
-              Configuration de l&apos;API DeepSeek
-            </h3>
-            <p className="text-sm mb-4" style={{ color: 'var(--muted-foreground)' }}>
-              Pour utiliser le chat, vous devez fournir votre clé API DeepSeek gratuite.
-              <br />
-              <a 
-                href="https://platform.deepseek.com/api_keys" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:underline"
-              >
-                Obtenez votre clé gratuite ici →
-              </a>
-            </p>
-            <div className="flex gap-3">
-              <input
-                type="password"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                placeholder="sk-..."
-                className="flex-1 glass rounded-xl px-4 py-3 text-sm focus:outline-none"
-                style={{ 
-                  color: 'var(--foreground)',
-                  borderColor: 'var(--glass-border)',
-                }}
-                onFocus={(e) => {
-                  e.target.style.boxShadow = `0 0 0 2px var(--primary)`;
-                }}
-                onBlur={(e) => {
-                  e.target.style.boxShadow = 'none';
-                }}
-              />
-              <button
-                onClick={saveApiKey}
-                disabled={!apiKey.trim()}
-                className="btn-glass px-6 py-3 rounded-xl font-medium disabled:opacity-50"
-                style={{ color: 'var(--primary)' }}
-              >
-                Sauvegarder
-              </button>
-              {hasValidApiKey && (
-                <button
-                  onClick={() => setShowApiKeyInput(false)}
-                  className="glass px-4 py-3 rounded-xl"
-                  style={{ color: 'var(--muted-foreground)' }}
-                >
-                  Annuler
-                </button>
-              )}
-            </div>
-          </div>
-        )}
-
         <div className="card-glass rounded-3xl shadow-2xl overflow-hidden">
           {/* Header avec gestion API Key */}
           <div className="glass-strong p-4 border-b flex justify-between items-center" style={{ borderColor: 'var(--glass-border)' }}>
@@ -277,9 +220,9 @@ const ChatSection: React.FC = () => {
                 </h3>
                 <p className="text-xs" style={{ color: 'var(--muted-foreground)' }}>
                   {serverHasApiKey 
-                    ? 'Connecté à DeepSeek (Serveur)' 
+                    ? 'Connecté' 
                     : hasValidApiKey 
-                      ? 'Connecté à DeepSeek (Client)' 
+                      ? 'Connecté' 
                       : 'Configuration requise'
                   } • {messages.length} messages
                 </p>
@@ -296,29 +239,7 @@ const ChatSection: React.FC = () => {
                 >
                   🗑️ Effacer
                 </button>
-              )}
-              {hasValidApiKey && (
-                <>
-                  <button
-                    onClick={() => setShowApiKeyInput(true)}
-                    className="glass-subtle p-2 rounded-lg text-xs"
-                    style={{ color: 'var(--muted-foreground)' }}
-                    title="Changer la clé API"
-                  >
-                    ⚙️
-                  </button>
-                  {!serverHasApiKey && (
-                    <button
-                      onClick={removeApiKey}
-                      className="glass-subtle p-2 rounded-lg text-xs"
-                      style={{ color: 'var(--muted-foreground)' }}
-                      title="Supprimer la clé API"
-                    >
-                      🗑️
-                    </button>
-                  )}
-                </>
-              )}
+              )}  
             </div>
           </div>
 
