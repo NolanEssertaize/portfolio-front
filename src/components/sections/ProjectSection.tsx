@@ -51,7 +51,7 @@ const ProjectsSection: React.FC = () => {
       description: 'Build a TCP/IP Server on an raspberry pi that is connected to a strength captor that is capturing pull-up motion and registering on a mobile app',
       technologies: ['Java', 'RS232', 'Team'],
       image: '/TCPIP.png',
-      github: '#',
+      github: 'https://www.canva.com/design/DAFeGReujvA/843jfXbe723PRx4z1dQ4OQ/edit?utm_content=DAFeGReujvA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton',
       demo: '#',
       featured: false,
       gradient: 'from-orange-500 to-red-600',
