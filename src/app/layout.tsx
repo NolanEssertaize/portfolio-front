@@ -1,24 +1,24 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import ClientThemeProvider from '@/components/ClientThemeProvider';
+import './globals.css'
+import type { Metadata } from 'next'
+import ClientThemeProvider from '@/components/ClientThemeProvider'
 
 export const metadata: Metadata = {
-  title: 'ESSERTAIZE - Portfolio',
-  description: 'Professional portfolio with AI integration',
-};
+    title: 'ESSERTAIZE - Portfolio',
+    description: 'Professional portfolio with AI integration',
+}
 
 export default function RootLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode
 }) {
-  return (
-    <html lang="en" className="scroll-smooth">
-      <head>
-        {/* Prevent scroll restoration */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
+    return (
+        <html lang="en" className="scroll-smooth">
+            <head>
+                {/* Prevent scroll restoration */}
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `
               if ('scrollRestoration' in history) {
                 history.scrollRestoration = 'manual';
               }
@@ -27,14 +27,12 @@ export default function RootLayout({
                 window.scrollTo(0, 0);
               });
             `,
-          }}
-        />
-      </head>
-      <body className="antialiased">
-        <ClientThemeProvider>
-          {children}
-        </ClientThemeProvider>
-      </body>
-    </html>
-  );
+                    }}
+                />
+            </head>
+            <body className="antialiased">
+                <ClientThemeProvider>{children}</ClientThemeProvider>
+            </body>
+        </html>
+    )
 }
