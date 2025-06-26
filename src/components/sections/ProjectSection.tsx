@@ -25,8 +25,11 @@ const ProjectsSection: React.FC = () => {
       setToastPosition({ top: startTop, left: startLeft });
       setToastOpacity(1);
       setShowToast(true);
+      // Wait for the toast to be rendered before starting the animation
       requestAnimationFrame(() => {
-        setToastPosition({ top: 16, left: window.innerWidth / 2 });
+        requestAnimationFrame(() => {
+          setToastPosition({ top: 16, left: window.innerWidth / 2 });
+        });
       });
       setTimeout(() => {
         const returnRect = buttonRef.current!.getBoundingClientRect();
@@ -297,7 +300,7 @@ const ProjectsSection: React.FC = () => {
             </button>
             {showToast && (
               <div
-                className="fixed glass-strong px-4 py-2 rounded-xl z-50 transition-[top,left,opacity] duration-500"
+                className="fixed glass-strong px-4 py-2 rounded-xl z-50 transition-[top,left,opacity,transform] duration-500"
                 style={{
                   color: 'var(--foreground)',
                   backgroundColor: 'var(--glass-bg)',
