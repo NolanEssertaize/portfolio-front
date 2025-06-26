@@ -23,29 +23,29 @@ const SkillsSection: React.FC = () => {
 
   const skills = {
     frontend: [
-      { name: 'React/Next.js', level: 60, icon: '⚛️' },
-      { name: 'TypeScript', level: 60, icon: '🔷' },
-      { name: 'Tailwind CSS', level: 40, icon: '🎨' },
-      { name: 'JavaScript', level: 60, icon: '🟨' },
+      { name: 'React/Next.js', level: 60, icon: 'integration_instructions' },
+      { name: 'TypeScript', level: 60, icon: 'code' },
+      { name: 'Tailwind CSS', level: 40, icon: 'palette' },
+      { name: 'JavaScript', level: 60, icon: 'terminal' },
     ],
     backend: [
-      { name: 'Node.js', level: 40, icon: '🟢' },
-      { name: 'Python', level: 80, icon: '🐍' },
-      { name: 'Databases', level: 50, icon: '🐘' },
-      { name: 'API Development', level: 90, icon: '🔌' },
+      { name: 'Node.js', level: 40, icon: 'dns' },
+      { name: 'Python', level: 80, icon: 'pets' },
+      { name: 'Databases', level: 50, icon: 'storage' },
+      { name: 'API Development', level: 90, icon: 'api' },
     ],
     devops: [
-      { name: 'Nginx', level: 40, icon: '🔗' },
-      { name: 'Environnement', level: 30, icon: '🛠️' },
-      { name: 'Deploy', level: 20, icon: '🌐' },
-      { name: 'Hardware', level: 50, icon: '🖥️' },
+      { name: 'Nginx', level: 40, icon: 'link' },
+      { name: 'Environnement', level: 30, icon: 'construction' },
+      { name: 'Deploy', level: 20, icon: 'public' },
+      { name: 'Hardware', level: 50, icon: 'computer' },
     ],
   };
 
   const tabs = [
-    { id: 'frontend', label: 'Frontend', icon: '🎨' },
-    { id: 'backend', label: 'Backend', icon: '⚙️' },
-    { id: 'devops', label: 'Devops', icon: '🗄️' },
+    { id: 'frontend', label: 'Frontend', icon: 'palette' },
+    { id: 'backend', label: 'Backend', icon: 'settings' },
+    { id: 'devops', label: 'Devops', icon: 'storage' },
   ];
 
   return (
@@ -92,7 +92,7 @@ const SkillsSection: React.FC = () => {
                   backgroundColor: activeTab === tab.id ? 'var(--glass-bg)' : 'transparent'
                 }}
               >
-                <span className="mr-2 text-lg">{tab.icon}</span>
+              <span className="material-icons mr-2 text-lg">{tab.icon}</span>
                 {tab.label}
               </button>
             ))}
@@ -109,7 +109,7 @@ const SkillsSection: React.FC = () => {
             >
               <div className="flex items-center mb-6">
                 <div className="text-3xl mr-4 glass-subtle rounded-xl p-3">
-                  {skill.icon}
+                  <span className="material-icons">{skill.icon}</span>
                 </div>
                 <h3 
                   className="text-lg font-semibold"

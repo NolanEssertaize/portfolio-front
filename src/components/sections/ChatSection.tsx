@@ -177,334 +177,189 @@ const ChatSection: React.FC = () => {
                     </div>
                 )}
 
-                <div className="card-glass rounded-3xl shadow-2xl overflow-hidden">
-                    {/* Header */}
-                    <div
-                        className="glass-strong p-4 border-b flex justify-between items-center"
-                        style={{ borderColor: 'var(--glass-border)' }}
+        <div className="card-glass rounded-3xl shadow-2xl overflow-hidden">
+          {/* Header */}
+          <div className="glass-strong p-4 border-b flex justify-between items-center" style={{ borderColor: 'var(--glass-border)' }}>
+            <div className="flex items-center space-x-3">
+              <div className="glass rounded-full p-2">
+                <span className="material-icons text-xl">smart_toy</span>
+              </div>
+              <div>
+                <h3 className="font-semibold" style={{ color: 'var(--foreground)' }}>
+                  ESSERTAIZE Assistant
+                </h3>
+                <p className="text-xs" style={{ color: 'var(--muted-foreground)' }}>
+                  {serverHasApiKey 
+                    ? 'Connected' 
+                    : hasValidApiKey 
+                      ? 'Connected' 
+                      : 'Configuration required'
+                  } • {messages.length} messages
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-2">
+              {!hasValidApiKey && (
+                <button
+                  onClick={() => setShowApiKeyInput(true)}
+                  className="glass-subtle p-2 rounded-lg text-xs"
+                  style={{ color: 'var(--primary)' }}
+                  title="Configure API Key"
+                >
+                  <span className="material-icons align-middle mr-1">vpn_key</span> Setup
+                </button>
+              )}
+              {messages.length > 0 && (
+                <button
+                  onClick={clearHistory}
+                  className="glass-subtle p-2 rounded-lg text-xs"
+                  style={{ color: 'var(--muted-foreground)' }}
+                  title="Clear history"
+                >
+                  <span className="material-icons align-middle mr-1">delete</span> Clear
+                </button>
+              )}  
+            </div>
+          </div>
+
+          {/* Messages Area */}
+          <div 
+            className="h-[500px] p-6 overflow-y-auto relative"
+            style={{ 
+              background: `linear-gradient(to bottom, var(--glass-bg), var(--surface-glass))` 
+            }}
+          >
+            <div className="space-y-6">
+              {/* Welcome message */}
+              {messages.length === 0 && (
+                <div className="flex items-start space-x-4 animate-fade-in-up">
+                  <div className="glass rounded-full p-3 flex-shrink-0">
+                      <span className="material-icons text-2xl">smart_toy</span>
+                  </div>
+                  <div className="glass rounded-2xl p-4 max-w-2xl border-l-4" style={{ borderLeftColor: 'var(--primary)' }}>
+                    <ReactMarkdown
+                      components={{
+                        h1: ({ children }) => (
+                          <h1 className="text-lg font-bold mb-2" style={{ color: 'var(--primary)' }}>
+                            {children}
+                          </h1>
+                        ),
+                        h2: ({ children }) => (
+                          <h2 className="text-base font-semibold mb-2" style={{ color: 'var(--primary)' }}>
+                            {children}
+                          </h2>
+                        ),
+                        h3: ({ children }) => (
+                          <h3 className="text-sm font-semibold mb-1" style={{ color: 'var(--primary)' }}>
+                            {children}
+                          </h3>
+                        ),
+                        strong: ({ children }) => (
+                          <strong className="font-semibold" style={{ color: 'var(--primary)' }}>
+                            {children}
+                          </strong>
+                        ),
+                        em: ({ children }) => (
+                          <em className="italic" style={{ color: 'var(--accent-foreground)' }}>
+                            {children}
+                          </em>
+                        ),
+                        ul: ({ children }) => <ul className="list-disc list-inside space-y-1 my-2">{children}</ul>,
+                        ol: ({ children }) => <ol className="list-decimal list-inside space-y-1 my-2">{children}</ol>,
+                        li: ({ children }) => (
+                          <li className="text-sm" style={{ color: 'var(--muted-foreground)' }}>
+                            {children}
+                          </li>
+                        ),
+                        p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                        code: ({ children }) => (
+                          <code
+                            className="glass-subtle px-1 py-0.5 rounded text-xs font-mono"
+                            style={{ backgroundColor: 'var(--glass-bg)', color: 'var(--primary)' }}
+                          >
+                            {children}
+                          </code>
+                        ),
+                      }}
                     >
-                        <div className="flex items-center space-x-3">
-                            <div className="glass rounded-full p-2">
-                                <span className="text-xl">🤖</span>
-                            </div>
-                            <div>
-                                <h3
-                                    className="font-semibold"
-                                    style={{ color: 'var(--foreground)' }}
-                                >
-                                    ESSERTAIZE Assistant
-                                </h3>
-                                <p
-                                    className="text-xs"
-                                    style={{ color: 'var(--muted-foreground)' }}
-                                >
-                                    {serverHasApiKey
-                                        ? 'Connected'
-                                        : hasValidApiKey
-                                        ? 'Connected'
-                                        : 'Configuration required'}{' '}
-                                    • {messages.length} messages
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center space-x-2">
-                            {!hasValidApiKey && (
-                                <button
-                                    onClick={() => setShowApiKeyInput(true)}
-                                    className="glass-subtle p-2 rounded-lg text-xs"
-                                    style={{ color: 'var(--primary)' }}
-                                    title="Configure API Key"
-                                >
-                                    🔑 Setup
-                                </button>
-                            )}
-                            {messages.length > 0 && (
-                                <button
-                                    onClick={clearHistory}
-                                    className="glass-subtle p-2 rounded-lg text-xs"
-                                    style={{ color: 'var(--muted-foreground)' }}
-                                    title="Clear history"
-                                >
-                                    🗑️ Clear
-                                </button>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Messages Area */}
-                    <div
-                        className="h-[500px] p-6 overflow-y-auto relative"
-                        style={{
-                            background: `linear-gradient(to bottom, var(--glass-bg), var(--surface-glass))`,
+                      Hi! I'm ESSERTAIZE's AI assistant. Feel free to ask me questions about his projects, skills or experience!
+                    </ReactMarkdown>
+                    <p className="flex items-center mt-2 text-sm" style={{ color: 'var(--muted-foreground)' }}>
+                      <span className="material-icons text-base mr-1 align-middle">lightbulb</span>
+                      I now keep memory of our conversation.
+                    </p>
+                  </div>
+                </div>
+              )}
+              
+              {/* Conversation messages */}
+              {messages.map((msg) => (
+                <div 
+                  key={msg.id} 
+                  className={`flex items-start space-x-4 ${msg.role === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}
+                >
+                  <div className="glass rounded-full p-3 flex-shrink-0">
+                      <span className="material-icons text-2xl">{msg.role === 'user' ? 'person' : 'smart_toy'}</span>
+                  </div>
+                  <div 
+                    className={`glass rounded-2xl p-4 max-w-4xl border-l-4 ${msg.role === 'user' ? 'border-r-4 border-l-0' : ''}`}
+                    style={{ 
+                      borderLeftColor: msg.role === 'user' ? 'transparent' : 'var(--primary)',
+                      borderRightColor: msg.role === 'user' ? 'var(--accent)' : 'transparent'
+                    }}
+                  >
+                    {msg.role === 'assistant' ? (
+                      <ReactMarkdown 
+                        components={{
+                          h1: ({children}) => <h1 className="text-lg font-bold mb-3 mt-4 first:mt-0" style={{ color: 'var(--primary)' }}>{children}</h1>,
+                          h2: ({children}) => <h2 className="text-base font-semibold mb-2 mt-3 first:mt-0" style={{ color: 'var(--primary)' }}>{children}</h2>,
+                          h3: ({children}) => <h3 className="text-sm font-semibold mb-2 mt-2 first:mt-0" style={{ color: 'var(--primary)' }}>{children}</h3>,
+                          strong: ({children}) => <strong className="font-semibold" style={{ color: 'var(--primary)' }}>{children}</strong>,
+                          em: ({children}) => <em className="italic" style={{ color: 'var(--accent-foreground)' }}>{children}</em>,
+                          ul: ({children}) => <ul className="list-disc list-inside space-y-1 my-3 ml-2">{children}</ul>,
+                          ol: ({children}) => <ol className="list-decimal list-inside space-y-1 my-3 ml-2">{children}</ol>,
+                          li: ({children}) => <li className="text-sm leading-relaxed" style={{ color: 'var(--card-foreground)' }}>{children}</li>,
+                          p: ({children}) => <p className="mb-3 last:mb-0 leading-relaxed">{children}</p>,
+                          code: ({children}) => <code className="glass-subtle px-2 py-1 rounded text-xs font-mono" style={{ backgroundColor: 'var(--glass-bg)', color: 'var(--primary)' }}>{children}</code>,
+                          blockquote: ({children}) => <blockquote className="border-l-4 pl-4 my-3 italic" style={{ borderLeftColor: 'var(--primary)', color: 'var(--muted-foreground)' }}>{children}</blockquote>,
                         }}
+                      >
+                        {msg.content}
+                      </ReactMarkdown>
+                    ) : (
+                      <p 
+                        className="text-sm leading-relaxed whitespace-pre-wrap"
+                        style={{ color: 'var(--card-foreground)' }}
+                      >
+                        {msg.content}
+                      </p>
+                    )}
+                    <p 
+                      className="text-xs mt-3 opacity-70"
+                      style={{ color: 'var(--muted-foreground)' }}
                     >
-                        <div className="space-y-6">
-                            {/* Welcome message */}
-                            {messages.length === 0 && !isLoading && (
-                                <div className="flex items-start space-x-4 animate-fade-in-up">
-                                    <div className="glass rounded-full p-3 flex-shrink-0">
-                                        <span className="text-2xl">🤖</span>
-                                    </div>
-                                    <div
-                                        className="glass rounded-2xl p-4 max-w-2xl border-l-4"
-                                        style={{
-                                            borderLeftColor: 'var(--primary)',
-                                        }}
-                                    >
-                                        <ReactMarkdown
-                                            components={{
-                                                h1: ({ children }) => (
-                                                    <h1
-                                                        className="text-lg font-bold mb-2"
-                                                        style={{
-                                                            color: 'var(--primary)',
-                                                        }}
-                                                    >
-                                                        {children}
-                                                    </h1>
-                                                ),
-                                                h2: ({ children }) => (
-                                                    <h2
-                                                        className="text-base font-semibold mb-2"
-                                                        style={{
-                                                            color: 'var(--primary)',
-                                                        }}
-                                                    >
-                                                        {children}
-                                                    </h2>
-                                                ),
-                                                h3: ({ children }) => (
-                                                    <h3
-                                                        className="text-sm font-semibold mb-1"
-                                                        style={{
-                                                            color: 'var(--primary)',
-                                                        }}
-                                                    >
-                                                        {children}
-                                                    </h3>
-                                                ),
-                                                strong: ({ children }) => (
-                                                    <strong
-                                                        className="font-semibold"
-                                                        style={{
-                                                            color: 'var(--primary)',
-                                                        }}
-                                                    >
-                                                        {children}
-                                                    </strong>
-                                                ),
-                                                em: ({ children }) => (
-                                                    <em
-                                                        className="italic"
-                                                        style={{
-                                                            color: 'var(--accent-foreground)',
-                                                        }}
-                                                    >
-                                                        {children}
-                                                    </em>
-                                                ),
-                                                ul: ({ children }) => (
-                                                    <ul className="list-disc list-inside space-y-1 my-2">
-                                                        {children}
-                                                    </ul>
-                                                ),
-                                                ol: ({ children }) => (
-                                                    <ol className="list-decimal list-inside space-y-1 my-2">
-                                                        {children}
-                                                    </ol>
-                                                ),
-                                                li: ({ children }) => (
-                                                    <li
-                                                        className="text-sm"
-                                                        style={{
-                                                            color: 'var(--muted-foreground)',
-                                                        }}
-                                                    >
-                                                        {children}
-                                                    </li>
-                                                ),
-                                                p: ({ children }) => (
-                                                    <p className="mb-2 last:mb-0">
-                                                        {children}
-                                                    </p>
-                                                ),
-                                                code: ({ children }) => (
-                                                    <code
-                                                        className="glass-subtle px-1 py-0.5 rounded text-xs font-mono"
-                                                        style={{
-                                                            backgroundColor:
-                                                                'var(--glass-bg)',
-                                                            color: 'var(--primary)',
-                                                        }}
-                                                    >
-                                                        {children}
-                                                    </code>
-                                                ),
-                                            }}
-                                        >
-                                            Hi! I&apos;m ESSERTAIZE&apos;s AI
-                                            assistant. Feel free to ask me
-                                            questions about his projects, skills
-                                            or experience! 💡 I now keep memory
-                                            of our conversation.
-                                        </ReactMarkdown>
-                                    </div>
-                                </div>
-                            )}
+                      {msg.timestamp.toLocaleTimeString()}
+                    </p>
+                  </div>
+                </div>
+              ))}
 
-                            {/* Conversation messages */}
-                            {messages.map((msg) => (
-                                <div
-                                    key={msg.id}
-                                    className={`flex items-start space-x-4 ${
-                                        msg.role === 'user'
-                                            ? 'flex-row-reverse space-x-reverse'
-                                            : ''
-                                    }`}
-                                >
-                                    <div className="glass rounded-full p-3 flex-shrink-0">
-                                        <span className="text-2xl">
-                                            {msg.role === 'user' ? '👤' : '🤖'}
-                                        </span>
-                                    </div>
-                                    <div
-                                        className={`glass rounded-2xl p-4 max-w-4xl border-l-4 ${
-                                            msg.role === 'user'
-                                                ? 'border-r-4 border-l-0'
-                                                : ''
-                                        }`}
-                                        style={{
-                                            borderLeftColor:
-                                                msg.role === 'user'
-                                                    ? 'transparent'
-                                                    : 'var(--primary)',
-                                            borderRightColor:
-                                                msg.role === 'user'
-                                                    ? 'var(--accent)'
-                                                    : 'transparent',
-                                        }}
-                                    >
-                                        <ReactMarkdown
-                                            components={{
-                                                h1: ({ children }) => (
-                                                    <h1
-                                                        className="text-lg font-bold mb-3 mt-4 first:mt-0"
-                                                        style={{
-                                                            color: 'var(--primary)',
-                                                        }}
-                                                    >
-                                                        {children}
-                                                    </h1>
-                                                ),
-                                                h2: ({ children }) => (
-                                                    <h2
-                                                        className="text-base font-semibold mb-2 mt-3 first:mt-0"
-                                                        style={{
-                                                            color: 'var(--primary)',
-                                                        }}
-                                                    >
-                                                        {children}
-                                                    </h2>
-                                                ),
-                                                h3: ({ children }) => (
-                                                    <h3
-                                                        className="text-sm font-semibold mb-2 mt-2 first:mt-0"
-                                                        style={{
-                                                            color: 'var(--primary)',
-                                                        }}
-                                                    >
-                                                        {children}
-                                                    </h3>
-                                                ),
-                                                strong: ({ children }) => (
-                                                    <strong
-                                                        className="font-semibold"
-                                                        style={{
-                                                            color: 'var(--primary)',
-                                                        }}
-                                                    >
-                                                        {children}
-                                                    </strong>
-                                                ),
-                                                em: ({ children }) => (
-                                                    <em
-                                                        className="italic"
-                                                        style={{
-                                                            color: 'var(--accent-foreground)',
-                                                        }}
-                                                    >
-                                                        {children}
-                                                    </em>
-                                                ),
-                                                ul: ({ children }) => (
-                                                    <ul className="list-disc list-inside space-y-1 my-3 ml-2">
-                                                        {children}
-                                                    </ul>
-                                                ),
-                                                ol: ({ children }) => (
-                                                    <ol className="list-decimal list-inside space-y-1 my-3 ml-2">
-                                                        {children}
-                                                    </ol>
-                                                ),
-                                                li: ({ children }) => (
-                                                    <li
-                                                        className="text-sm leading-relaxed"
-                                                        style={{
-                                                            color: 'var(--card-foreground)',
-                                                        }}
-                                                    >
-                                                        {children}
-                                                    </li>
-                                                ),
-                                                p: ({ children }) => (
-                                                    <p className="mb-3 last:mb-0 leading-relaxed">
-                                                        {children}
-                                                    </p>
-                                                ),
-                                                code: ({ children }) => (
-                                                    <code
-                                                        className="glass-subtle px-2 py-1 rounded text-xs font-mono"
-                                                        style={{
-                                                            backgroundColor:
-                                                                'var(--glass-bg)',
-                                                            color: 'var(--primary)',
-                                                        }}
-                                                    >
-                                                        {children}
-                                                    </code>
-                                                ),
-                                                blockquote: ({ children }) => (
-                                                    <blockquote
-                                                        className="border-l-4 pl-4 my-3 italic"
-                                                        style={{
-                                                            borderLeftColor:
-                                                                'var(--primary)',
-                                                            color: 'var(--muted-foreground)',
-                                                        }}
-                                                    >
-                                                        {children}
-                                                    </blockquote>
-                                                ),
-                                            }}
-                                        >
-                                            {msg.content}
-                                        </ReactMarkdown>
-                                        {msg.createdAt && (
-                                            <p
-                                                className="text-xs mt-3 opacity-70"
-                                                style={{
-                                                    color: 'var(--muted-foreground)',
-                                                }}
-                                            >
-                                                {new Date(
-                                                    msg.createdAt
-                                                ).toLocaleTimeString()}
-                                            </p>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
+              {/* Typing indicator */}
+              {isLoading && (
+                <div className="flex items-start space-x-4">
+                  <div className="glass rounded-full p-3 flex-shrink-0">
+                    <span className="material-icons text-2xl">smart_toy</span>
+                  </div>
+                  <div className="glass rounded-2xl p-4 border-l-4" style={{ borderLeftColor: 'var(--primary)' }}>
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: 'var(--primary)' }}></div>
+                      <div className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: 'var(--primary)', animationDelay: '0.1s' }}></div>
+                      <div className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: 'var(--primary)', animationDelay: '0.2s' }}></div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
                             <div ref={messagesEndRef} />
                         </div>
@@ -597,67 +452,47 @@ const ChatSection: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Features */}
-                <div className="grid md:grid-cols-3 gap-6 mt-12">
-                    <div className="text-center card-glass rounded-2xl p-6 hover:scale-105 transition-all duration-300">
-                        <div className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center glass-subtle">
-                            <span className="text-3xl">🧠</span>
-                        </div>
-                        <h3
-                            className="font-semibold mb-3"
-                            style={{ color: 'var(--foreground)' }}
-                        >
-                            Contextual Memory
-                        </h3>
-                        <p
-                            className="text-sm leading-relaxed"
-                            style={{ color: 'var(--muted-foreground)' }}
-                        >
-                            Remembers your conversation and can reference
-                            previous messages
-                        </p>
-                    </div>
-
-                    <div className="text-center card-glass rounded-2xl p-6 hover:scale-105 transition-all duration-300">
-                        <div className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center glass-subtle">
-                            <span className="text-3xl">🔐</span>
-                        </div>
-                        <h3
-                            className="font-semibold mb-3"
-                            style={{ color: 'var(--foreground)' }}
-                        >
-                            Local History
-                        </h3>
-                        <p
-                            className="text-sm leading-relaxed"
-                            style={{ color: 'var(--muted-foreground)' }}
-                        >
-                            Your history is saved locally in your browser
-                        </p>
-                    </div>
-
-                    <div className="text-center card-glass rounded-2xl p-6 hover:scale-105 transition-all duration-300">
-                        <div className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center glass-subtle">
-                            <span className="text-3xl">💬</span>
-                        </div>
-                        <h3
-                            className="font-semibold mb-3"
-                            style={{ color: 'var(--foreground)' }}
-                        >
-                            Powered by Google Gemini
-                        </h3>
-                        <p
-                            className="text-sm leading-relaxed"
-                            style={{ color: 'var(--muted-foreground)' }}
-                        >
-                            Powered by Google Gemini with personalized context
-                            about ESSERTAIZE
-                        </p>
-                    </div>
-                </div>
+        {/* Features */}
+        <div className="grid md:grid-cols-3 gap-6 mt-12">
+          <div className="text-center card-glass rounded-2xl p-6 hover:scale-105 transition-all duration-300">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center glass-subtle">
+              <span className="material-icons text-3xl">psychology</span>
             </div>
-        </section>
-    )
-}
+            <h3 className="font-semibold mb-3" style={{ color: 'var(--foreground)' }}>
+              Contextual Memory
+            </h3>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
+              Remembers your conversation and can reference previous messages
+            </p>
+          </div>
+          
+          <div className="text-center card-glass rounded-2xl p-6 hover:scale-105 transition-all duration-300">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center glass-subtle">
+              <span className="material-icons text-3xl">lock</span>
+            </div>
+            <h3 className="font-semibold mb-3" style={{ color: 'var(--foreground)' }}>
+              Local History
+            </h3>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
+              Your history is saved locally in your browser
+            </p>
+          </div>
+          
+          <div className="text-center card-glass rounded-2xl p-6 hover:scale-105 transition-all duration-300">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center glass-subtle">
+              <span className="material-icons text-3xl">chat</span>
+            </div>
+            <h3 className="font-semibold mb-3" style={{ color: 'var(--foreground)' }}>
+              Powered by DeepSeek
+            </h3>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
+              Powered by DeepSeek API with personalized context about ESSERTAIZE
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 export default ChatSection

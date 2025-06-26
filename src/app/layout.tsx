@@ -12,13 +12,17 @@ export default function RootLayout({
 }: {
     children: React.ReactNode
 }) {
-    return (
-        <html lang="en" className="scroll-smooth">
-            <head>
-                {/* Prevent scroll restoration */}
-                <script
-                    dangerouslySetInnerHTML={{
-                        __html: `
+  return (
+    <html lang="en" className="scroll-smooth">
+      <head>
+        {/* Prevent scroll restoration */}
+        <link
+          href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
               if ('scrollRestoration' in history) {
                 history.scrollRestoration = 'manual';
               }
