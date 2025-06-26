@@ -118,6 +118,19 @@ body {
   box-shadow: 0 4px 20px var(--glass-shadow);
 }
 
+/* Shorthand utility classes used throughout the components */
+.glass {
+  @apply glass-effect;
+}
+
+.glass-subtle {
+  @apply glass-effect-subtle;
+}
+
+.glass-strong {
+  @apply glass-effect-strong;
+}
+
 @keyframes fade-in-up {
   from {
     opacity: 0;
@@ -217,11 +230,7 @@ html {
 }
 
 .btn-glass {
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
-  box-shadow: 0 8px 32px var(--glass-shadow);
+  @apply glass;
   transition: all 0.3s ease;
 }
 
@@ -232,11 +241,7 @@ html {
 }
 
 .card-glass {
-  background: var(--surface-glass);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid var(--glass-border);
-  box-shadow: 0 12px 40px var(--glass-shadow);
+  @apply glass-strong;
   transition: all 0.3s ease;
 }
 
@@ -254,6 +259,9 @@ html {
   .glass-effect,
   .glass-effect-strong,
   .glass-effect-subtle,
+  .glass,
+  .glass-strong,
+  .glass-subtle,
   .btn-glass,
   .card-glass {
     -webkit-backdrop-filter: blur(15px);
@@ -268,7 +276,11 @@ img {
 .animate-float,
 .animate-fade-in-up,
 .glass-effect,
-.card-glass {
+.card-glass,
+.glass,
+.glass-strong,
+.glass-subtle,
+.btn-glass {
   will-change: transform;
   transform-style: preserve-3d;
   backface-visibility: hidden;
