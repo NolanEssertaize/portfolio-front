@@ -335,13 +335,10 @@ const ChatSection: React.FC = () => {
                         {msg.content}
                       </p>
                     )}
-                    <p 
-                      className="text-xs mt-3 opacity-70"
-                      style={{ color: 'var(--muted-foreground)' }}
-                    >
-                      {new Date(
-                          msg.createdAt
-                      ).toLocaleTimeString()}
+                    <p className="text-xs text-right text-gray-400">
+                      {msg.createdAt
+                        ? new Date(msg.createdAt).toLocaleTimeString()
+                        : ''}
                     </p>
                   </div>
                 </div>
