@@ -283,7 +283,7 @@ const ChatSection: React.FC = () => {
                         ),
                       }}
                     >
-                      Hi! I'm ESSERTAIZE's AI assistant. Feel free to ask me questions about his projects, skills or experience!
+                      Hi! I&apos;m ESSERTAIZE's AI assistant. Feel free to ask me questions about his projects, skills or experience!
                     </ReactMarkdown>
                     <p className="flex items-center mt-2 text-sm" style={{ color: 'var(--muted-foreground)' }}>
                       <span className="material-icons text-base mr-1 align-middle">lightbulb</span>
