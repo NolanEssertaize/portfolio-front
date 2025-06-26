@@ -303,24 +303,57 @@ const ChatSection: React.FC = () => {
                       <span className="material-icons text-2xl">smart_toy</span>
                   </div>
                   <div className="glass rounded-2xl p-4 max-w-2xl border-l-4" style={{ borderLeftColor: 'var(--primary)' }}>
-                    <ReactMarkdown 
+                    <ReactMarkdown
                       components={{
-                        h1: ({children}) => <h1 className="text-lg font-bold mb-2" style={{ color: 'var(--primary)' }}>{children}</h1>,
-                        h2: ({children}) => <h2 className="text-base font-semibold mb-2" style={{ color: 'var(--primary)' }}>{children}</h2>,
-                        h3: ({children}) => <h3 className="text-sm font-semibold mb-1" style={{ color: 'var(--primary)' }}>{children}</h3>,
-                        strong: ({children}) => <strong className="font-semibold" style={{ color: 'var(--primary)' }}>{children}</strong>,
-                        em: ({children}) => <em className="italic" style={{ color: 'var(--accent-foreground)' }}>{children}</em>,
-                        ul: ({children}) => <ul className="list-disc list-inside space-y-1 my-2">{children}</ul>,
-                        ol: ({children}) => <ol className="list-decimal list-inside space-y-1 my-2">{children}</ol>,
-                        li: ({children}) => <li className="text-sm" style={{ color: 'var(--muted-foreground)' }}>{children}</li>,
-                        p: ({children}) => <p className="mb-2 last:mb-0">{children}</p>,
-                        code: ({children}) => <code className="glass-subtle px-1 py-0.5 rounded text-xs font-mono" style={{ backgroundColor: 'var(--glass-bg)', color: 'var(--primary)' }}>{children}</code>,
+                        h1: ({ children }) => (
+                          <h1 className="text-lg font-bold mb-2" style={{ color: 'var(--primary)' }}>
+                            {children}
+                          </h1>
+                        ),
+                        h2: ({ children }) => (
+                          <h2 className="text-base font-semibold mb-2" style={{ color: 'var(--primary)' }}>
+                            {children}
+                          </h2>
+                        ),
+                        h3: ({ children }) => (
+                          <h3 className="text-sm font-semibold mb-1" style={{ color: 'var(--primary)' }}>
+                            {children}
+                          </h3>
+                        ),
+                        strong: ({ children }) => (
+                          <strong className="font-semibold" style={{ color: 'var(--primary)' }}>
+                            {children}
+                          </strong>
+                        ),
+                        em: ({ children }) => (
+                          <em className="italic" style={{ color: 'var(--accent-foreground)' }}>
+                            {children}
+                          </em>
+                        ),
+                        ul: ({ children }) => <ul className="list-disc list-inside space-y-1 my-2">{children}</ul>,
+                        ol: ({ children }) => <ol className="list-decimal list-inside space-y-1 my-2">{children}</ol>,
+                        li: ({ children }) => (
+                          <li className="text-sm" style={{ color: 'var(--muted-foreground)' }}>
+                            {children}
+                          </li>
+                        ),
+                        p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                        code: ({ children }) => (
+                          <code
+                            className="glass-subtle px-1 py-0.5 rounded text-xs font-mono"
+                            style={{ backgroundColor: 'var(--glass-bg)', color: 'var(--primary)' }}
+                          >
+                            {children}
+                          </code>
+                        ),
                       }}
                     >
                       Hi! I'm ESSERTAIZE's AI assistant. Feel free to ask me questions about his projects, skills or experience!
-                      
-                        <span className="material-icons align-middle mr-1">lightbulb</span> I now keep memory of our conversation.
                     </ReactMarkdown>
+                    <p className="flex items-center mt-2 text-sm" style={{ color: 'var(--muted-foreground)' }}>
+                      <span className="material-icons text-base mr-1 align-middle">lightbulb</span>
+                      I now keep memory of our conversation.
+                    </p>
                   </div>
                 </div>
               )}
