@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 const ProjectsSection: React.FC = () => {
   const [mounted, setMounted] = useState(false);
@@ -12,35 +12,11 @@ const ProjectsSection: React.FC = () => {
     animationDuration: number;
   }>>([]);
   const [showToast, setShowToast] = useState(false);
-  const [toastPosition, setToastPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
-  const [toastOpacity, setToastOpacity] = useState(0);
-  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const copyEmail = () => {
     navigator.clipboard.writeText('nolan.essertaize26@gmail.com');
-    if (buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect();
-      const startTop = rect.top + rect.height / 2;
-      const startLeft = rect.left + rect.width / 2;
-      setToastPosition({ top: startTop, left: startLeft });
-      setToastOpacity(1);
-      setShowToast(true);
-      // Wait for the toast to be rendered before starting the animation
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setToastPosition({ top: 16, left: window.innerWidth / 2 });
-        });
-      });
-      setTimeout(() => {
-        const returnRect = buttonRef.current!.getBoundingClientRect();
-        setToastPosition({
-          top: returnRect.top + returnRect.height / 2,
-          left: returnRect.left + returnRect.width / 2,
-        });
-        setToastOpacity(0);
-      }, 2500);
-      setTimeout(() => setShowToast(false), 3000);
-    }
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
   };
 
   // Generate random values only on client-side
@@ -292,7 +268,6 @@ const ProjectsSection: React.FC = () => {
             </p>
             <button
               onClick={copyEmail}
-              ref={buttonRef}
               className="btn-glass px-6 py-3 rounded-xl font-medium transition-all duration-300"
               style={{ color: 'var(--primary)' }}
             >
@@ -300,15 +275,8 @@ const ProjectsSection: React.FC = () => {
             </button>
             {showToast && (
               <div
-                className="fixed glass-strong px-4 py-2 rounded-xl z-50 transition-[top,left,opacity,transform] duration-500"
-                style={{
-                  color: 'var(--foreground)',
-                  backgroundColor: 'var(--glass-bg)',
-                  top: toastPosition.top,
-                  left: toastPosition.left,
-                  opacity: toastOpacity,
-                  transform: 'translate(-50%, -50%)',
-                }}
+                className="fixed top-3 left-1/2 transform -translate-x-1/2 glass-strong z-200 px-4 py-2 rounded-xl"
+                style={{ color: 'var(--foreground)', backgroundColor: 'var(--glass-bg)' }}
               >
                 Email copied!
               </div>
