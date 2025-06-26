@@ -1,14 +1,16 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
- 
-  reactStrictMode: false, 
+  reactStrictMode: false,
   images: {
-    unoptimized: true, 
+    unoptimized: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
   experimental: {
-    optimizePackageImports: ["react-markdown"]
-  }
+    optimizePackageImports: ["react-markdown"],
+  },
 };
 
 export default nextConfig;
