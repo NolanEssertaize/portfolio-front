@@ -11,6 +11,13 @@ const ProjectsSection: React.FC = () => {
     animationDelay: number;
     animationDuration: number;
   }>>([]);
+  const [showToast, setShowToast] = useState(false);
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText('nolan.essertaize26@gmail.com');
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
 
   // Generate random values only on client-side
   useEffect(() => {
@@ -154,15 +161,15 @@ const ProjectsSection: React.FC = () => {
                   {/* Corner Badge for Featured Project */}
                   {project.featured && (
                     <div className="absolute top-4 right-4">
-                      <div 
+                      <div
                         className="glass-strong text-xs font-semibold px-3 py-1 rounded-full border transform rotate-12"
-                        style={{ 
+                        style={{
                           color: 'var(--primary)',
                           borderColor: 'var(--primary)',
                           backgroundColor: 'var(--glass-bg)'
                         }}
                       >
-                        ⭐ Featured
+                        <span className="material-icons align-middle mr-1">star</span> Featured
                       </div>
                     </div>
                   )}
@@ -259,12 +266,21 @@ const ProjectsSection: React.FC = () => {
             >
               I&apos;m always open to discussing new opportunities and exciting projects.
             </p>
-            <button 
+            <button
+              onClick={copyEmail}
               className="btn-glass px-6 py-3 rounded-xl font-medium transition-all duration-300"
               style={{ color: 'var(--primary)' }}
             >
-              Get In Touch
+              Keep in Touch
             </button>
+            {showToast && (
+              <div
+                className="fixed bottom-4 left-1/2 transform -translate-x-1/2 glass-strong px-4 py-2 rounded-xl"
+                style={{ color: 'var(--foreground)', backgroundColor: 'var(--glass-bg)' }}
+              >
+                Email copied!
+              </div>
+            )}
           </div>
         </div>
       </div>
