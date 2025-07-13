@@ -31,8 +31,10 @@ jobs:
    
   deploy:
       runs-on: self-hosted
-      needs: build-push   
-      environment: portfolio 
+      needs: build-push
+      environment: portfolio
+      env:
+        GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
       steps:
         - name: SSH Deploy to Tailscale server
           uses: appleboy/ssh-action@v0.1.7
@@ -40,8 +42,9 @@ jobs:
             host: nolanserver
             username: sr13
             key: ${{ secrets.SERVER_SSH_KEY }}
+            envs: GOOGLE_API_KEY
             script: |
               docker pull nolansr13/essertaize-portfolio
               docker stop essertaize-portfolio || true
               docker rm essertaize-portfolio || true
-              docker run -d --name essertaize-portfolio -p 3000:3000 nolansr13/essertaize-portfolio:latest
+              docker run -d --name essertaize-portfolio -p 3000:3000 -e GOOGLE_API_KEY="$GOOGLE_API_KEY" nolansr13/essertaize-portfolio:latest
