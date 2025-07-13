@@ -44,4 +44,4 @@ jobs:
             docker pull nolansr13/essertaize-portfolio
             docker stop essertaize-portfolio || true
             docker rm essertaize-portfolio || true
-            docker run -d --name essertaize-portfolio -p 3000:3000 nolansr13/essertaize-portoflio:latest
+            docker run -d --name essertaize-portfolio -p 3000:3000 nolansr13/essertaize-portfolio:latest
