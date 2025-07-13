@@ -40,7 +40,7 @@ jobs:
             username: sr13
             key: ${{ secrets.SERVER_SSH_KEY }}
             script: |
-              docker pull nolansr13/essertaize-portfolio
-              docker stop essertaize-portfolio || true
-              docker rm essertaize-portfolio || true
-              docker run -d --name essertaize-portfolio -p 3000:3000 nolansr13/essertaize-portfolio:latest
+              sudo docker pull nolansr13/essertaize-portfolio
+              sudo docker stop essertaize-portfolio || true
+              sudo docker rm essertaize-portfolio || true
+              sudo docker run -d --name essertaize-portfolio -p 3000:3000 nolansr13/essertaize-portfolio:latest
