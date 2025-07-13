@@ -30,18 +30,16 @@ jobs:
 
    
   deploy:
-    needs: build-push
-    runs-on: ubuntu-latest
-    environment: portfolio
-    steps:
-      - name: SSH Deploy to VPS
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            docker pull nolansr13/essertaize-portfolio
-            docker stop essertaize-portfolio || true
-            docker rm essertaize-portfolio || true
-            docker run -d --name essertaize-portfolio -p 3000:3000 nolansr13/essertaize-portfolio:latest
+      runs-on: self-hosted
+      steps:
+        - name: SSH Deploy to Tailscale server
+          uses: appleboy/ssh-action@v0.1.7
+          with:
+            host: nolanserver
+            username: sr13
+            key: ${{ secrets.SERVER_SSH_KEY }}
+            script: |
+              docker pull nolansr13/essertaize-portfolio
+              docker stop essertaize-portfolio || true
+              docker rm essertaize-portfolio || true
+              docker run -d --name essertaize-portfolio -p 3000:3000 nolansr13/essertaize-portfolio:latest
