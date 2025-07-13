@@ -31,6 +31,7 @@ jobs:
    
   deploy:
       runs-on: self-hosted
+      needs: build-push   
       environment: portfolio 
       steps:
         - name: SSH Deploy to Tailscale server
