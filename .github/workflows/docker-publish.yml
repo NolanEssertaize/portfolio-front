@@ -32,6 +32,7 @@ jobs:
   deploy:
     needs: build-push
     runs-on: ubuntu-latest
+    environment: portfolio
     steps:
       - name: SSH Deploy to VPS
         uses: appleboy/ssh-action@v0.1.7
