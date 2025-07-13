@@ -2,6 +2,9 @@ import { streamText } from 'ai'
 import { createGoogleGenerativeAI } from '@ai-sdk/google'
 import { NextResponse } from 'next/server'
 
+export const runtime = 'edge'
+export const dynamic = 'force-dynamic'
+
 interface ChatMessage {
     role: 'user' | 'assistant' | 'system'
     content: string

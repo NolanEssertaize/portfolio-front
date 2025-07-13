@@ -23,6 +23,7 @@ const ChatSection: React.FC = () => {
         body: {
             apiKey: serverHasApiKey ? undefined : apiKey,
         },
+        streamMode: 'sse',
         onResponse: (response) => {
             if (response.status === 401) {
                 setShowApiKeyInput(true)
