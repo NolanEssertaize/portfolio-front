@@ -7,7 +7,6 @@ const ChatSection: React.FC = () => {
     const [apiKey, setApiKey] = useState('')
     const [hasValidApiKey, setHasValidApiKey] = useState(false)
     const [serverHasApiKey, setServerHasApiKey] = useState(false)
-    const [showApiKeyInput, setShowApiKeyInput] = useState(false)
     const [apiCheckComplete, setApiCheckComplete] = useState(false)
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -25,7 +24,6 @@ const ChatSection: React.FC = () => {
         },
         onResponse: (response) => {
             if (response.status === 401) {
-                setShowApiKeyInput(true)
                 setHasValidApiKey(false)
                 setServerHasApiKey(false)
             }
@@ -49,8 +47,6 @@ const ChatSection: React.FC = () => {
                         if (savedApiKey) {
                             setApiKey(savedApiKey)
                             setHasValidApiKey(true)
-                        } else {
-                            setShowApiKeyInput(true)
                         }
                     }
                     setApiCheckComplete(true)
@@ -62,8 +58,6 @@ const ChatSection: React.FC = () => {
                     if (savedApiKey) {
                         setApiKey(savedApiKey)
                         setHasValidApiKey(true)
-                    } else {
-                        setShowApiKeyInput(true)
                     }
                     setApiCheckComplete(true)
                 })
@@ -87,14 +81,6 @@ const ChatSection: React.FC = () => {
         }
     }, [messages])
 
-    const saveApiKey = () => {
-        if (apiKey.trim()) {
-            localStorage.setItem('GOOGLE_API_KEY', apiKey.trim())
-            setHasValidApiKey(true)
-            setShowApiKeyInput(false)
-        }
-    }
-
     const clearHistory = () => {
         setMessages([])
         localStorage.removeItem('chat_history')
@@ -106,7 +92,7 @@ const ChatSection: React.FC = () => {
             className="py-20 transition-all duration-500"
             style={{ backgroundColor: 'var(--surface)' }}
         >
-            <div className="max-w-4xl mx-auto px-2 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <h2
                         className="text-4xl font-bold mb-4"
@@ -128,52 +114,7 @@ const ChatSection: React.FC = () => {
                     </p>
                 </div>
 
-                {/* API Key Input Modal */}
-                {showApiKeyInput && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                        <div className="card-glass rounded-3xl p-8 max-w-md mx-4">
-                            <h3
-                                className="text-xl font-bold mb-4"
-                                style={{ color: 'var(--foreground)' }}
-                            >
-                                Google Gemini API Key Required
-                            </h3>
-                            <p
-                                className="mb-6"
-                                style={{ color: 'var(--muted-foreground)' }}
-                            >
-                                To use the AI chat, please provide your free
-                                Google Gemini API key.
-                            </p>
-                            <input
-                                type="text"
-                                value={apiKey}
-                                onChange={(e) => setApiKey(e.target.value)}
-                                placeholder="AIza..."
-                                className="w-full glass rounded-xl px-4 py-3 mb-4"
-                                style={{ color: 'var(--foreground)' }}
-                            />
-                            <div className="flex space-x-4">
-                                <button
-                                    onClick={saveApiKey}
-                                    className="flex-1 btn-glass px-4 py-2 rounded-xl"
-                                    style={{ color: 'var(--primary)' }}
-                                >
-                                    Save & Continue
-                                </button>
-                                <button
-                                    onClick={() => setShowApiKeyInput(false)}
-                                    className="glass-subtle px-4 py-2 rounded-xl"
-                                    style={{ color: 'var(--muted-foreground)' }}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-        <div className="card-glass rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[80vh] md:h-[600px]">
+        <div className="card-glass rounded-3xl shadow-2xl overflow-hidden">
           {/* Header */}
           <div className="glass-strong p-4 border-b flex justify-between items-center" style={{ borderColor: 'var(--glass-border)' }}>
             <div className="flex items-center space-x-3">
@@ -196,16 +137,6 @@ const ChatSection: React.FC = () => {
             </div>
             
             <div className="flex items-center space-x-2">
-              {!hasValidApiKey && (
-                <button
-                  onClick={() => setShowApiKeyInput(true)}
-                  className="glass-subtle p-2 rounded-lg text-xs"
-                  style={{ color: 'var(--primary)' }}
-                  title="Configure API Key"
-                >
-                  <span className="material-icons align-middle mr-1">vpn_key</span> Setup
-                </button>
-              )}
               {messages.length > 0 && (
                 <button
                   onClick={clearHistory}
@@ -220,10 +151,10 @@ const ChatSection: React.FC = () => {
           </div>
 
           {/* Messages Area */}
-          <div
-            className="flex-1 p-4 sm:p-6 overflow-y-auto relative"
-            style={{
-              background: `linear-gradient(to bottom, var(--glass-bg), var(--surface-glass))`
+          <div 
+            className="h-[500px] p-6 overflow-y-auto relative"
+            style={{ 
+              background: `linear-gradient(to bottom, var(--glass-bg), var(--surface-glass))` 
             }}
           >
             <div className="space-y-6">
@@ -362,7 +293,7 @@ const ChatSection: React.FC = () => {
 
                     {/* Input Area */}
                     <div
-                        className="p-4 sm:p-6 glass-strong border-t"
+                        className="p-6 glass-strong border-t"
                         style={{ borderColor: 'var(--glass-border)' }}
                     >
                         <form
