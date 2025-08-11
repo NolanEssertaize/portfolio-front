@@ -1,9 +1,13 @@
 'use client'
-import { useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useChat } from '@ai-sdk/react'
 import ReactMarkdown from 'react-markdown'
 
 const ChatSection: React.FC = () => {
+    const [apiKey, setApiKey] = useState('')
+    const [hasValidApiKey, setHasValidApiKey] = useState(false)
+    const [serverHasApiKey, setServerHasApiKey] = useState(false)
+    const [apiCheckComplete, setApiCheckComplete] = useState(false)
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
     const {
@@ -15,28 +19,67 @@ const ChatSection: React.FC = () => {
         setMessages,
     } = useChat({
         api: '/api/chat',
+        body: {
+            apiKey: serverHasApiKey ? undefined : apiKey,
+        },
+        onResponse: (response) => {
+            if (response.status === 401) {
+                setHasValidApiKey(false)
+                setServerHasApiKey(false)
+            }
+        },
     })
 
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }, [messages])
+        // Only check API once when component mounts
+        if (!apiCheckComplete) {
+            fetch('/api/chat')
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log('Server API check:', data)
+                    if (data.hasApiKey) {
+                        setServerHasApiKey(true)
+                        setHasValidApiKey(true)
+                    } else {
+                        // Check localStorage for user API key
+                        const savedApiKey =
+                            localStorage.getItem('GOOGLE_API_KEY')
+                        if (savedApiKey) {
+                            setApiKey(savedApiKey)
+                            setHasValidApiKey(true)
+                        }
+                    }
+                    setApiCheckComplete(true)
+                })
+                .catch((err) => {
+                    console.error('Error checking server API key:', err)
+                    // Fallback to localStorage check
+                    const savedApiKey = localStorage.getItem('GOOGLE_API_KEY')
+                    if (savedApiKey) {
+                        setApiKey(savedApiKey)
+                        setHasValidApiKey(true)
+                    }
+                    setApiCheckComplete(true)
+                })
 
+            // Load message history once
+            const savedMessages = localStorage.getItem('chat_history')
+            if (savedMessages) {
+                try {
+                    setMessages(JSON.parse(savedMessages))
+                } catch (error) {
+                    console.error('Error loading chat history:', error)
+                }
+            }
+        }
+    }, [apiCheckComplete, setMessages])
+
+    // Save history to localStorage when messages change
     useEffect(() => {
         if (messages.length > 0) {
             localStorage.setItem('chat_history', JSON.stringify(messages))
         }
     }, [messages])
-
-    useEffect(() => {
-        const savedMessages = localStorage.getItem('chat_history')
-        if (savedMessages) {
-            try {
-                setMessages(JSON.parse(savedMessages))
-            } catch (error) {
-                console.error('Error loading chat history:', error)
-            }
-        }
-    }, [setMessages])
 
     const clearHistory = () => {
         setMessages([])
@@ -71,36 +114,41 @@ const ChatSection: React.FC = () => {
                     </p>
                 </div>
 
-                <div className="card-glass rounded-3xl shadow-2xl overflow-hidden">
-                {/* Header */}
-                <div className="glass-strong p-4 border-b flex justify-between items-center" style={{ borderColor: 'var(--glass-border)' }}>
-                    <div className="flex items-center space-x-3">
-                        <div className="glass rounded-full p-2">
-                            <span className="material-icons text-xl">smart_toy</span>
-                        </div>
-                        <div>
-                            <h3 className="font-semibold" style={{ color: 'var(--foreground)' }}>
-                                ESSERTAIZE Assistant
-                            </h3>
-                            <p className="text-xs" style={{ color: 'var(--muted-foreground)' }}>
-                                Connected • {messages.length} messages
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div className="flex items-center space-x-2">
-                        {messages.length > 0 && (
-                            <button
-                                onClick={clearHistory}
-                                className="glass-subtle p-2 rounded-lg text-xs"
-                                style={{ color: 'var(--muted-foreground)' }}
-                                title="Clear history"
-                            >
-                                <span className="material-icons align-middle mr-1">delete</span> Clear
-                            </button>
-                        )}  
-                    </div>
-                </div>
+        <div className="card-glass rounded-3xl shadow-2xl overflow-hidden">
+          {/* Header */}
+          <div className="glass-strong p-4 border-b flex justify-between items-center" style={{ borderColor: 'var(--glass-border)' }}>
+            <div className="flex items-center space-x-3">
+              <div className="glass rounded-full p-2">
+                <span className="material-icons text-xl">smart_toy</span>
+              </div>
+              <div>
+                <h3 className="font-semibold" style={{ color: 'var(--foreground)' }}>
+                  ESSERTAIZE Assistant
+                </h3>
+                <p className="text-xs" style={{ color: 'var(--muted-foreground)' }}>
+                  {serverHasApiKey 
+                    ? 'Connected' 
+                    : hasValidApiKey 
+                      ? 'Connected' 
+                      : 'Configuration required'
+                  } • {messages.length} messages
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-2">
+              {messages.length > 0 && (
+                <button
+                  onClick={clearHistory}
+                  className="glass-subtle p-2 rounded-lg text-xs"
+                  style={{ color: 'var(--muted-foreground)' }}
+                  title="Clear history"
+                >
+                  <span className="material-icons align-middle mr-1">delete</span> Clear
+                </button>
+              )}  
+            </div>
+          </div>
 
           {/* Messages Area */}
           <div 
@@ -256,7 +304,11 @@ const ChatSection: React.FC = () => {
                                 type="text"
                                 value={input}
                                 onChange={handleInputChange}
-                                placeholder="Ask your questions..."
+                                placeholder={
+                                    hasValidApiKey
+                                        ? 'Ask your questions...'
+                                        : 'Please configure API key first'
+                                }
                                 className="flex-1 glass rounded-xl px-4 py-3 text-sm focus:outline-none transition-all duration-300"
                                 style={{
                                     color: 'var(--foreground)',
@@ -268,11 +320,15 @@ const ChatSection: React.FC = () => {
                                 onBlur={(e) => {
                                     e.target.style.boxShadow = 'none'
                                 }}
-                                disabled={isLoading}
+                                disabled={isLoading || !hasValidApiKey}
                             />
                             <button
                                 type="submit"
-                                disabled={isLoading || !input.trim()}
+                                disabled={
+                                    isLoading ||
+                                    !input.trim() ||
+                                    !hasValidApiKey
+                                }
                                 className="btn-glass px-6 py-3 rounded-xl font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                                 style={{ color: 'var(--primary)' }}
                             >
@@ -353,10 +409,10 @@ const ChatSection: React.FC = () => {
               <span className="material-icons text-3xl">chat</span>
             </div>
             <h3 className="font-semibold mb-3" style={{ color: 'var(--foreground)' }}>
-              Powered by Google Gemini
+              Powered by DeepSeek
             </h3>
             <p className="text-sm leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
-              Powered by Google Gemini API with personalized context about ESSERTAIZE
+              Powered by DeepSeek API with personalized context about ESSERTAIZE
             </p>
           </div>
         </div>
