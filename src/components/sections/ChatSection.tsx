@@ -80,10 +80,6 @@ const ChatSection: React.FC = () => {
         }
     }, [apiCheckComplete, setMessages])
 
-    useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'auto' })
-    }, [messages])
-
     // Save history to localStorage when messages change
     useEffect(() => {
         if (messages.length > 0) {
