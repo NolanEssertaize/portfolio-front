@@ -23,7 +23,6 @@ const ChatSection: React.FC = () => {
         body: {
             apiKey: serverHasApiKey ? undefined : apiKey,
         },
-        streamMode: 'sse',
         onResponse: (response) => {
             if (response.status === 401) {
                 setShowApiKeyInput(true)
@@ -82,7 +81,7 @@ const ChatSection: React.FC = () => {
     }, [apiCheckComplete, setMessages])
 
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+        messagesEndRef.current?.scrollIntoView({ behavior: 'auto' })
     }, [messages])
 
     // Save history to localStorage when messages change
@@ -111,7 +110,7 @@ const ChatSection: React.FC = () => {
             className="py-20 transition-all duration-500"
             style={{ backgroundColor: 'var(--surface)' }}
         >
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto px-2 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <h2
                         className="text-4xl font-bold mb-4"
@@ -178,7 +177,7 @@ const ChatSection: React.FC = () => {
                     </div>
                 )}
 
-        <div className="card-glass rounded-3xl shadow-2xl overflow-hidden">
+        <div className="card-glass rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[80vh] md:h-[600px]">
           {/* Header */}
           <div className="glass-strong p-4 border-b flex justify-between items-center" style={{ borderColor: 'var(--glass-border)' }}>
             <div className="flex items-center space-x-3">
@@ -225,10 +224,10 @@ const ChatSection: React.FC = () => {
           </div>
 
           {/* Messages Area */}
-          <div 
-            className="h-[500px] p-6 overflow-y-auto relative"
-            style={{ 
-              background: `linear-gradient(to bottom, var(--glass-bg), var(--surface-glass))` 
+          <div
+            className="flex-1 p-4 sm:p-6 overflow-y-auto relative"
+            style={{
+              background: `linear-gradient(to bottom, var(--glass-bg), var(--surface-glass))`
             }}
           >
             <div className="space-y-6">
@@ -367,7 +366,7 @@ const ChatSection: React.FC = () => {
 
                     {/* Input Area */}
                     <div
-                        className="p-6 glass-strong border-t"
+                        className="p-4 sm:p-6 glass-strong border-t"
                         style={{ borderColor: 'var(--glass-border)' }}
                     >
                         <form
