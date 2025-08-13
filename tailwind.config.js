@@ -6,7 +6,17 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        breathe: {
+          '0%,100%': { transform: 'scale(0.98)', opacity: '0.8' },
+          '50%': { transform: 'scale(1.02)', opacity: '1' },
+        },
+      },
+      animation: {
+        breathe: 'breathe 2.4s ease-in-out infinite',
+      },
+    },
   },
   plugins: [],
 }
