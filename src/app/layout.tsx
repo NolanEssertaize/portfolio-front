@@ -1,6 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import ClientThemeProvider from '@/components/ClientThemeProvider'
+import ClientThemeProvider from '@/components/portfolio/ClientThemeProvider'
 
 export const metadata: Metadata = {
     title: 'ESSERTAIZE - Portfolio',
