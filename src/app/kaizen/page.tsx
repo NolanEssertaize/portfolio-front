@@ -13,6 +13,7 @@ export default function KaizenPage() {
   const [topic, setTopic] = useState<Topic>('Math');
   const [level, setLevel] = useState<Level>('Easy');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const isLoading = status === 'loading';
   const [lesson, setLesson] = useState<LessonSchema | null>(null);
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
   const [grade, setGrade] = useState<'correct' | 'incorrect' | null>(null);
@@ -139,7 +140,7 @@ export default function KaizenPage() {
                           value={idx}
                           checked={selectedChoice === idx}
                           onChange={() => setSelectedChoice(idx)}
-                          disabled={status === 'loading'}
+                          disabled={isLoading}
                         />
                         <span>{choice}</span>
                       </label>
@@ -147,7 +148,7 @@ export default function KaizenPage() {
                   </div>
                   <button
                     onClick={handleCheckAnswer}
-                    disabled={selectedChoice === null || status === 'loading'}
+                    disabled={selectedChoice === null || isLoading}
                     className="btn-glass px-4 py-2 mt-4 rounded-xl disabled:opacity-50"
                   >
                     Check Answer
@@ -174,7 +175,7 @@ export default function KaizenPage() {
       {status === 'loading' && (
         <div className="fixed inset-0 flex flex-col items-center justify-center glass-effect-strong bg-[var(--background)]/60">
           <BreathingLoader />
-          <p className="mt-4">Generating your lesson…</p>
+          <p className="mt-4">Generating...</p>
         </div>
       )}
     </div>

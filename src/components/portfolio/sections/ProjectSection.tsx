@@ -77,7 +77,7 @@ const ProjectsSection: React.FC = () => {
       title: 'Learning AI',
       description: 'Exploring artificial intelligence concepts and applications.',
       technologies: ['Next.js', 'AI'],
-      image: '/ProjectAI.png',
+      image: '/AILesson.png',
       github: '#',
       demo: '/kaizen',
       demoLabel: 'Test',
