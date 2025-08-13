@@ -1,6 +1,19 @@
 'use client';
 import { useState, useEffect } from 'react';
 
+interface Project {
+  title: string;
+  description: string;
+  technologies: string[];
+  image: string;
+  github: string;
+  featured: boolean;
+  demo?: string;
+  demoLabel?: string;
+  gradient?: string;
+}
+
+
 const ProjectsSection: React.FC = () => {
   const [mounted, setMounted] = useState(false);
   const [floatingElements, setFloatingElements] = useState<Array<{
@@ -34,14 +47,13 @@ const ProjectsSection: React.FC = () => {
     setMounted(true);
   }, []);
 
-  const projects = [
+  const projects: Project[] = [
     {
       title: 'AI-Powered Portfolio',
       description: 'Full-stack portfolio with chatbot support powered by AI. I have built the server that contain that portfolio, bought credit for that DeepSeek API, and the domain name',
       technologies: ['Next.js', 'Node.js', 'PostgreSQL', 'Fast API', 'Nginx', 'UbuntuServer'],
       image: '/ProjectAI.png',
       github: 'https://github.com/NolanEssertaize/portfolio-front',
-      demo: '#',
       featured: true,
     },
     {
@@ -50,7 +62,6 @@ const ProjectsSection: React.FC = () => {
       technologies: ['C', 'C++', 'Algorithm', 'HTML', 'CSS', 'MP3', 'PNG', 'JPEG'],
       image: '/CS50.png',
       github: 'https://www.edx.org/cs50',
-      demo: '#',
       featured: false,
     },
     {
@@ -59,9 +70,18 @@ const ProjectsSection: React.FC = () => {
       technologies: ['Java', 'RS232', 'Team'],
       image: '/TCPIP.png',
       github: 'https://www.canva.com/design/DAFeGReujvA/843jfXbe723PRx4z1dQ4OQ/edit?utm_content=DAFeGReujvA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton',
-      demo: '#',
       featured: false,
       gradient: 'from-orange-500 to-red-600',
+    },
+    {
+      title: 'Learning AI',
+      description: 'Exploring artificial intelligence concepts and applications.',
+      technologies: ['Next.js', 'AI'],
+      image: '/ProjectAI.png',
+      github: '#',
+      demo: '/learning-ai',
+      demoLabel: 'Test',
+      featured: false,
     },
   ];
 
@@ -220,7 +240,16 @@ const ProjectsSection: React.FC = () => {
                 
                 {/* Action Buttons */}
                 <div className="flex space-x-4">
-                  <a 
+                  {project.demo && (
+                    <a
+                      href={project.demo}
+                      className="flex items-center glass-subtle hover:glass px-4 py-2 rounded-xl transition-all duration-300 group"
+                      style={{ color: 'var(--muted-foreground)' }}
+                    >
+                      <span className="font-medium">{project.demoLabel ?? 'Demo'}</span>
+                    </a>
+                  )}
+                  <a
                     target="_blank"
                     href={project.github}
                     className="flex items-center glass-subtle hover:glass px-4 py-2 rounded-xl transition-all duration-300 group"
