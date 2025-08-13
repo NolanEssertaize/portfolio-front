@@ -79,7 +79,7 @@ const ProjectsSection: React.FC = () => {
       technologies: ['Next.js', 'AI'],
       image: '/ProjectAI.png',
       github: '#',
-      demo: '/learning-ai',
+      demo: '/kaizen',
       demoLabel: 'Test',
       featured: false,
     },
@@ -246,6 +246,9 @@ const ProjectsSection: React.FC = () => {
                       className="flex items-center glass-subtle hover:glass px-4 py-2 rounded-xl transition-all duration-300 group"
                       style={{ color: 'var(--muted-foreground)' }}
                     >
+                      <div className="w-5 h-6 glass-subtle rounded-full flex items-center justify-center mr-2">
+                        <span className="material-icons text-3xl">rocket_launch</span>
+                      </div>
                       <span className="font-medium">{project.demoLabel ?? 'Demo'}</span>
                     </a>
                   )}

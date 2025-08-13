@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
         const { object } = await generateObject({
-          model: google('models/gemini-1.5-flash-latest'),
+          model: google('models/gemini-2.5-pro'),
           temperature: 0.2,
           system: SYSTEM_PROMPT,
           prompt: buildPrompt(topic, level, errorMessage),
