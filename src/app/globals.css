@@ -159,18 +159,6 @@ body {
     }
 }
 
-@keyframes breathe {
-    0%,
-    100% {
-        transform: scale(0.98);
-        opacity: 0.8;
-    }
-    50% {
-        transform: scale(1.02);
-        opacity: 1;
-    }
-}
-
 .animate-fade-in-up {
     animation: fade-in-up 0.8s ease-out forwards;
 }
@@ -185,10 +173,6 @@ body {
 
 .animate-mountain-glow {
     animation: mountain-glow 4s ease-in-out infinite;
-}
-
-.animate-breathe {
-    animation: breathe 2.4s ease-in-out infinite;
 }
 
 .animation-delay-300 {
