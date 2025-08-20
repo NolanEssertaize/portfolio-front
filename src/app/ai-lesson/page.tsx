@@ -1,5 +1,5 @@
-import AiLessonIntro from "@/components/ai-lesson/AiLessonIntro";
+import AiLessonTemplate from "@/components/atomic/templates/AiLessonTemplate";
 
 export default function AiLessonPage() {
-  return <AiLessonIntro />;
+  return <AiLessonTemplate />;
 }
