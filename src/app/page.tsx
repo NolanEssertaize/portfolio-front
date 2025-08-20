@@ -1,5 +1,5 @@
-import LandingTemplate from "@/components/atomic/templates/LandingTemplate";
+import PortfolioPage from "./portfolio/page";
 
 export default function Home() {
-  return <LandingTemplate />;
+  return <PortfolioPage />;
 }
