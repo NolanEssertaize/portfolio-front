@@ -19,7 +19,7 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section id="how" className="py-12">
+    <section id="how" className="py-12 scroll-mt-24">
       <Container>
         <Heading className="text-center">How it works</Heading>
         <ol className="mt-8 flex flex-col md:flex-row gap-6 md:gap-4 list-none">

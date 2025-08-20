@@ -6,7 +6,7 @@ import Button from "@/components/atomic/molecules/Button";
 
 export default function PricingTeaser() {
   return (
-    <section id="pricing" className="py-12">
+    <section id="pricing" className="py-12 scroll-mt-24">
       <Container>
         <Heading className="text-center">Pricing</Heading>
         <div className="mt-8 grid gap-6 sm:grid-cols-2">

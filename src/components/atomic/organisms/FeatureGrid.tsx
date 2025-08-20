@@ -36,7 +36,7 @@ const features = [
 
 export default function FeatureGrid() {
   return (
-    <section className="py-12">
+    <section id="features" className="py-12 scroll-mt-24">
       <Container>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
