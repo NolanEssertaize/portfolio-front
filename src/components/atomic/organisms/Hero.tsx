@@ -3,7 +3,7 @@ import Container from "@/components/atomic/atoms/Container";
 import Heading from "@/components/atomic/atoms/Heading";
 import Subheading from "@/components/atomic/atoms/Subheading";
 import CodeBlock from "@/components/atomic/atoms/CodeBlock";
-import Button from "@/components/atomic/molecules/Button";
+import { Button } from '@/components/atomic/atoms';
 
 export default function Hero() {
   return (
@@ -18,12 +18,12 @@ export default function Hero() {
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
             <Link href="/kaizen">
-              <Button className="bg-[var(--primary)] text-[var(--primary-foreground)]">
+              <Button variant="primary" animation="roll-replace">
                 Start now
               </Button>
             </Link>
             <Link href="/docs">
-              <Button className="bg-[var(--secondary)] text-[var(--secondary-foreground)]">
+              <Button variant="secondary" animation="roll-replace">
                 Docs
               </Button>
             </Link>

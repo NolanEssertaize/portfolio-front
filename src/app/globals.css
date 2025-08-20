@@ -309,3 +309,38 @@ img {
     opacity: 1;
   }
 }
+/* ==== Button Roll-Replacement Animation (Atomic) ==== */
+@media (prefers-reduced-motion: no-preference) {
+  .btn[data-anim="roll-replace"] .btn-text-front,
+  .btn[data-anim="roll-replace"] .btn-text-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    transition: transform var(--btn-roll-dur, 380ms) cubic-bezier(.2,.8,.2,1),
+                opacity var(--btn-roll-dur, 380ms) cubic-bezier(.2,.8,.2,1);
+    will-change: transform, opacity;
+  }
+  .btn[data-anim="roll-replace"] .btn-text-front { position: relative; }
+  .btn[data-anim="roll-replace"] .btn-text-back {
+    position: absolute; inset: 0;
+    transform: translate3d(-25%, 100%, 0) rotate(-8deg);
+    opacity: 0;
+  }
+  .btn[data-anim="roll-replace"].group:hover .btn-text-front,
+  .btn[data-anim="roll-replace"]:hover .btn-text-front {
+    transform: translate3d(25%, -100%, 0) rotate(8deg);
+    opacity: 0;
+  }
+  .btn[data-anim="roll-replace"].group:hover .btn-text-back,
+  .btn[data-anim="roll-replace"]:hover .btn-text-back {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn[data-anim="roll-replace"] .btn-text-front,
+  .btn[data-anim="roll-replace"] .btn-text-back { transition: none !important; }
+  .btn[data-anim="roll-replace"] .btn-text-back { display: none; }
+  .btn[data-anim="roll-replace"]:hover .btn-text-front { opacity: .85; text-decoration: underline; }
+}

@@ -2,7 +2,7 @@ import Link from "next/link";
 import Container from "@/components/atomic/atoms/Container";
 import Heading from "@/components/atomic/atoms/Heading";
 import Subheading from "@/components/atomic/atoms/Subheading";
-import Button from "@/components/atomic/molecules/Button";
+import { Button } from '@/components/atomic/atoms';
 
 export default function PricingTeaser() {
   return (
@@ -17,7 +17,7 @@ export default function PricingTeaser() {
               <li>standard model</li>
             </ul>
             <Link href="/kaizen">
-              <Button className="bg-[var(--primary)] text-[var(--primary-foreground)]">
+              <Button variant="primary" animation="roll-replace">
                 Get started
               </Button>
             </Link>
@@ -30,7 +30,7 @@ export default function PricingTeaser() {
               <li>weekly summary</li>
             </ul>
             <Link href="/pricing">
-              <Button className="bg-[var(--secondary)] text-[var(--secondary-foreground)]">
+              <Button variant="secondary" animation="roll-replace">
                 Premium (soon)
               </Button>
             </Link>
