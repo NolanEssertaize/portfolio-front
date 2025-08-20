@@ -1,7 +1,7 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from "fs";
+import * as path from "path";
 
-const root = path.join(process.cwd(), 'src');
+const root = path.join(process.cwd(), "src");
 const files: string[] = [];
 
 function collect(dir: string) {
@@ -16,14 +16,15 @@ collect(root);
 
 let changed = 0;
 let conversions = 0;
+const ambiguous: string[] = [];
 
 for (const file of files) {
-  let content = fs.readFileSync(file, 'utf8');
+  let content = fs.readFileSync(file, "utf8");
   let updated = content;
 
-  const importRegex = /import\s+Button\s+from\s+["']@\/components\/(?:ui|atomic\/molecules)\/Button["'];?/g;
+  const importRegex = /import\s+(?:\{\s*)?Button(?:\s*\})?\s+from\s+["']@\/components\/(?:ui|atomic\/atoms|atomic\/molecules)\/Button["'];?/g;
   if (importRegex.test(updated)) {
-    updated = updated.replace(importRegex, "import { Button } from '@/components/atomic/atoms';");
+    updated = updated.replace(importRegex, "import { Button } from '@/components/dna/button';");
   }
 
   const buttonRegex = /<button([^>]*className=\"[^\"]*btn[^\"]*\"[^>]*)>([\s\S]*?)<\/button>/g;
@@ -33,11 +34,20 @@ for (const file of files) {
   }
 
   if (updated !== content) {
-    fs.writeFileSync(file, updated, 'utf8');
+    fs.writeFileSync(file, updated, "utf8");
     changed++;
     console.log(`Updated: ${file}`);
   }
+
+  if (/<button[^>]*>/.test(updated) && !/className=\"[^\"]*btn[^\"]*\"/.test(updated)) {
+    ambiguous.push(file);
+  }
+}
+
+if (ambiguous.length) {
+  console.log("\nAmbiguous buttons:");
+  for (const file of ambiguous) console.log(" - " + file);
 }
 
 console.log(`\nFiles changed: ${changed}`);
-console.log(`Conversions attempted: ${conversions}`);
+console.log(`Conversions: ${conversions}`);
