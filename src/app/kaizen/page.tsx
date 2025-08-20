@@ -63,7 +63,12 @@ export default function KaizenPage() {
     <div className="min-h-screen flex flex-col">
       <header className="glass-effect">
         <div className="max-w-4xl mx-auto flex justify-between items-center p-4">
-          <h1 className="text-lg font-semibold">Kaizen Learning (Demo)</h1>
+          <a 
+            target='_blank'
+            href='/'>
+            <h1 className="text-lg font-semibold">ESSERTAIZE</h1>
+          </a>
+          <h1 className="text-lg font-semibold">改善</h1>
           <button className="btn-glass px-4 py-2 rounded-xl cursor-not-allowed" disabled>Login</button>
         </div>
       </header>

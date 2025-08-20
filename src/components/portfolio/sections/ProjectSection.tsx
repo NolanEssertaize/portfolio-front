@@ -80,7 +80,6 @@ const ProjectsSection: React.FC = () => {
       image: '/AILesson.png',
       github: '#',
       demo: '/kaizen',
-      demoLabel: 'Test',
       featured: false,
     },
   ];
