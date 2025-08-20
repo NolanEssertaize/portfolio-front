@@ -1,5 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/atomic/atoms';
 
 interface Project {
   title: string;
@@ -79,7 +81,7 @@ const ProjectsSection: React.FC = () => {
         technologies: ['Next.js', 'AI'],
         image: '/AILesson.png',
         github: '#',
-        demo: '/ai-lesson',
+        demo: '/kaizen',
         featured: false,
       },
     ];
@@ -240,16 +242,21 @@ const ProjectsSection: React.FC = () => {
                 {/* Action Buttons */}
                 <div className="flex space-x-4">
                   {project.demo && (
-                    <a
-                      href={project.demo}
-                      className="flex items-center glass-subtle hover:glass px-4 py-2 rounded-xl transition-all duration-300 group"
-                      style={{ color: 'var(--muted-foreground)' }}
-                    >
-                      <div className="w-5 h-6 glass-subtle rounded-full flex items-center justify-center mr-2">
-                        <span className="material-icons text-3xl">rocket_launch</span>
-                      </div>
-                      <span className="font-medium">{project.demoLabel ?? 'Demo'}</span>
-                    </a>
+                    <Link href={project.demo}>
+                      <Button
+                        variant="ghost"
+                        animation="roll-replace"
+                        className="glass-subtle hover:glass px-4 py-2 rounded-xl transition-all duration-300"
+                        style={{ color: 'var(--muted-foreground)' }}
+                        leftIcon={
+                          <div className="w-5 h-6 glass-subtle rounded-full flex items-center justify-center">
+                            <span className="material-icons text-3xl">rocket_launch</span>
+                          </div>
+                        }
+                      >
+                        {project.demoLabel ?? 'Demo'}
+                      </Button>
+                    </Link>
                   )}
                   <a
                     target="_blank"
@@ -287,13 +294,13 @@ const ProjectsSection: React.FC = () => {
             >
               I&apos;m always open to discussing new opportunities and exciting projects.
             </p>
-            <button
+            <Button
               onClick={copyEmail}
               className="btn-glass px-6 py-3 rounded-xl font-medium transition-all duration-300"
               style={{ color: 'var(--primary)' }}
             >
               Keep in Touch
-            </button>
+            </Button>
             {showToast && (
               <div
                 className="fixed top-3 left-1/2 transform -translate-x-1/2 glass-strong z-200 px-4 py-2 rounded-xl"

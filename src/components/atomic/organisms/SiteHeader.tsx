@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import Button from "@/components/atomic/molecules/Button";
+import { Button } from '@/components/atomic/atoms';
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -20,11 +20,11 @@ export default function SiteHeader() {
         </nav>
         <div className="hidden md:block">
           <Link href="/login">
-            <Button>Login</Button>
+            <Button animation="roll-replace">Login</Button>
           </Link>
         </div>
-        <button
-          className="md:hidden btn-glass p-2 rounded-lg"
+        <Button
+          className="md:hidden btn-glass p-2 rounded-lg" variant="ghost" animation="none"
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
         >
@@ -35,7 +35,7 @@ export default function SiteHeader() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             )}
           </svg>
-        </button>
+        </Button>
       </div>
       {open && (
         <nav className="md:hidden px-4 pb-4 flex flex-col space-y-2">
@@ -43,7 +43,7 @@ export default function SiteHeader() {
           <a href="#how" className="py-2">How it works</a>
           <a href="#pricing" className="py-2">Pricing</a>
           <Link href="/login" className="py-2">
-            <Button className="w-full">Login</Button>
+            <Button className="w-full" animation="roll-replace">Login</Button>
           </Link>
         </nav>
       )}
