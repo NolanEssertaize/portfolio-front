@@ -24,8 +24,8 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur">
-      <Container className="flex items-center justify-between py-4">
+    <nav className="sticky top-0 z-50 bg-white/60 backdrop-blur-md border border-white/20 shadow-md">
+      <Container className="flex items-center justify-between py-6 md:py-8">
         <Heading as="h2" size="h4" className="font-bold">
           <a href="#">ESSERTAIZE</a>
         </Heading>
@@ -74,8 +74,8 @@ export default function Navbar() {
       </Container>
 
       {open && (
-        <div className="md:hidden border-t border-border bg-background/90 backdrop-blur">
-          <Container className="flex flex-col py-4">
+        <div className="md:hidden bg-white/60 backdrop-blur-md border-t border-white/20 shadow-md">
+          <Container className="flex flex-col p-6">
             {links.map((link) => (
               <Text
                 key={link.href}

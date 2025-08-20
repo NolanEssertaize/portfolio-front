@@ -29,62 +29,7 @@
     --ring: var(--predominant);
 }
 
-.dark {
-    --predominant: #f6edcd;
-    --background: #0b243c;
-    --surface: rgba(11, 36, 60, 0.8);
-    --surface-glass: rgba(11, 36, 60, 0.4);
 
-    --mountain-primary: #2c4a4a;
-    --mountain-secondary: #1f3838;
-    --mountain-tertiary: #3a5a5a;
-
-    --glass-bg: rgba(11, 36, 60, 0.2);
-    --glass-border: rgba(246, 237, 205, 0.1);
-    --glass-shadow: rgba(0, 0, 0, 0.3);
-
-    --foreground: var(--predominant);
-    --card: rgba(11, 36, 60, 0.6);
-    --card-foreground: var(--predominant);
-    --primary: var(--predominant);
-    --primary-foreground: var(--background);
-    --secondary: var(--mountain-primary);
-    --secondary-foreground: var(--predominant);
-    --muted: var(--mountain-tertiary);
-    --muted-foreground: rgba(246, 237, 205, 0.7);
-    --accent: var(--mountain-secondary);
-    --accent-foreground: var(--predominant);
-    --border: rgba(246, 237, 205, 0.15);
-    --input: rgba(246, 237, 205, 0.1);
-    --ring: var(--predominant);
-}
-
-[data-theme='dark'] {
-    --predominant: #f6edcd;
-    --background: hsl(209, 69%, 14%);
-    --surface: #0b243ccc;
-    --surface-glass: rgba(11, 36, 60, 0.4);
-    --mountain-primary: #2c4a4a;
-    --mountain-secondary: #1f3838;
-    --mountain-tertiary: #3a5a5a;
-    --glass-bg: rgba(11, 36, 60, 0.2);
-    --glass-border: rgba(246, 237, 205, 0.1);
-    --glass-shadow: rgba(0, 0, 0, 0.3);
-    --foreground: var(--predominant);
-    --card: rgba(11, 36, 60, 0.6);
-    --card-foreground: var(--predominant);
-    --primary: var(--predominant);
-    --primary-foreground: var(--background);
-    --secondary: var(--mountain-primary);
-    --secondary-foreground: var(--predominant);
-    --muted: var(--mountain-tertiary);
-    --muted-foreground: rgba(246, 237, 205, 0.7);
-    --accent: var(--mountain-secondary);
-    --accent-foreground: var(--predominant);
-    --border: rgba(246, 237, 205, 0.15);
-    --input: rgba(246, 237, 205, 0.1);
-    --ring: var(--predominant);
-}
 
 body {
     background: var(--background);
@@ -343,4 +288,75 @@ img {
   .btn[data-anim="roll-replace"] .btn-text-back { transition: none !important; }
   .btn[data-anim="roll-replace"] .btn-text-back { display: none; }
   .btn[data-anim="roll-replace"]:hover .btn-text-front { opacity: .85; text-decoration: underline; }
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #111827;
+  --primary: #10b981;
+  --primary-foreground: #ffffff;
+  --secondary: #f3f4f6;
+  --secondary-foreground: #111827;
+}
+
+/* ---- iOS-like Glass Utilities ---- */
+
+/* Tiny noise (base64) to avoid external asset; super subtle */
+:root {
+  --glass-bg-1: rgba(255,255,255,0.55);
+  --glass-bg-2: rgba(255,255,255,0.35);
+  --glass-border: rgba(255,255,255,0.28);
+  --glass-noise: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nNScgaGVpZ2h0PSc1JyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxyZWN0IHdpZHRoPSc1JyBoZWlnaHQ9JzUnIGZpbGw9J3JnYmEoMCwwLDAvMCknLz48ZmlsdGVyIGlkPSduJyB4PScwJyB5PScwJz48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9JzAuOTUnIHN0aXRjaFRpbGVzPSdzdGl0Y2gnLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0nNScgaGVpZ2h0PSc1JyBmaWx0ZXI9InVybCgjbikiIG9wYWNpdHk9IjAu03IiIGZpbGw9IiMwMDAiLz48L3N2Zz4=");
+}
+
+/* Base “glass” surface */
+.glass {
+  position: relative;
+  background-image: linear-gradient(135deg, var(--glass-bg-1), var(--glass-bg-2));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--tw-shadow, 0 0 #0000), var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), inset 0 1px rgba(255,255,255,.45), 0 0 0 1px rgba(255,255,255,.18);
+  -webkit-backdrop-filter: blur(16px) saturate(1.35);
+  backdrop-filter: blur(16px) saturate(1.35);
+}
+
+/* Micro-noise + inner highlight */
+.glass::after {
+  content: "";
+  pointer-events: none;
+  position: absolute; inset: 0;
+  background-image: var(--glass-noise);
+  background-size: 120px 120px;
+  opacity: .06;
+  border-radius: inherit;
+}
+
+/* Hover sheen */
+@media (hover:hover) and (pointer:fine) {
+  .glass:hover { filter: saturate(1.5); }
+}
+
+/* Reduced-motion safety */
+@media (prefers-reduced-motion: reduce) {
+  .glass, .glass::after { transition: none !important; }
+}
+
+/* Optional “sheen” sweep on hover via gradient mask */
+.sheen {
+  position: relative; overflow: hidden;
+}
+.sheen::before {
+  content: "";
+  position: absolute; inset: -200% -50% 0 -50%;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.18) 45%, transparent 60%);
+  transform: translate3d(-30%,0,0) rotate(8deg);
+  transition: transform .8s cubic-bezier(.2,.8,.2,1);
+}
+.sheen:hover::before { transform: translate3d(40%,0,0) rotate(8deg); }
+@keyframes caret-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.typewriter-caret {
+  animation: caret-blink 1s steps(1) infinite;
 }

@@ -15,7 +15,7 @@ export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
 }
 
 const headingStyles: Record<HeadingLevel, string> = {
-  h1: "text-4xl md:text-5xl font-bold leading-tight tracking-tight",
+  h1: "text-5xl md:text-7xl font-bold tracking-tight",
   h2: "text-3xl md:text-4xl font-bold leading-tight tracking-tight",
   h3: "text-2xl md:text-3xl font-bold",
   h4: "text-xl md:text-2xl font-bold",
