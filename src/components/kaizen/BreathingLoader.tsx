@@ -1,6 +1,6 @@
-export default function BreathingLoader() {
+export default function BreathingLoader({ className = 'w-32 h-32' }: { className?: string }) {
   return (
-    <div className="w-32 h-32">
+    <div className={className}>
       <svg viewBox="0 0 100 100" className="w-full h-full">
         <g className="origin-center animate-[mountain-grow_0.6s_ease-out_forwards]">
           <path d="M10 90 L50 10 L90 90 Z" fill="black" />
