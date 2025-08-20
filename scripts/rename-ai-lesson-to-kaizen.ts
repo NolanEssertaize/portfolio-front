@@ -8,6 +8,7 @@ function collect(dir: string) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
+      if (full.includes('kaizen')) continue;
       collect(full);
     } else if (/\.[tj]sx?$/.test(entry.name)) {
       files.push(full);

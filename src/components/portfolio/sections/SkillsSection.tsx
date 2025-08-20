@@ -49,8 +49,8 @@ const SkillsSection: React.FC = () => {
   ];
 
   return (
-    <section 
-      id="skills" 
+    <section
+      id="services"
       className="py-20 transition-all duration-500 relative"
       style={{ backgroundColor: 'var(--surface)' }}
     >

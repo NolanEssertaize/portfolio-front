@@ -1,9 +1,9 @@
 'use client';
 import { useEffect } from 'react';
-import Navbar from '@/components/portfolio/Navbar';
+import { Navbar } from '@/components/dna/nav';
 import HeroSection from '@/components/portfolio/sections/HeroSection';
 import AboutSection from '@/components/portfolio/sections/AboutSection';
-import SkillsSection from '@/components/portfolio/sections/SkillsSection';
+import ServicesSection from '@/components/portfolio/sections/ServicesSection';
 import ProjectsSection from '@/components/portfolio/sections/ProjectSection';
 import ChatSection from '@/components/portfolio/sections/ChatSection';
 
@@ -34,7 +34,7 @@ export default function Home() {
       <Navbar />
       <HeroSection />
       <AboutSection />
-      <SkillsSection />
+      <ServicesSection />
       <ProjectsSection />
       <ChatSection/>
     </main>
