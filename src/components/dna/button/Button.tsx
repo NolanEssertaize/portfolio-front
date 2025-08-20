@@ -1,7 +1,7 @@
 import React from "react";
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "secondary" | "ghost";
+  variant?: "primary" | "secondary" | "ghost" | "glass";
   size?: "sm" | "md" | "lg";
   animation?: "none" | "roll-replace";
   leftIcon?: React.ReactNode;
@@ -12,6 +12,7 @@ const variantClasses: Record<string, string> = {
   primary: "bg-[var(--primary)] text-[var(--primary-foreground)]",
   secondary: "bg-[var(--secondary)] text-[var(--secondary-foreground)]",
   ghost: "bg-transparent text-[var(--foreground)]",
+  glass: "glass text-gray-900",
 };
 
 const sizeClasses: Record<string, string> = {

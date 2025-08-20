@@ -13,10 +13,10 @@ export interface TextProps extends HTMLAttributes<HTMLElement> {
 }
 
 const textStyles: Record<TextSize, string> = {
-  sm: "text-sm",
-  md: "text-base",
-  lg: "text-lg",
-  muted: "text-sm text-gray-500 dark:text-gray-400",
+  sm: "text-sm leading-relaxed",
+  md: "text-base md:text-lg leading-relaxed",
+  lg: "text-lg md:text-xl leading-relaxed",
+  muted: "text-base md:text-lg leading-relaxed text-gray-500",
 };
 
 export default function Text({

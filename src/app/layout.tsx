@@ -1,6 +1,5 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import ClientThemeProvider from '@/components/portfolio/ClientThemeProvider'
 
 export const metadata: Metadata = {
   title: "Nolan Essertaize – SaaS engineering for SMEs",
@@ -46,7 +45,7 @@ export default function RootLayout({
                 />
             </head>
             <body className="antialiased">
-                <ClientThemeProvider>{children}</ClientThemeProvider>
+                {children}
             </body>
         </html>
     )

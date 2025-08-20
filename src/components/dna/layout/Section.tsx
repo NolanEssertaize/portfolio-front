@@ -18,8 +18,10 @@ export default function Section({ id, title, children, className = "", ...props 
   return (
     <section id={id} className={`py-16 md:py-24 ${className}`} {...props}>
       <Container>
-        {title && <Heading as="h2" className="mb-8">{title}</Heading>}
-        {children}
+        <div className="rounded-2xl bg-white/60 backdrop-blur-md border border-white/20 shadow-md p-6 md:p-8">
+          {title && <Heading as="h2" className="mb-8">{title}</Heading>}
+          {children}
+        </div>
       </Container>
     </section>
   );
