@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation';
+import LandingTemplate from "@/components/atomic/templates/LandingTemplate";
 
 export default function Home() {
-  redirect('/portfolio');
+  return <LandingTemplate />;
 }
