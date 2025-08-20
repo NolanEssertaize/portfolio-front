@@ -73,16 +73,16 @@ const ProjectsSection: React.FC = () => {
       featured: false,
       gradient: 'from-orange-500 to-red-600',
     },
-    {
-      title: 'Learning AI',
-      description: 'Exploring artificial intelligence concepts and applications.',
-      technologies: ['Next.js', 'AI'],
-      image: '/AILesson.png',
-      github: '#',
-      demo: '/kaizen',
-      featured: false,
-    },
-  ];
+      {
+        title: 'Learning AI',
+        description: 'Exploring artificial intelligence concepts and applications.',
+        technologies: ['Next.js', 'AI'],
+        image: '/AILesson.png',
+        github: '#',
+        demo: '/ai-lesson',
+        featured: false,
+      },
+    ];
 
   return (
     <section 
