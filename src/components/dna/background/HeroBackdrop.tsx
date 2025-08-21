@@ -10,6 +10,4 @@ export default function HeroBackdrop() {
       >
         改善
       </span>
-    </div>
-  );
-}
+
