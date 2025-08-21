@@ -570,7 +570,9 @@ img {
   opacity: calc(0.18 + var(--glow, 0) * 0.72);
   filter: blur(calc(1px + var(--glow, 0) * 1.5px));
   border-radius: 2px;
-  transition: opacity 120ms linear, filter 120ms linear;
+  transform: scale(var(--scale, 1));
+  transform-origin: center;
+  transition: opacity 120ms linear, filter 120ms linear, transform 120ms linear;
 }
 
 .zigzag {
