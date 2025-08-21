@@ -1,11 +1,11 @@
 'use client';
 import { useEffect } from 'react';
-import { Navbar } from '@/components/dna/nav';
-import HeroSection from '@/components/portfolio/sections/HeroSection';
-import ServicesSection from '@/components/portfolio/sections/ServicesSection';
-import ProjectsSection from '@/components/portfolio/sections/ProjectSection';
-import ChatSection from '@/components/portfolio/sections/ChatSection';
-import ParcoursTimeline from '@/components/portfolio/sections/ParcoursTimeline';
+import { Navbar } from '@ui/components/dna/nav';
+import HeroSection from '@ui/components/portfolio/sections/HeroSection';
+import ServicesSection from '@ui/components/portfolio/sections/ServicesSection';
+import ProjectsSection from '@ui/components/portfolio/sections/ProjectSection';
+import ChatSection from '@ui/components/portfolio/sections/ChatSection';
+import ParcoursTimeline from '@ui/components/portfolio/sections/ParcoursTimeline';
 
 export default function Home() {
   useEffect(() => {

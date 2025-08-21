@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { Button } from '@/components/dna/button';
-import { Section } from '@/components/dna/layout';
-import { Text } from '@/components/dna/typography';
+import { Button } from '@ui/components/dna/button';
+import { Section } from '@ui/components/dna/layout';
+import { Text } from '@ui/components/dna/typography';
 
 export default function NotFound() {
   return (

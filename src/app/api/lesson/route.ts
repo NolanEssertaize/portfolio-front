@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createGoogleGenerativeAI } from '@ai-sdk/google'
 import { generateObject } from 'ai'
-import { lessonSchema, type LessonSchema } from '@/lib/lessonSchema'
+import { lessonSchema, type LessonSchema } from '@domain/lesson'
 
 export const runtime = 'edge'
 export const dynamic = 'force-dynamic'

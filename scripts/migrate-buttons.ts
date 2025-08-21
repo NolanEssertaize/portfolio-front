@@ -24,7 +24,7 @@ for (const file of files) {
 
   const importRegex = /import\s+(?:\{\s*)?Button(?:\s*\})?\s+from\s+["']@\/components\/(?:ui|atomic\/atoms|atomic\/molecules)\/Button["'];?/g;
   if (importRegex.test(updated)) {
-    updated = updated.replace(importRegex, "import { Button } from '@/components/dna/button';");
+    updated = updated.replace(importRegex, "import { Button } from '@ui/components/dna/button';");
   }
 
   const buttonRegex = /<button([^>]*className=\"[^\"]*btn[^\"]*\"[^>]*)>([\s\S]*?)<\/button>/g;
