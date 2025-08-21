@@ -1,53 +1,39 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { Button } from '@/components/dna/button';
-import { Container } from '@/components/dna/layout';
-import { Heading, Text } from '@/components/dna/typography';
-import GlassPanel from '@/components/dna/glass/GlassPanel';
-import Typewriter from '@/components/dna/animations/Typewriter';
+import Link from "next/link";
+import GlassPanel from "@/components/dna/glass/GlassPanel";
+import HeroBackdrop from "@/components/dna/background/HeroBackdrop";
+import { Button } from "@/components/dna/button";
+import { Heading, Text } from "@/components/dna/typography";
 
-export default function HeroSection() {
+export default function HeroSection(){
   return (
-    <section
-      id="hero"
-      className="flex min-h-screen items-center bg-gradient-to-b from-white via-green-50 to-white py-16 md:py-24"
-    >
-      <Container>
-        <GlassPanel className="flex flex-col items-center justify-between gap-12 text-center md:flex-row md:text-left">
-          <div className="space-y-6 md:flex-1">
-            <Heading as="h1" className="text-gray-900">
-              <Typewriter text="Building SaaS for SMEs." />
+    <section id="hero" className="relative py-24 md:py-32 overflow-hidden">
+      <HeroBackdrop />
+      <div className="container mx-auto px-4 hero-fade-in">
+        <div className="mx-auto max-w-3xl text-center">
+          <GlassPanel className="mx-auto">
+            <Heading as="h1" className="text-5xl md:text-7xl font-bold tracking-tight text-[var(--foreground)]">
+              KAIZEN learning & SaaS delivery
             </Heading>
-            <Text className="text-gray-600">
-              Secure, data-driven, and fast to ship — from idea to production.
+            <Text className="mt-4 text-lg md:text-xl text-gray-700">
+              Secure, data‑driven, and fast to ship — from idea to production.
             </Text>
-            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link href="/contact">
-                <Button size="lg" animation="roll-replace">
+            <div className="mt-8 flex items-center justify-center gap-3">
+              <Link href="/contact" aria-label="Start a project">
+                <Button variant="primary" size="lg" animation="roll-replace">
                   Start a project
                 </Button>
               </Link>
-              <Link href="#projects">
-                <Button variant="secondary" size="lg" animation="roll-replace">
+              <Link href="#projects" aria-label="See case studies">
+                <Button variant="ghost" size="lg" animation="roll-replace">
                   See case studies
                 </Button>
               </Link>
             </div>
-          </div>
-          <GlassPanel className="w-full max-w-lg h-72 md:flex-1 overflow-hidden">
-            <Image
-              src="/ProjectAI.png"
-              alt="App screenshot"
-              className="h-full w-full object-cover"
-              width={800}
-              height={600}
-              priority
-            />
           </GlassPanel>
-        </GlassPanel>
-      </Container>
+        </div>
+      </div>
     </section>
   );
 }
