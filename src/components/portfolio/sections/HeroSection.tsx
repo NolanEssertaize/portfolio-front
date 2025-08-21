@@ -13,10 +13,10 @@ export default function HeroSection(){
       <div className="container mx-auto px-4 hero-fade-in">
         <div className="mx-auto max-w-3xl text-center">
           <GlassPanel className="mx-auto">
-            <Heading as="h1" className="text-5xl md:text-7xl font-bold tracking-tight text-[var(--foreground)]">
+            <Heading as="h1" className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900">
               KAIZEN learning & SaaS delivery
             </Heading>
-            <Text className="mt-4 text-lg md:text-xl text-gray-700">
+            <Text className="mt-4 text-lg md:text-xl text-gray-600">
               Secure, data‑driven, and fast to ship — from idea to production.
             </Text>
             <div className="mt-8 flex items-center justify-center gap-3">
