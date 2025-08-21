@@ -579,27 +579,26 @@ img {
   padding: 0;
   position: relative;
   z-index: 1;
-}
-
-.item {
-  position: relative;
   display: grid;
   grid-template-columns: 1fr;
-  align-items: center;
-  margin: 6rem 0;
+  gap: 6rem;
 }
 
 @media (min-width: 800px) {
-  .item {
+  .zigzag {
     grid-template-columns: 1fr 1fr;
   }
 }
 
-.left  { grid-template-areas: "card ."; }
-.right { grid-template-areas: ". card"; }
+.item {
+  position: relative;
+  display: contents;
+}
+
+.left > .card { grid-column: 1; }
+.right > .card { grid-column: 2; }
 
 .card {
-  grid-area: card;
   background: linear-gradient(180deg, var(--bg), transparent 140%),
               linear-gradient(to right, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
   border: 1px solid var(--stroke);
@@ -652,14 +651,21 @@ img {
 }
 
 .connector {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
+  position: relative;
+  height: 0;
   display: flex;
   align-items: center;
-  gap: 12px;
   pointer-events: none;
+}
+
+.left > .connector {
+  grid-column: 2;
+  justify-self: end;
+}
+
+.right > .connector {
+  grid-column: 1;
+  justify-self: start;
 }
 
 .dot {
@@ -671,18 +677,19 @@ img {
 }
 
 .line {
+  display: inline-block;
+  margin: 0 12px;
   width: min(18vw, 200px);
   height: 2px;
   background-image: repeating-linear-gradient(
     to right,
-    rgba(255,255,255,0.6) 0 10px,
-    rgba(255,255,255,0.1) 10px 16px
+    rgba(255,255,255, calc(0.4 + var(--charge, 0) * 0.6)) 0 10px,
+    rgba(255,255,255,0.08) 10px 16px
   );
+  opacity: calc(0.4 + var(--charge, 0) * 0.6);
   filter: drop-shadow(0 0 2px rgba(255,255,255,0.35));
+  transition: opacity 120ms linear, filter 120ms linear;
 }
-
-.left .connector { justify-content: flex-start; }
-.right .connector { justify-content: flex-end; }
 
 @media (prefers-reduced-motion: reduce) {
   .card,
