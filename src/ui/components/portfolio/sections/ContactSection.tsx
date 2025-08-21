@@ -9,10 +9,10 @@ export default function ContactSection() {
         <Text className="text-center">
           Prefer email?{" "}
           <a
-            href="mailto:contact@example.com"
+            href="mailto:nolan.essertaize26@gmail.com"
             className="underline"
           >
-            contact@example.com
+            nolan.essertaize26@gmail.com
           </a>
         </Text>
         <form

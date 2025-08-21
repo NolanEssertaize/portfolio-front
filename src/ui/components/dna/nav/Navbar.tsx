@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Container } from '@ui/components/dna/layout';
 import { Button } from '@ui/components/dna/button';
 import { Heading, Text } from '@ui/components/dna/typography';
+import Link from 'next/link';
 
 const links = [
   { label: 'Services', href: '#services' },
@@ -15,19 +16,14 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   const handleContact = () => {
-    const target = document.getElementById('contact');
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      window.location.href = 'mailto:contact@example.com';
-    }
+    window.location.href = 'mailto:nolan.essertaize26@gmail.com';
   };
 
   return (
     <nav className="sticky top-0 z-50 bg-white/60 backdrop-blur-md border border-white/20 shadow-md">
       <Container className="flex items-center justify-between py-6 md:py-8">
         <Heading as="h2" size="h4" className="font-bold">
-          <a href="#">ESSERTAIZE</a>
+          <Link href="/">ESSERTAIZE</Link>
         </Heading>
 
         <div className="hidden md:flex items-center gap-6">
@@ -91,7 +87,6 @@ export default function Navbar() {
             <Button
               variant="primary"
               size="md"
-              animation="roll-replace"
               className="mt-4 self-start"
               onClick={handleContact}
             >
