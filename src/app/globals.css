@@ -429,3 +429,105 @@ img {
     to   { transform: rotate(360deg); }
   }
 }
+
+/* === KAIZEN Assemble Background Animation (motion-safe) === */
+:root{
+  --kaizen-emerald: #10b981;
+  --kaizen-loop: 8s;        /* total cycle */
+  --kaizen-enter: 2.4s;     /* slide-in duration */
+  --kaizen-hold: 1.3s;      /* time assembled before reset */
+  --kaizen-delay: 0.4s;     /* initial delay for stagger */
+}
+
+/* Container for the two halves */
+.kaizen-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -10;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Shared style for each half (we animate via transform only) */
+.kaizen-half {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(72vw, 720px);
+  translate: -50% -50%;
+  opacity: 0.10; /* faint watermark */
+  will-change: transform, opacity;
+}
+
+/* Masks built with clip-path so we can use the same SVG twice */
+.kaizen-left { clip-path: inset(0 50% 0 0); }
+.kaizen-right{ clip-path: inset(0 0 0 50%); }
+
+/* Left slides from off-screen left to center */
+@keyframes kaizenSlideInLeft {
+  0%   { transform: translateX(-45vw) scale(1); opacity: .08; }
+  60%  { transform: translateX(0)     scale(1); opacity: .10; }
+  100% { transform: translateX(0)     scale(1); opacity: .10; }
+}
+
+/* Right slides from off-screen right to center */
+@keyframes kaizenSlideInRight {
+  0%   { transform: translateX(45vw)  scale(1); opacity: .08; }
+  60%  { transform: translateX(0)     scale(1); opacity: .10; }
+  100% { transform: translateX(0)     scale(1); opacity: .10; }
+}
+
+/* Emerald flash in the center when they meet (short and subtle) */
+.kaizen-flash {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(22vw, 220px);
+  height: min(22vw, 220px);
+  translate: -50% -50%;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--kaizen-emerald) 65%, white 35%) 0%, transparent 70%);
+  filter: blur(18px);
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+@keyframes kaizenFlashPulse {
+  0%   { opacity: 0; transform: scale(.85); }
+  60%  { opacity: .55; transform: scale(1.05); }
+  100% { opacity: 0; transform: scale(1.15); }
+}
+
+/* Orchestrate the loop with delays so it breathes:
+   - slide in to 60% of timeline
+   - flash triggers near 60–72%
+   - hold assembled
+   - reset (via opacity off-screen jump is hidden by overflow)
+*/
+.kaizen-left {
+  animation:
+    kaizenSlideInLeft var(--kaizen-enter) cubic-bezier(.2,.8,.2,1) var(--kaizen-delay) forwards,
+    kaizenSlideInLeft var(--kaizen-loop) linear infinite;
+}
+.kaizen-right {
+  animation:
+    kaizenSlideInRight var(--kaizen-enter) cubic-bezier(.2,.8,.2,1) var(--kaizen-delay) forwards,
+    kaizenSlideInRight var(--kaizen-loop) linear infinite;
+}
+.kaizen-flash {
+  animation:
+    kaizenFlashPulse calc(var(--kaizen-enter) * .6) ease-out calc(var(--kaizen-delay) + var(--kaizen-enter) * .6) both,
+    kaizenFlashPulse var(--kaizen-loop) ease-out infinite;
+}
+
+/* Reduced motion: show assembled state, no motion; mild static glow */
+@media (prefers-reduced-motion: reduce) {
+  .kaizen-left,
+  .kaizen-right,
+  .kaizen-flash { animation: none !important; }
+  .kaizen-left,
+  .kaizen-right { transform: translateX(0) !important; opacity: .10; }
+  .kaizen-flash { opacity: .16; filter: blur(12px); }
+}
+
