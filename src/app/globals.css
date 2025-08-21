@@ -1,32 +1,23 @@
 @import 'tailwindcss';
 
 :root {
-    --predominant: #0b243c;
-    --background: #f6edcd;
-    --surface: rgba(246, 237, 205, 0.8);
-    --surface-glass: rgba(246, 237, 205, 0.4);
-    --mountain-primary: #b4d2cb;
-    --mountain-secondary: #80b0b5;
-    --mountain-tertiary: #c7dbcf;
-
-    --glass-bg: rgba(246, 237, 205, 0.1);
-    --glass-border: rgba(11, 36, 60, 0.1);
-    --glass-shadow: rgba(11, 36, 60, 0.1);
-
-    --foreground: var(--predominant);
-    --card: rgba(246, 237, 205, 0.6);
-    --card-foreground: var(--predominant);
-    --primary: var(--predominant);
-    --primary-foreground: var(--background);
-    --secondary: var(--mountain-primary);
-    --secondary-foreground: var(--predominant);
-    --muted: var(--mountain-tertiary);
-    --muted-foreground: var(--predominant);
-    --accent: var(--mountain-secondary);
-    --accent-foreground: var(--predominant);
-    --border: rgba(11, 36, 60, 0.15);
-    --input: rgba(11, 36, 60, 0.1);
-    --ring: var(--predominant);
+    --background: #ffffff;
+    --foreground: #000000;
+    --primary: #10b981;
+    --primary-foreground: #ffffff;
+    --secondary: #f3f4f6;
+    --secondary-foreground: #111827;
+    --muted: #f3f4f6;
+    --muted-foreground: #6b7280;
+    --card: #ffffff;
+    --card-foreground: #000000;
+    --border: rgba(0, 0, 0, 0.1);
+    --input: rgba(0, 0, 0, 0.05);
+    --ring: #10b981;
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-border: rgba(0, 0, 0, 0.1);
+    --glass-shadow: rgba(0, 0, 0, 0.05);
+    --surface-glass: rgba(255, 255, 255, 0.4);
 }
 
 
@@ -290,15 +281,6 @@ img {
   .btn[data-anim="roll-replace"]:hover .btn-text-front { opacity: .85; text-decoration: underline; }
 }
 
-:root {
-  --background: #ffffff;
-  --foreground: #111827;
-  --primary: #10b981;
-  --primary-foreground: #ffffff;
-  --secondary: #f3f4f6;
-  --secondary-foreground: #111827;
-}
-
 /* ---- iOS-like Glass Utilities ---- */
 
 /* Tiny noise (base64) to avoid external asset; super subtle */
@@ -360,3 +342,91 @@ img {
 .typewriter-caret {
   animation: caret-blink 1s steps(1) infinite;
 }
+/* motion-safe fade in */
+@media (prefers-reduced-motion: no-preference){
+  .hero-fade-in { animation: heroFade .9s ease-out both; }
+  @keyframes heroFade { from { opacity:0; transform: translateY(8px) } to { opacity:1; transform:none } }
+}
+
+/* ---- Hero backdrop utilities ---- */
+:root{
+  /* Deeper emeralds with subtle teal for depth */
+  --hero-bg:
+    radial-gradient(1200px 680px at 50% 8%, rgba(12,133,93,0.22), transparent 60%),
+    radial-gradient(900px 520px at 12% 25%, rgba(12,133,93,0.12), transparent 60%),
+    radial-gradient(900px 520px at 88% 28%, rgba(15,118,110,0.10), transparent 60%),
+    linear-gradient(#f9fafb, #ffffff);
+}
+
+/* sub‑pixel dot grid (ultra faint) */
+.hero-dots {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(0,0,0,.06) 1px, transparent 0);
+  background-size: 28px 28px;
+}
+
+/* vignette ring for focus */
+.hero-vignette {
+  position: relative;
+}
+.hero-vignette::after{
+  content:"";
+  position:absolute; inset:-20vmax;
+  background: radial-gradient(50% 50% at 50% 40%, rgba(0,0,0,.10), transparent 62%);
+  pointer-events:none;
+}
+
+/* ---- iOS-like Glass: edge-lit tuning ---- */
+:root{
+  --glass-fill-1: rgba(255,255,255,0.46); /* slightly more transparent center */
+  --glass-fill-2: rgba(255,255,255,0.28);
+  --glass-border: rgba(255,255,255,0.26); /* hairline */
+  --glass-edge-light: rgba(255,255,255,0.55); /* edge highlight */
+  --glass-edge-shadow: rgba(0,0,0,0.06);      /* faint inner shadow */
+}
+
+/* Base glass */
+.glass {
+  position: relative;
+  background-image: linear-gradient(135deg, var(--glass-fill-1), var(--glass-fill-2));
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: blur(16px) saturate(1.35);
+  backdrop-filter: blur(16px) saturate(1.35);
+  box-shadow:
+    inset 0 1px 0 var(--glass-edge-light), /* top inner light */
+    0 0 0 1px rgba(255,255,255,0.18),      /* hairline outer */
+    0 18px 38px rgba(0,0,0,0.08);          /* ambient */
+}
+
+/* Edge emphasis: a feathered rim around the panel */
+.glass::before {
+  content:""; pointer-events:none;
+  position:absolute; inset:0; border-radius:inherit;
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(255,255,255,.22), transparent 50%),
+    radial-gradient(120% 140% at 100% 0%, rgba(255,255,255,.18), transparent 50%),
+    radial-gradient(120% 140% at 0% 100%, rgba(255,255,255,.14), transparent 50%),
+    radial-gradient(120% 140% at 100% 100%, rgba(255,255,255,.14), transparent 50%),
+    radial-gradient(80% 80% at 50% 50%, rgba(0,0,0,.06), transparent 60%); /* inner shadow */
+  mix-blend-mode: screen;
+  opacity:.8;
+}
+
+/* Micro-noise stays very subtle */
+.glass::after {
+  content:""; pointer-events:none; position:absolute; inset:0; border-radius:inherit;
+  background-image: var(--glass-noise); background-size: 120px 120px; opacity:.05;
+}
+
+/* Motion safety */
+@media (prefers-reduced-motion: reduce) {
+  .glass, .glass::before, .glass::after { transition:none !important; }
+}
+
+@media (prefers-reduced-motion: no-preference){
+  @keyframes halo-rotate {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+}
+
