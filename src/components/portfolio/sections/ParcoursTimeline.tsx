@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef } from "react";
-import styles from "./ParcoursTimeline.module.css";
 
 type Step = {
   id: number;
@@ -79,39 +78,39 @@ export default function ParcoursTimeline({ steps = stepsData }: { steps?: Step[]
   }, []);
 
   return (
-    <section className={styles.wrapper} aria-label="Parcours">
-      <div className={styles.rail} ref={railRef}>
+    <section className="wrapper" aria-label="Parcours">
+      <div className="rail" ref={railRef}>
         {segments.map((_, i) => (
-          <span key={i} ref={addSegmentRef} className={styles.segment} aria-hidden="true" />
+          <span key={i} ref={addSegmentRef} className="segment" aria-hidden="true" />
         ))}
       </div>
 
-      <ol className={styles.zigzag}>
+      <ol className="zigzag">
         {steps.map((s, i) => (
           <li
             key={s.id}
-            className={`${styles.item} ${s.side === "left" ? styles.left : styles.right}`}
+            className={`${"item"} ${s.side === "left" ? "left" : "right"}`}
             style={{ "--i": String(i) } as React.CSSProperties}
           >
-            <article className={styles.card} tabIndex={0}>
-              <header className={styles.cardHeader}>
-                <h3 className={styles.title}>{s.title}</h3>
-                <p className={styles.subtitle}>{s.subtitle}</p>
-                <time className={styles.period}>{s.period}</time>
+            <article className="card" tabIndex={0}>
+              <header className="cardHeader">
+                <h3 className="title">{s.title}</h3>
+                <p className="subtitle">{s.subtitle}</p>
+                <time className="period">{s.period}</time>
               </header>
-              <ul className={styles.bullets}>
+              <ul className="bullets">
                 {s.bullets.map((b, j) => (
                   <li key={j}>{b}</li>
                 ))}
               </ul>
-              <div className={styles.cornerTag} aria-hidden="true">
+              <div className="cornerTag" aria-hidden="true">
                 #{String(s.id).padStart(2, "0")}
               </div>
             </article>
 
-            <div className={styles.connector} aria-hidden="true">
-              <span className={styles.dot} />
-              <span className={styles.line} />
+            <div className="connector" aria-hidden="true">
+              <span className="dot" />
+              <span className="line" />
             </div>
           </li>
         ))}
@@ -119,4 +118,3 @@ export default function ParcoursTimeline({ steps = stepsData }: { steps?: Step[]
     </section>
   );
 }
-

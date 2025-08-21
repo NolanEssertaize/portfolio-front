@@ -2,10 +2,10 @@
 import { useEffect } from 'react';
 import { Navbar } from '@/components/dna/nav';
 import HeroSection from '@/components/portfolio/sections/HeroSection';
-import AboutSection from '@/components/portfolio/sections/AboutSection';
 import ServicesSection from '@/components/portfolio/sections/ServicesSection';
 import ProjectsSection from '@/components/portfolio/sections/ProjectSection';
 import ChatSection from '@/components/portfolio/sections/ChatSection';
+import ParcoursTimeline from '@/components/portfolio/sections/ParcoursTimeline';
 
 export default function Home() {
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function Home() {
     <main className="relative">
       <Navbar />
       <HeroSection />
-      <AboutSection />
+      <ParcoursTimeline />
       <ServicesSection />
       <ProjectsSection />
       <ChatSection/>
