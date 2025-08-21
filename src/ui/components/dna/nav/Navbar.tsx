@@ -7,9 +7,9 @@ import { Heading, Text } from '@ui/components/dna/typography';
 import Link from 'next/link';
 
 const links = [
+  { label: 'About', href: '#about' },
   { label: 'Services', href: '#services' },
   { label: 'Projects', href: '#projects' },
-  { label: 'About', href: '#about' },
 ];
 
 export default function Navbar() {

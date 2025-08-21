@@ -78,7 +78,7 @@ export default function ParcoursTimeline({ steps = stepsData }: { steps?: Step[]
   }, []);
 
   return (
-    <section className="wrapper" aria-label="Parcours">
+    <section id="about" className="wrapper" aria-label="Parcours">
       <div className="rail" ref={railRef}>
         {segments.map((_, i) => (
           <span key={i} ref={addSegmentRef} className="segment" aria-hidden="true" />
