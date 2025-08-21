@@ -675,7 +675,12 @@ img {
   background: var(--accent);
   box-shadow: 0 0 10px var(--accent), 0 0 30px rgba(0,230,118,0.35);
   position: relative;
-  animation: particle-float 6s ease-in-out infinite;
+  --dx: 0px;
+  --dy: 0px;
+  --duration: 6s;
+  --delay: 0s;
+  animation: particle-float var(--duration) ease-in-out infinite;
+  animation-delay: var(--delay);
 }
 
 .dot::before {
@@ -694,13 +699,14 @@ img {
     transform: translate(0, 0);
   }
   25% {
-    transform: translate(2px, -4px);
+    transform: translate(calc(var(--dx) / 2), calc(var(--dy) / 2));
   }
   50% {
-    transform: translate(-2px, -8px);
+    transform: translate(var(--dx), var(--dy));
   }
   75% {
-    transform: translate(2px, -4px);
+    transform: translate(calc(var(--dx) / 2), calc(var(--dy) / 2));
+
   }
   100% {
     transform: translate(0, 0);
