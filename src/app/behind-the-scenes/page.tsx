@@ -1,5 +1,5 @@
-import { Navbar } from "@/components/dna/nav";
-import InfraSection from "@/components/portfolio/sections/InfraSection";
+import { Navbar } from "@ui/components/dna/nav";
+import InfraSection from "@ui/components/portfolio/sections/InfraSection";
 
 export default function BehindTheScenesPage() {
   return (

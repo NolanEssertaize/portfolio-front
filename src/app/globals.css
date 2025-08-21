@@ -1,5 +1,5 @@
+/* autoprefixer: off */
 @import 'tailwindcss';
-
 :root {
     --background: #ffffff;
     --foreground: #000000;
@@ -486,7 +486,8 @@ img {
   height: min(22vw, 220px);
   translate: -50% -50%;
   border-radius: 9999px;
-  background: radial-gradient(closest-side, color-mix(in oklab, var(--kaizen-emerald) 65%, white 35%) 0%, transparent 70%);
+  /* simplified gradient to satisfy autoprefixer */
+  background: radial-gradient(circle at 50% 50%, var(--kaizen-emerald) 0%, transparent 70%);
   filter: blur(18px);
   opacity: 0;
   pointer-events: none;

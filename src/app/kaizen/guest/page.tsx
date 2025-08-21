@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import BreathingLoader from '@/components/kaizen/BreathingLoader';
-import { lessonSchema, type LessonSchema, type LessonBlock } from '@/lib/lessonSchema';
+import BreathingLoader from '@ui/components/kaizen/BreathingLoader';
+import { lessonSchema, type LessonSchema, type LessonBlock } from '@domain/lesson';
 
 export default function KaizenGuestPage() {
   type Topic = LessonSchema['topic'];

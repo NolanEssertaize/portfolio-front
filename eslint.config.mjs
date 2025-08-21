@@ -11,6 +11,26 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    files: ["src/ui/**/*.{ts,tsx}", "src/ui/**/*.{js}"],
+    rules: {
+      "no-restricted-imports": ["error", { patterns: ["@infrastructure/*"] }],
+    },
+  },
+  {
+    files: [
+      "src/domain/**/*.{ts,tsx}",
+      "src/application/**/*.{ts,tsx}",
+      "src/domain/**/*.{js}",
+      "src/application/**/*.{js}",
+    ],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        { patterns: ["@ui/*", "@infrastructure/*", "next/*", "react", "react-dom"] },
+      ],
+    },
+  },
 ];
 
 export default eslintConfig;

@@ -1,4 +1,4 @@
-import BreathingLoader from '@/components/kaizen/BreathingLoader';
+import BreathingLoader from '@ui/components/kaizen/BreathingLoader';
 import Link from 'next/link';
 
 export default function KaizenIntroductionPage() {
