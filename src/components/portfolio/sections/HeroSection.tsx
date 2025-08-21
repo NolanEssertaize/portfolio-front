@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import GlassPanel from "@/components/dna/glass/GlassPanel";
-import HeroBackdrop from "@/components/dna/background/HeroBackdrop";
 import KaizenAssembleBackdrop from "@/components/dna/background/KaizenAssembleBackdrop";
 import { Button } from "@/components/dna/button";
 import { Heading, Text } from "@/components/dna/typography";
@@ -11,7 +10,6 @@ import Typewriter from "@/components/dna/animations/Typewriter";
 export default function HeroSection(){
   return (
     <section id="hero" className="relative py-24 md:py-32 overflow-hidden">
-      <HeroBackdrop />
       <KaizenAssembleBackdrop />
       <div className="container mx-auto px-4 hero-fade-in">
         <div className="mx-auto max-w-3xl text-center">
