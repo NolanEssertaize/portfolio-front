@@ -674,6 +674,37 @@ img {
   border-radius: 999px;
   background: var(--accent);
   box-shadow: 0 0 10px var(--accent), 0 0 30px rgba(0,230,118,0.35);
+  position: relative;
+  animation: particle-float 6s ease-in-out infinite;
+}
+
+.dot::before {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  background: var(--accent);
+  opacity: 0.25;
+  border-radius: 999px;
+  filter: blur(20px);
+  z-index: -1;
+}
+
+@keyframes particle-float {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(2px, -4px);
+  }
+  50% {
+    transform: translate(-2px, -8px);
+  }
+  75% {
+    transform: translate(2px, -4px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 .line {

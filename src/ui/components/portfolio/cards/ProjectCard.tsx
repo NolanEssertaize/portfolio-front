@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import { Card } from "@ui/components/dna/card";
 import { Heading, Text } from "@ui/components/dna/typography";
 import { Button } from "@ui/components/dna/button";
@@ -21,8 +22,39 @@ export default function ProjectCard({
   image,
   href,
 }: ProjectCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mq.matches) return;
+
+    const handlePointerMove = (e: PointerEvent) => {
+      const card = cardRef.current;
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const dx = centerX - e.clientX;
+      const dy = centerY - e.clientY;
+      const distance = Math.hypot(dx, dy);
+      const hoverRadius = 160;
+      if (distance < hoverRadius) {
+        const strength = ((hoverRadius - distance) / hoverRadius) * 30;
+        const angle = Math.atan2(dy, dx);
+        const tx = Math.cos(angle) * strength;
+        const ty = Math.sin(angle) * strength;
+        card.style.transform = `translate(${tx}px, ${ty}px)`;
+      } else {
+        card.style.transform = "";
+      }
+    };
+
+    window.addEventListener("pointermove", handlePointerMove);
+    return () => window.removeEventListener("pointermove", handlePointerMove);
+  }, []);
+
   return (
-    <Card className="flex h-full flex-col">
+    <Card ref={cardRef} className="flex h-full flex-col">
       <div className="mb-4 overflow-hidden rounded-lg shadow">
         <Image
           src={image}
