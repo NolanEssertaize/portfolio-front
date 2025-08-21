@@ -1,10 +1,8 @@
-import BreathingLoader from '@ui/components/kaizen/BreathingLoader';
 import Link from 'next/link';
 
 export default function KaizenIntroductionPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden relative">
-      <BreathingLoader className="w-40 h-40 absolute top-8 right-8 opacity-20 animate-[float_6s_ease-in-out_infinite]" />
       <h1 className="text-4xl sm:text-6xl font-bold mb-4 animate-[fade-in-up_0.6s_ease-out_forwards]">
         Kaizen Learning
       </h1>

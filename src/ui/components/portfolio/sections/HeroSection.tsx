@@ -13,7 +13,7 @@ export default function HeroSection(){
         <div className="mx-auto max-w-3xl text-center">
           <GlassPanel className="mx-auto">
             <Heading as="h1" className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900">
-              <Typewriter text={"KAIZEN learning & SaaS delivery"}/>
+              <Typewriter text={"ESSERTAIZE Nolan's portfolio."}/>
             </Heading>
             <Text className="mt-4 text-lg md:text-xl text-gray-700">
               <Typewriter text={"Secure, data‑driven, and fast to ship — from idea to production."}/>
