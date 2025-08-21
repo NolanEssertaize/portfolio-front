@@ -6,6 +6,7 @@ import HeroBackdrop from "@/components/dna/background/HeroBackdrop";
 import KaizenAssembleBackdrop from "@/components/dna/background/KaizenAssembleBackdrop";
 import { Button } from "@/components/dna/button";
 import { Heading, Text } from "@/components/dna/typography";
+import Typewriter from "@/components/dna/animations/Typewriter";
 
 export default function HeroSection(){
   return (
@@ -16,10 +17,10 @@ export default function HeroSection(){
         <div className="mx-auto max-w-3xl text-center">
           <GlassPanel className="mx-auto">
             <Heading as="h1" className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900">
-              KAIZEN learning & SaaS delivery
+              <Typewriter text={"KAIZEN learning & SaaS delivery"}/>
             </Heading>
-            <Text className="mt-4 text-lg md:text-xl text-gray-600">
-              Secure, data‑driven, and fast to ship — from idea to production.
+            <Text className="mt-4 text-lg md:text-xl text-gray-700">
+              <Typewriter text={"Secure, data‑driven, and fast to ship — from idea to production."}/>
             </Text>
             <div className="mt-8 flex items-center justify-center gap-3">
               <Link href="/contact" aria-label="Start a project">
