@@ -706,6 +706,7 @@ img {
   }
   75% {
     transform: translate(calc(var(--dx) / 2), calc(var(--dy) / 2));
+
   }
   100% {
     transform: translate(0, 0);
