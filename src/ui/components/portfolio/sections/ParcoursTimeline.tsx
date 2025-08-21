@@ -74,7 +74,9 @@ export default function ParcoursTimeline({ steps = stepsData }: { steps?: Step[]
         const segCenter = rect.top + rect.height / 2;
         const dist = Math.abs(segCenter - centerY);
         const intensity = Math.max(0, 1 - dist / (window.innerHeight * 0.6));
+        const scale = 1 + intensity * 0.5;
         seg.style.setProperty("--glow", intensity.toFixed(3));
+        seg.style.setProperty("--scale", scale.toFixed(3));
       });
       cardsRef.current.forEach((card) => {
         const rect = card.getBoundingClientRect();
