@@ -9,9 +9,9 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const variantClasses: Record<string, string> = {
-  primary: "bg-[var(--primary)] text-[var(--primary-foreground)]",
+  primary: "bg-[var(--primary)] text-[var(--primary-foreground)] hover:bg-emerald-600",
   secondary: "bg-[var(--secondary)] text-[var(--secondary-foreground)]",
-  ghost: "bg-transparent text-[var(--foreground)]",
+  ghost: "bg-transparent text-[var(--primary)] border border-[var(--primary)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)]",
   glass: "glass text-gray-900",
 };
 

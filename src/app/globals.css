@@ -1,32 +1,23 @@
 @import 'tailwindcss';
 
 :root {
-    --predominant: #0b243c;
-    --background: #f6edcd;
-    --surface: rgba(246, 237, 205, 0.8);
-    --surface-glass: rgba(246, 237, 205, 0.4);
-    --mountain-primary: #b4d2cb;
-    --mountain-secondary: #80b0b5;
-    --mountain-tertiary: #c7dbcf;
-
-    --glass-bg: rgba(246, 237, 205, 0.1);
-    --glass-border: rgba(11, 36, 60, 0.1);
-    --glass-shadow: rgba(11, 36, 60, 0.1);
-
-    --foreground: var(--predominant);
-    --card: rgba(246, 237, 205, 0.6);
-    --card-foreground: var(--predominant);
-    --primary: var(--predominant);
-    --primary-foreground: var(--background);
-    --secondary: var(--mountain-primary);
-    --secondary-foreground: var(--predominant);
-    --muted: var(--mountain-tertiary);
-    --muted-foreground: var(--predominant);
-    --accent: var(--mountain-secondary);
-    --accent-foreground: var(--predominant);
-    --border: rgba(11, 36, 60, 0.15);
-    --input: rgba(11, 36, 60, 0.1);
-    --ring: var(--predominant);
+    --background: #ffffff;
+    --foreground: #000000;
+    --primary: #10b981;
+    --primary-foreground: #ffffff;
+    --secondary: #f3f4f6;
+    --secondary-foreground: #111827;
+    --muted: #f3f4f6;
+    --muted-foreground: #6b7280;
+    --card: #ffffff;
+    --card-foreground: #000000;
+    --border: rgba(0, 0, 0, 0.1);
+    --input: rgba(0, 0, 0, 0.05);
+    --ring: #10b981;
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-border: rgba(0, 0, 0, 0.1);
+    --glass-shadow: rgba(0, 0, 0, 0.05);
+    --surface-glass: rgba(255, 255, 255, 0.4);
 }
 
 
@@ -290,15 +281,6 @@ img {
   .btn[data-anim="roll-replace"]:hover .btn-text-front { opacity: .85; text-decoration: underline; }
 }
 
-:root {
-  --background: #ffffff;
-  --foreground: #111827;
-  --primary: #10b981;
-  --primary-foreground: #ffffff;
-  --secondary: #f3f4f6;
-  --secondary-foreground: #111827;
-}
-
 /* ---- iOS-like Glass Utilities ---- */
 
 /* Tiny noise (base64) to avoid external asset; super subtle */
@@ -360,6 +342,7 @@ img {
 .typewriter-caret {
   animation: caret-blink 1s steps(1) infinite;
 }
+
 /* ---- Hero backdrop utilities ---- */
 :root{
   --hero-bg: radial-gradient(1200px 600px at 50% 10%, rgba(16,185,129,0.10), transparent 60%),

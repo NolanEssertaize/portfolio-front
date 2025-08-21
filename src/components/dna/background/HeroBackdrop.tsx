@@ -1,24 +1,13 @@
 "use client";
-import Image from "next/image";
 
-export default function HeroBackdrop(){
+export default function HeroBackdrop() {
   return (
-    <div className="absolute inset-0 -z-10 hero-vignette">
-      {/* color field */}
-      <div className="absolute inset-0" style={{ backgroundImage: "var(--hero-bg)" }} />
-      {/* faint dot grid */}
-      <div className="absolute inset-0 hero-dots opacity-[.06]" />
+    <div className="fixed inset-0 -z-10 flex items-center justify-center overflow-hidden pointer-events-none">
+      <span
+        aria-hidden
+        className="text-black opacity-10 select-none"
+        style={{ fontSize: "60vw", lineHeight: 1 }}
+      >
+        改善
+      </span>
 
-      {/* KAIZEN watermark */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="opacity-10">
-          <Image
-            src="/kaizen-mark.svg"
-            alt="" width={720} height={720} priority
-            className="w-[60vw] max-w-[720px] h-auto"
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
