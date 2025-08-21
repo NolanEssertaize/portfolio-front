@@ -27,6 +27,9 @@ const services = [
 ];
 
 export default function ServicesSection() {
+  const handleTalk = () => {
+    window.location.href = 'mailto:nolan.essertaize26@gmail.com';
+  };
   return (
     <Section id="services" title="Services">
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -39,7 +42,7 @@ export default function ServicesSection() {
               {title}
             </Heading>
             <Text className="flex-1">{description}</Text>
-            <Button variant="ghost" className="mt-4 self-start">
+            <Button variant="ghost" className="mt-4 self-start" onClick={handleTalk}>
               Let&apos;s talk
             </Button>
           </Card>

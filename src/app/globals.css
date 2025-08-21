@@ -563,7 +563,7 @@ img {
 }
 
 .segment {
-  width: 4px;
+  width: 8px;
   height: calc(100vh / 28 - 2px);
   margin: 1px 0;
   background: radial-gradient(circle, var(--accent) 0%, transparent 65%);

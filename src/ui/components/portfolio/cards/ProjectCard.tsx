@@ -27,30 +27,6 @@ export default function ProjectCard({
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (mq.matches) return;
-
-    const handlePointerMove = (e: PointerEvent) => {
-      const card = cardRef.current;
-      if (!card) return;
-      const rect = card.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const dx = centerX - e.clientX;
-      const dy = centerY - e.clientY;
-      const distance = Math.hypot(dx, dy);
-      const hoverRadius = 160;
-      if (distance < hoverRadius) {
-        const strength = ((hoverRadius - distance) / hoverRadius) * 30;
-        const angle = Math.atan2(dy, dx);
-        const tx = Math.cos(angle) * strength;
-        const ty = Math.sin(angle) * strength;
-        card.style.transform = `translate(${tx}px, ${ty}px)`;
-      } else {
-        card.style.transform = "";
-      }
-    };
-
-    window.addEventListener("pointermove", handlePointerMove);
-    return () => window.removeEventListener("pointermove", handlePointerMove);
   }, []);
 
   return (
