@@ -21,10 +21,10 @@ export default function Intro({ onStart }: IntroProps) {
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
 
   return (
-    <section
-      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-gray-900 to-black bg-[length:100%_150%] text-white"
-      style={{ backgroundPositionY: bgY }}
-    >
+      <section
+        className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-gray-900 to-black bg-[length:100%_150%] text-white"
+        style={{ backgroundPositionY: bgY as unknown as string }}
+      >
       <SideSvg style={{ x: leftX, color, filter: glow }} />
       <SideSvg mirrored style={{ x: rightX, color, filter: glow }} />
       <div className="px-4 text-center">
