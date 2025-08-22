@@ -23,7 +23,7 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="h-full scroll-smooth">
       <head>
         {/* Prevent scroll restoration */}
         <link
@@ -44,7 +44,7 @@ export default function RootLayout({
                     }}
                 />
             </head>
-            <body className="antialiased">
+            <body className="h-full antialiased">
                 {children}
             </body>
         </html>
