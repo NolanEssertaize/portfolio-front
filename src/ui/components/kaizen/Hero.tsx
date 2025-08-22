@@ -32,7 +32,7 @@ export default function Hero({ content, onPrimary, onSecondary }: HeroProps) {
       <Container>
         <div className="mx-auto max-w-xl text-center">
           <motion.h1
-            className="mb-6 text-4xl font-bold sm:text-6xl"
+            className="mb-6 text-4xl font-bold text-white/80 sm:text-6xl"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}

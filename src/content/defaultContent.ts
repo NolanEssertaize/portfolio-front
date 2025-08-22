@@ -67,7 +67,7 @@ export const defaultContent = {
         name: 'Guest',
         priceText: 'Free',
         features: [
-          'Limited lesson generation (3/day)',
+          'Limited lesson generation (1/day)',
           'No exports',
           'Basic analytics',
         ],
