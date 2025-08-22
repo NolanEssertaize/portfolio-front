@@ -26,10 +26,10 @@ export default function Pricing({ tiers, note }: PricingProps) {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: i * 0.1, ease: 'easeOut' }}
-              className="flex flex-col rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl"
+              className="flex flex-col rounded-2xl border border-black/10 bg-black/5 p-6 backdrop-blur-xl"
             >
               <h3 className="mb-2 text-xl font-semibold">{tier.name}</h3>
-              <p className="mb-4 text-white/70">{tier.priceText}</p>
+              <p className="mb-4 text-black/70">{tier.priceText}</p>
               <ul className="mb-6 flex-1 space-y-2 text-sm">
                 {tier.features.map((f) => (
                   <li key={f} className="flex items-center gap-2">
@@ -47,7 +47,7 @@ export default function Pricing({ tiers, note }: PricingProps) {
             </motion.div>
           ))}
         </div>
-        <p className="mt-6 text-center text-xs text-white/60">{note}</p>
+        <p className="mt-6 text-center text-xs text-black/60">{note}</p>
       </Container>
     </section>
   );

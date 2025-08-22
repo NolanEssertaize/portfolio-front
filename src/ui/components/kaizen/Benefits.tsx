@@ -19,7 +19,7 @@ export default function Benefits({ content }: BenefitsProps) {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
-            className="text-white/80"
+            className="text-black/80"
           >
             {content.paragraph}
           </motion.p>

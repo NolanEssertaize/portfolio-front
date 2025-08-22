@@ -33,9 +33,9 @@ export default function SecurityPrivacy({ content }: SecurityProps) {
         </ul>
         <div className="space-y-4">
           {content.miniFaq.map((f) => (
-            <details key={f.q} className="rounded-lg border border-white/10 bg-white/5 p-4 backdrop-blur-xl">
+            <details key={f.q} className="rounded-lg border border-black/10 bg-black/5 p-4 backdrop-blur-xl">
               <summary className="cursor-pointer font-medium">{f.q}</summary>
-              <p className="mt-2 text-sm text-white/80">{f.a}</p>
+              <p className="mt-2 text-sm text-black/80">{f.a}</p>
             </details>
           ))}
         </div>

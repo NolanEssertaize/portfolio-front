@@ -21,10 +21,10 @@ export default function Testimonials({ items }: { items: Testimonial[] }) {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: i * 0.1, ease: 'easeOut' }}
-              className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl"
+              className="rounded-2xl border border-black/10 bg-black/5 p-6 backdrop-blur-xl"
             >
-              <p className="mb-4 text-sm text-white/80">“{t.quote}”</p>
-              <footer className="text-xs text-white/60">
+              <p className="mb-4 text-sm text-black/80">“{t.quote}”</p>
+              <footer className="text-xs text-black/60">
                 {t.name}, {t.role}
               </footer>
             </motion.blockquote>

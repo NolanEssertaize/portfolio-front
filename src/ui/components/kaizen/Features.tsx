@@ -19,7 +19,7 @@ export default function Features({ features }: { features: Feature[] }) {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: i * 0.05, ease: 'easeOut' }}
-              className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl"
+              className="rounded-2xl border border-black/10 bg-black/5 p-6 backdrop-blur-xl"
             >
               <svg
                 className="mb-4 h-6 w-6 text-green-400"
@@ -32,7 +32,7 @@ export default function Features({ features }: { features: Feature[] }) {
                 <path d="M8 12h8M12 8v8" />
               </svg>
               <h3 className="mb-2 font-semibold">{f.title}</h3>
-              <p className="text-sm text-white/80">{f.text}</p>
+              <p className="text-sm text-black/80">{f.text}</p>
             </motion.div>
           ))}
         </div>
