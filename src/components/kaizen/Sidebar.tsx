@@ -50,7 +50,7 @@ export default function Sidebar({ onNavigate }: Props) {
   useEffect(() => {}, [sidebarOpen]); // trigger re-render on mount for persisted state
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col min-h-0">
       <div className="flex items-center justify-between p-2">
         <Button className="flex-1" onClick={newChat}>
           New Chat

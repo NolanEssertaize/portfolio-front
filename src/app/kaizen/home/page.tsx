@@ -15,7 +15,7 @@ export default function KaizenHomePage() {
         </nav>
       </header>
       <KaizenProvider>
-        <main className="flex-1"><ChatHomeShell /></main>
+        <main className="flex flex-1 min-h-0"><ChatHomeShell /></main>
       </KaizenProvider>
       <footer className="border-t border-white/10 bg-white/5 backdrop-blur p-4 text-center text-xs">© Kaizen</footer>
     </div>

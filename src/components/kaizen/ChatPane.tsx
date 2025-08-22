@@ -42,7 +42,7 @@ export default function ChatPane({ onOpenSidebar }: Props) {
   const showNudge = msgs.length === 1 && msgs[0].role === 'user' && !profile.topic && !profile.preciseSubject;
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col min-h-0">
       <div className="flex items-center gap-2 border-b border-white/10 p-2">
         <button className="md:hidden" aria-label="Open sidebar" onClick={onOpenSidebar}>☰</button>
         {editing ? (
