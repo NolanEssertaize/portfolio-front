@@ -1,102 +1,158 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useKaizen } from './KaizenContext';
 
 export default function ChatPane() {
   const {
+    profile,
     threads,
     createThread,
     deleteThread,
     messagesByThread,
     appendMessage,
+    activeThreadId,
+    setActiveThread,
   } = useKaizen();
-  const [activeId, setActiveId] = useState<string | null>(null);
   const [input, setInput] = useState('');
+  const [needsTopicPrompt, setNeedsTopicPrompt] = useState(false);
+
+  const msgs = activeThreadId ? messagesByThread[activeThreadId] || [] : [];
+
+  useEffect(() => {
+    setNeedsTopicPrompt(false);
+  }, [activeThreadId]);
+
+  const handleNewChat = () => {
+    const title =
+      profile.preciseSubject ||
+      `Start the topic: ${profile.topic || 'Untitled'}`;
+    const id = createThread(title);
+    setActiveThread(id);
+  };
 
   const handleSend = () => {
-    if (!activeId || !input.trim()) return;
-    appendMessage(activeId, {
+    if (!activeThreadId || !input.trim()) return;
+    const existing = messagesByThread[activeThreadId] || [];
+    const now = new Date().toISOString();
+    appendMessage(activeThreadId, {
       id: crypto.randomUUID(),
       role: 'user',
       content: input.trim(),
-      createdAt: new Date().toISOString(),
+      createdAt: now,
     });
-    // TODO: handle assistant reply via API
+    if (existing.length === 0 && !profile.topic && !profile.preciseSubject) {
+      setNeedsTopicPrompt(true);
+    }
+    appendMessage(activeThreadId, {
+      id: crypto.randomUUID(),
+      role: 'assistant',
+      content: '(Preview) Your AI lesson will appear here.',
+      createdAt: now,
+    });
     setInput('');
   };
 
-  const msgs = activeId ? messagesByThread[activeId] || [] : [];
+  const handleExport = () => {
+    if (!activeThreadId) return;
+    const data = messagesByThread[activeThreadId] || [];
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: 'application/json',
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `thread-${activeThreadId}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
-    <div className="h-full flex">
-      <aside className="w-48 shrink-0 border-r border-white/10 p-2 space-y-2 bg-white/5 backdrop-blur">
+    <div className="h-full flex flex-col">
+      <div className="border-b border-white/10 p-2 flex items-center gap-2 overflow-x-auto">
         <button
-          onClick={() => {
-            const id = createThread('New Thread');
-            setActiveId(id);
-          }}
-          className="w-full rounded bg-white/10 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
+          onClick={handleNewChat}
+          className="rounded bg-white/10 px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-green-400"
         >
-          + New
+          + New chat
         </button>
-        <ul className="space-y-1 overflow-y-auto" aria-label="Conversation list">
-          {threads.map(t => (
-            <li key={t.id} className="flex items-center gap-1">
-              <button
-                onClick={() => setActiveId(t.id)}
-                className={`flex-1 text-left px-2 py-1 rounded hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-green-400 ${
-                  activeId === t.id ? 'bg-white/10' : ''
-                }`}
-              >
-                <span className="block truncate text-sm">{t.title}</span>
-              </button>
-              <button
-                onClick={() => deleteThread(t.id)}
-                aria-label="Delete thread"
-                className="text-xs text-red-400 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-green-400"
-              >
-                ×
-              </button>
-            </li>
-          ))}
-        </ul>
-      </aside>
-      <section className="flex-1 flex flex-col">
+        {threads.map(t => (
+          <div key={t.id} className="flex items-center gap-1">
+            <button
+              onClick={() => setActiveThread(t.id)}
+              className={`px-2 py-1 rounded text-xs truncate max-w-40 focus:outline-none focus:ring-2 focus:ring-green-400 ${
+                activeThreadId === t.id ? 'bg-white/10' : 'hover:bg-white/10'
+              }`}
+            >
+              {t.title}
+            </button>
+            <button
+              onClick={() => deleteThread(t.id)}
+              aria-label="Delete thread"
+              className="text-xs text-red-400 hover:text-red-600"
+            >
+              ×
+            </button>
+          </div>
+        ))}
+      </div>
+      <div className="flex-1 flex flex-col">
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {msgs.map(m => (
-            <motion.p
+            <motion.div
               key={m.id}
               initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`max-w-prose rounded bg-white/5 p-2 text-sm ${
-                m.role === 'user' ? 'self-end bg-green-500/20' : ''
+              className={`max-w-prose rounded px-3 py-2 text-sm ${
+                m.role === 'user' ? 'ml-auto bg-green-500/20' : 'bg-white/10'
               }`}
             >
               {m.content}
-            </motion.p>
+            </motion.div>
           ))}
+          {needsTopicPrompt && (
+            <div className="max-w-prose rounded bg-yellow-500/20 p-2 text-sm">
+              <p>Please set a topic in My Data or start the topic.</p>
+              <button
+                onClick={() => setNeedsTopicPrompt(false)}
+                className="mt-1 rounded bg-white/10 px-2 py-1 text-xs"
+              >
+                Start the topic
+              </button>
+            </div>
+          )}
         </div>
-        <div className="border-t border-white/10 p-2">
-          <label htmlFor="chat-input" className="sr-only">
-            Message
-          </label>
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            handleSend();
+          }}
+          className="border-t border-white/10 p-2 flex items-center gap-2"
+        >
           <input
-            id="chat-input"
             value={input}
             onChange={e => setInput(e.target.value)}
-            onKeyDown={e => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                handleSend();
-              }
-            }}
             placeholder="Type a message..."
-            className="w-full rounded bg-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="flex-1 rounded bg-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
           />
+          <button
+            type="submit"
+            className="rounded bg-green-500/20 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
+          >
+            Send
+          </button>
+        </form>
+        <div className="border-t border-white/10 p-2 text-right text-xs">
+          <button
+            onClick={handleExport}
+            className="rounded bg-white/10 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-green-400"
+          >
+            Export chat (JSON)
+          </button>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
+

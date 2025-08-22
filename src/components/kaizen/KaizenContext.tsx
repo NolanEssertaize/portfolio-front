@@ -13,6 +13,8 @@ type KaizenContextType = {
   deleteThread: (id: string) => void;
   messagesByThread: Record<string, ChatMessage[]>;
   appendMessage: (threadId: string, msg: ChatMessage) => void;
+  activeThreadId: string | null;
+  setActiveThread: (id: string | null) => void;
 };
 
 const defaultProfile: LearnerProfile = {
@@ -43,6 +45,7 @@ export function KaizenProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfileState] = useState<LearnerProfile>(defaultProfile);
   const [threads, setThreads] = useState<ThreadMeta[]>([]);
   const [messagesByThread, setMessagesByThread] = useState<Record<string, ChatMessage[]>>({});
+  const [activeThreadId, setActiveThread] = useState<string | null>(null);
 
   useEffect(() => {
     try {
@@ -106,6 +109,8 @@ export function KaizenProvider({ children }: { children: React.ReactNode }) {
         deleteThread,
         messagesByThread,
         appendMessage,
+        activeThreadId,
+        setActiveThread,
       }}
     >
       {children}

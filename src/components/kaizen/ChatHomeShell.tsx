@@ -1,7 +1,7 @@
 'use client';
 
 import ChatPane from './ChatPane';
-import ProfilePanel from './ProfilePanel';
+import MyDataPanel from './MyDataPanel';
 
 export default function ChatHomeShell() {
   return (
@@ -26,7 +26,7 @@ export default function ChatHomeShell() {
           <ChatPane />
         </section>
         <aside className="w-full md:w-80 lg:w-96">
-          <ProfilePanel />
+          <MyDataPanel />
         </aside>
       </main>
       <footer className="border-t border-white/10 bg-white/5 backdrop-blur p-4 text-center text-xs">
