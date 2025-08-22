@@ -24,16 +24,24 @@ export default function Hero({ content, onPrimary, onSecondary }: HeroProps) {
   const rightMove = useTransform(scrollYProgress, [0, 1], ['5%', '0%']);
 
   const backgroundChars = useMemo(() => {
-    const sizes = ['text-3xl', 'text-4xl', 'text-5xl', 'text-6xl', 'text-7xl'];
-    return Array.from({ length: 7 }).map((_, i) => ({
-      char: i % 2 === 0 ? '改' : '善',
-      size: sizes[Math.floor(Math.random() * sizes.length)],
-      startTop: Math.random() * 100,
-      startLeft: Math.random() * 100,
-      endTop: Math.random() * 100,
-      endLeft: Math.random() * 100,
-      duration: Math.random() * 10 + 5,
-    }));
+    const sizes = [
+      { class: 'text-3xl', duration: 30 },
+      { class: 'text-4xl', duration: 25 },
+      { class: 'text-5xl', duration: 20 },
+      { class: 'text-6xl', duration: 15 },
+      { class: 'text-7xl', duration: 10 },
+    ];
+
+    return Array.from({ length: 30 }).map((_, i) => {
+      const size = sizes[Math.floor(Math.random() * sizes.length)];
+      return {
+        char: i % 2 === 0 ? '改' : '善',
+        size: size.class,
+        top: Math.random() * 100,
+        duration: size.duration,
+        delay: Math.random() * -size.duration,
+      };
+    });
   }, []);
 
   return (
@@ -46,9 +54,9 @@ export default function Hero({ content, onPrimary, onSecondary }: HeroProps) {
           <motion.span
             key={idx}
             className={`absolute select-none text-green-400/60 ${item.size}`}
-            initial={{ top: `${item.startTop}%`, left: `${item.startLeft}%` }}
-            animate={{ top: `${item.endTop}%`, left: `${item.endLeft}%` }}
-            transition={{ duration: item.duration, repeat: Infinity, repeatType: 'reverse', ease: 'linear' }}
+            initial={{ top: `${item.top}%`, left: '-10%' }}
+            animate={{ left: '110%' }}
+            transition={{ duration: item.duration, repeat: Infinity, ease: 'linear', delay: item.delay }}
             style={{ textShadow: '0 0 6px rgba(34,197,94,0.8)' }}
           >
             {item.char}
