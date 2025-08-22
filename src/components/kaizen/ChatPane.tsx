@@ -1,65 +1,36 @@
 'use client';
-
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useRef, useEffect } from 'react';
 import { useKaizen } from './KaizenContext';
+import { Button } from './ui';
 
-export default function ChatPane() {
-  const {
-    profile,
-    threads,
-    createThread,
-    deleteThread,
-    messagesByThread,
-    appendMessage,
-    activeThreadId,
-    setActiveThread,
-  } = useKaizen();
-  const [input, setInput] = useState('');
-  const [needsTopicPrompt, setNeedsTopicPrompt] = useState(false);
+type Props = { onOpenSidebar?: () => void };
 
+export default function ChatPane({ onOpenSidebar }: Props) {
+  const { threads, activeThreadId, renameThread, messagesByThread, appendMessage, profile } = useKaizen();
+  const thread = threads.find(t => t.id === activeThreadId);
   const msgs = activeThreadId ? messagesByThread[activeThreadId] || [] : [];
+  const [editing, setEditing] = useState(false);
+  const [title, setTitle] = useState(thread?.title || '');
+  const [input, setInput] = useState('');
+  const bottomRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    setNeedsTopicPrompt(false);
-  }, [activeThreadId]);
+  useEffect(() => setTitle(thread?.title || ''), [thread?.title]);
+  useEffect(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), [msgs.length]);
 
-  const handleNewChat = () => {
-    const title =
-      profile.preciseSubject ||
-      `Start the topic: ${profile.topic || 'Untitled'}`;
-    const id = createThread(title);
-    setActiveThread(id);
-  };
-
-  const handleSend = () => {
+  const send = () => {
     if (!activeThreadId || !input.trim()) return;
-    const existing = messagesByThread[activeThreadId] || [];
     const now = new Date().toISOString();
-    appendMessage(activeThreadId, {
-      id: crypto.randomUUID(),
-      role: 'user',
-      content: input.trim(),
-      createdAt: now,
-    });
-    if (existing.length === 0 && !profile.topic && !profile.preciseSubject) {
-      setNeedsTopicPrompt(true);
+    appendMessage(activeThreadId, { id: crypto.randomUUID(), role: 'user', content: input.trim(), createdAt: now });
+    if (msgs.length === 0 && !profile.topic && !profile.preciseSubject) {
+      /* nudge shown below */
     }
-    appendMessage(activeThreadId, {
-      id: crypto.randomUUID(),
-      role: 'assistant',
-      content: '(Preview) Your AI lesson will appear here.',
-      createdAt: now,
-    });
+    appendMessage(activeThreadId, { id: crypto.randomUUID(), role: 'assistant', content: '(Preview) Your AI lesson will appear here.', createdAt: now });
     setInput('');
   };
 
-  const handleExport = () => {
+  const exportChat = () => {
     if (!activeThreadId) return;
-    const data = messagesByThread[activeThreadId] || [];
-    const blob = new Blob([JSON.stringify(data, null, 2)], {
-      type: 'application/json',
-    });
+    const blob = new Blob([JSON.stringify(msgs, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -68,91 +39,33 @@ export default function ChatPane() {
     URL.revokeObjectURL(url);
   };
 
+  const showNudge = msgs.length === 1 && msgs[0].role === 'user' && !profile.topic && !profile.preciseSubject;
+
   return (
-    <div className="h-full flex flex-col">
-      <div className="border-b border-white/10 p-2 flex items-center gap-2 overflow-x-auto">
-        <button
-          onClick={handleNewChat}
-          className="rounded bg-white/10 px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-green-400"
-        >
-          + New chat
-        </button>
-        {threads.map(t => (
-          <div key={t.id} className="flex items-center gap-1">
-            <button
-              onClick={() => setActiveThread(t.id)}
-              className={`px-2 py-1 rounded text-xs truncate max-w-40 focus:outline-none focus:ring-2 focus:ring-green-400 ${
-                activeThreadId === t.id ? 'bg-white/10' : 'hover:bg-white/10'
-              }`}
-            >
-              {t.title}
-            </button>
-            <button
-              onClick={() => deleteThread(t.id)}
-              aria-label="Delete thread"
-              className="text-xs text-red-400 hover:text-red-600"
-            >
-              ×
-            </button>
+    <div className="flex h-full flex-col">
+      <div className="flex items-center gap-2 border-b border-white/10 p-2">
+        <button className="md:hidden" aria-label="Open sidebar" onClick={onOpenSidebar}>☰</button>
+        {editing ? (
+          <input value={title} onChange={e => setTitle(e.target.value)} onBlur={() => { setEditing(false); if (thread) renameThread(thread.id, title || 'Untitled'); }} className="flex-1 rounded bg-white/10 p-1" autoFocus />
+        ) : (
+          <h2 className="flex-1 truncate" onClick={() => setEditing(true)}>{thread?.title || 'Untitled'}</h2>
+        )}
+        <Button onClick={exportChat} className="px-2 py-1 text-xs">Export chat</Button>
+      </div>
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {msgs.map(m => (
+          <div key={m.id} className={`max-w-prose rounded px-3 py-2 text-sm ${m.role === 'user' ? 'ml-auto bg-green-500/20' : 'bg-white/10'}`}>
+            <div>{m.content}</div>
+            <div className="mt-1 text-[10px] opacity-50">{new Date(m.createdAt).toLocaleTimeString()}</div>
           </div>
         ))}
+        {showNudge && <div className="text-xs text-yellow-200">Select a topic or continue with “Start the topic”.</div>}
+        <div ref={bottomRef} />
       </div>
-      <div className="flex-1 flex flex-col">
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {msgs.map(m => (
-            <motion.div
-              key={m.id}
-              initial={{ opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`max-w-prose rounded px-3 py-2 text-sm ${
-                m.role === 'user' ? 'ml-auto bg-green-500/20' : 'bg-white/10'
-              }`}
-            >
-              {m.content}
-            </motion.div>
-          ))}
-          {needsTopicPrompt && (
-            <div className="max-w-prose rounded bg-yellow-500/20 p-2 text-sm">
-              <p>Please set a topic in My Data or start the topic.</p>
-              <button
-                onClick={() => setNeedsTopicPrompt(false)}
-                className="mt-1 rounded bg-white/10 px-2 py-1 text-xs"
-              >
-                Start the topic
-              </button>
-            </div>
-          )}
-        </div>
-        <form
-          onSubmit={e => {
-            e.preventDefault();
-            handleSend();
-          }}
-          className="border-t border-white/10 p-2 flex items-center gap-2"
-        >
-          <input
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            placeholder="Type a message..."
-            className="flex-1 rounded bg-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
-          />
-          <button
-            type="submit"
-            className="rounded bg-green-500/20 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
-          >
-            Send
-          </button>
-        </form>
-        <div className="border-t border-white/10 p-2 text-right text-xs">
-          <button
-            onClick={handleExport}
-            className="rounded bg-white/10 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-green-400"
-          >
-            Export chat (JSON)
-          </button>
-        </div>
-      </div>
+      <form onSubmit={e => { e.preventDefault(); send(); }} className="border-t border-white/10 p-2 flex items-end gap-2">
+        <textarea value={input} onChange={e => setInput(e.target.value)} aria-label="Message" onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey && !(e.nativeEvent as KeyboardEvent).isComposing) { e.preventDefault(); send(); } }} className="flex-1 rounded bg-white/10 p-2 text-sm" rows={2} />
+        <Button type="submit" className="px-3 py-2">Send</Button>
+      </form>
     </div>
   );
 }
-
