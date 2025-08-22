@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import SideCircuit from './SideCircuit';
 import Container from './Container';
@@ -22,11 +23,38 @@ export default function Hero({ content, onPrimary, onSecondary }: HeroProps) {
   const leftMove = useTransform(scrollYProgress, [0, 1], ['-5%', '0%']);
   const rightMove = useTransform(scrollYProgress, [0, 1], ['5%', '0%']);
 
+  const backgroundChars = useMemo(() => {
+    const sizes = ['text-3xl', 'text-4xl', 'text-5xl', 'text-6xl', 'text-7xl'];
+    return Array.from({ length: 7 }).map((_, i) => ({
+      char: i % 2 === 0 ? '改' : '善',
+      size: sizes[Math.floor(Math.random() * sizes.length)],
+      startTop: Math.random() * 100,
+      startLeft: Math.random() * 100,
+      endTop: Math.random() * 100,
+      endLeft: Math.random() * 100,
+      duration: Math.random() * 10 + 5,
+    }));
+  }, []);
+
   return (
     <section
       id="intro"
-      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-gray-900 to-black"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-white to-black"
     >
+      <div className="pointer-events-none absolute inset-0">
+        {backgroundChars.map((item, idx) => (
+          <motion.span
+            key={idx}
+            className={`absolute select-none text-green-400/60 ${item.size}`}
+            initial={{ top: `${item.startTop}%`, left: `${item.startLeft}%` }}
+            animate={{ top: `${item.endTop}%`, left: `${item.endLeft}%` }}
+            transition={{ duration: item.duration, repeat: Infinity, repeatType: 'reverse', ease: 'linear' }}
+            style={{ textShadow: '0 0 6px rgba(34,197,94,0.8)' }}
+          >
+            {item.char}
+          </motion.span>
+        ))}
+      </div>
       <SideCircuit style={{ x: prefersReducedMotion ? 0 : leftMove }} />
       <SideCircuit mirrored style={{ x: prefersReducedMotion ? 0 : rightMove }} />
       <Container>
