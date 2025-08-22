@@ -51,11 +51,18 @@ export function KaizenProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const [profile, setProfileState] = useState<LearnerProfile>(() => read('kaizen_profile_v1', defaultProfile));
-  const [threads, setThreads] = useState<ThreadMeta[]>(() => read('kaizen_threads_v1', []));
-  const [messagesByThread, setMessages] = useState<Record<string, ChatMessage[]>>(() => read('kaizen_msgs_v1', {}));
+  const [profile, setProfileState] = useState<LearnerProfile>(defaultProfile);
+  const [threads, setThreads] = useState<ThreadMeta[]>([]);
+  const [messagesByThread, setMessages] = useState<Record<string, ChatMessage[]>>({});
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null);
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(() => read('kaizen_sidebar_open_v1', false));
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    setProfileState(read('kaizen_profile_v1', defaultProfile));
+    setThreads(read('kaizen_threads_v1', []));
+    setMessages(read('kaizen_msgs_v1', {}));
+    setSidebarOpen(read('kaizen_sidebar_open_v1', false));
+  }, []);
 
   useEffect(() => localStorage.setItem('kaizen_profile_v1', JSON.stringify(profile)), [profile]);
   useEffect(() => localStorage.setItem('kaizen_threads_v1', JSON.stringify(threads)), [threads]);
