@@ -41,9 +41,9 @@ export default function Header({ items, onStart }: HeaderProps) {
   };
 
   return (
-    <header className="fixed top-0 z-50 w-full bg-black/40 backdrop-blur-xl">
+    <header className="fixed top-0 z-50 w-full bg-white backdrop-blur-xl">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <span className="text-lg font-semibold">Kaizen</span>
+        <span className="text-lg font-semibold text-black">Kaizen</span>
         <button
           className="sm:hidden"
           onClick={() => setOpen((v) => !v)}
@@ -52,14 +52,14 @@ export default function Header({ items, onStart }: HeaderProps) {
           ☰
         </button>
         <ul
-          className={`${open ? 'block' : 'hidden'} absolute left-0 top-full w-full bg-black/90 p-4 sm:static sm:flex sm:w-auto sm:space-x-6 sm:bg-transparent sm:p-0`}
+          className={`${open ? 'block' : 'hidden'} absolute left-0 top-full w-full bg-white p-4 sm:static sm:flex sm:w-auto sm:space-x-6 sm:bg-transparent sm:p-0`}
         >
           {items.map((item) => (
             <li key={item.id}>
               <button
                 onClick={() => handleClick(item.id)}
                 className={`text-sm font-medium hover:text-green-400 ${
-                  active === item.id ? 'text-green-400' : 'text-white'
+                  active === item.id ? 'text-green-400' : 'text-black'
                 }`}
               >
                 {item.label}

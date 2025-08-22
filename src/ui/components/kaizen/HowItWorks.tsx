@@ -19,10 +19,10 @@ export default function HowItWorks({ steps }: { steps: Step[] }) {
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.6, delay: i * 0.1, ease: 'easeOut' }}
-              className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl"
+              className="rounded-2xl border border-black/10 bg-black/5 p-6 backdrop-blur-xl"
             >
-              <h3 className="mb-2 text-lg font-semibold">{step.title}</h3>
-              <p className="text-sm text-white/80">{step.text}</p>
+              <h3 className="mb-2 text-lg font-semibold text-black">{step.title}</h3>
+              <p className="text-sm text-black/80">{step.text}</p>
             </motion.div>
           ))}
         </div>

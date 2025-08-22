@@ -34,9 +34,9 @@ export default function KaizenIntroductionPage() {
   ];
 
   return (
-    <div className="font-sans text-white">
+    <div className="font-sans overflow-x-hidden text-black">
       <Header items={navItems} onStart={() => setModalOpen(true)} />
-      <main className="pt-16">
+      <main>
         <Hero
           content={defaultContent.hero}
           onPrimary={() => setModalOpen(true)}

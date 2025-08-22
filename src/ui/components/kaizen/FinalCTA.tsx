@@ -28,12 +28,12 @@ export default function FinalCTA({ content, onPrimary }: Props) {
             </button>
             <a
               href="mailto:contact@example.com"
-              className="text-sm text-white/80 hover:text-white"
+              className="text-sm text-black/80 hover:text-black"
             >
               {content.secondary}
             </a>
           </div>
-          <p className="text-xs text-white/60">{content.note}</p>
+          <p className="text-xs text-black/60">{content.note}</p>
         </div>
       </Container>
     </section>
