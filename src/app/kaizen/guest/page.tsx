@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import BreathingLoader from '@ui/components/kaizen/BreathingLoader';
+import KaizenLayout from '@ui/components/kaizen/KaizenLayout';
 import { lessonSchema, type LessonSchema, type LessonBlock } from '@domain/lesson';
 
 export default function KaizenGuestPage() {
@@ -61,7 +62,7 @@ export default function KaizenGuestPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col animate-[fade-in-up_0.6s_ease-out]">
+    <KaizenLayout className="flex flex-col animate-[fade-in-up_0.6s_ease-out]">
       <header className="glass-effect">
         <div className="max-w-4xl mx-auto flex justify-between items-center p-4">
           <Link href="/" target="_blank">
@@ -182,6 +183,7 @@ export default function KaizenGuestPage() {
           <p className="mt-4">Generating...</p>
         </div>
       )}
-    </div>
+    </KaizenLayout>
   );
 }
+
