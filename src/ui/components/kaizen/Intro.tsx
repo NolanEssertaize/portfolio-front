@@ -1,32 +1,16 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import React from 'react';
-import SideSvg from './SideSvg';
+import KaizenLayout from './KaizenLayout';
 
 interface IntroProps {
   onStart: () => void;
 }
 
 export default function Intro({ onStart }: IntroProps) {
-  const { scrollYProgress } = useScroll();
-  const leftX = useTransform(scrollYProgress, [0, 1], ['-100%', '0%']);
-  const rightX = useTransform(scrollYProgress, [0, 1], ['100%', '0%']);
-  const color = useTransform(scrollYProgress, [0.8, 1], ['#4b5563', '#4ade80']);
-  const glow = useTransform(
-    scrollYProgress,
-    [0.8, 1],
-    ['drop-shadow(0 0 0px #4ade80)', 'drop-shadow(0 0 12px #4ade80)']
-  );
-  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
-
   return (
-      <section
-        className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-gray-900 to-black bg-[length:100%_150%] text-white"
-        style={{ backgroundPositionY: bgY as unknown as string }}
-      >
-      <SideSvg style={{ x: leftX, color, filter: glow }} />
-      <SideSvg mirrored style={{ x: rightX, color, filter: glow }} />
+    <KaizenLayout className="flex items-center justify-center">
       <div className="px-4 text-center">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
@@ -53,7 +37,7 @@ export default function Intro({ onStart }: IntroProps) {
           Start Learning
         </motion.button>
       </div>
-    </section>
+    </KaizenLayout>
   );
 }
 
