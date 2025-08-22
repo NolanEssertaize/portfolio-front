@@ -1,23 +1,23 @@
 'use client';
 
 import { useState } from 'react';
-import { defaultContent } from '@/content/defaultContent';
-import Header from '@/ui/components/kaizen/Header';
-import Hero from '@/ui/components/kaizen/Hero';
-import HowItWorks from '@/ui/components/kaizen/HowItWorks';
-import Benefits from '@/ui/components/kaizen/Benefits';
-import Features from '@/ui/components/kaizen/Features';
-import Pricing from '@/ui/components/kaizen/Pricing';
-import SecurityPrivacy from '@/ui/components/kaizen/SecurityPrivacy';
-import Demo from '@/ui/components/kaizen/Demo';
-import Testimonials from '@/ui/components/kaizen/Testimonials';
-import FAQ from '@/ui/components/kaizen/FAQ';
-import Roadmap from '@/ui/components/kaizen/Roadmap';
-import FinalCTA from '@/ui/components/kaizen/FinalCTA';
-import Footer from '@/ui/components/kaizen/Footer';
-import AuthModal from '@/ui/components/kaizen/AuthModal';
+import { defaultContent } from './content/defaultContent';
+import Header from './ui/components/kaizen/Header';
+import Hero from './ui/components/kaizen/Hero';
+import HowItWorks from './ui/components/kaizen/HowItWorks';
+import Benefits from './ui/components/kaizen/Benefits';
+import Features from './ui/components/kaizen/Features';
+import Pricing from './ui/components/kaizen/Pricing';
+import SecurityPrivacy from './ui/components/kaizen/SecurityPrivacy';
+import Demo from './ui/components/kaizen/Demo';
+import Testimonials from './ui/components/kaizen/Testimonials';
+import FAQ from './ui/components/kaizen/FAQ';
+import Roadmap from './ui/components/kaizen/Roadmap';
+import FinalCTA from './ui/components/kaizen/FinalCTA';
+import Footer from './ui/components/kaizen/Footer';
+import AuthModal from './ui/components/kaizen/AuthModal';
 
-export default function KaizenIntroductionPage() {
+export default function App() {
   const [modalOpen, setModalOpen] = useState(false);
   const navItems = [
     { id: 'intro', label: 'Intro' },
