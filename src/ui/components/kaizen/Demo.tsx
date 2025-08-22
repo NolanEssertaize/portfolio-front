@@ -38,7 +38,7 @@ export default function Demo({ content, onGuest }: DemoProps) {
           >
             <button
               onClick={onGuest}
-              className="mb-4 rounded-md bg-green-500/20 px-6 py-3 text-green-300 hover:bg-green-500/30"
+              className="mb-4 rounded-md bg-green-500/20 px-6 py-3 text-black text-center hover:bg-green-500/30"
             >
               Try as Guest
             </button>

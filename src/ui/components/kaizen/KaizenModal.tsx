@@ -42,7 +42,7 @@ export default function KaizenModal({ open, onClose }: KaizenModalProps) {
               />
               <button
                 type="submit"
-                className="w-full rounded bg-green-500/20 py-2 text-green-300 transition hover:bg-green-500/30"
+                className="w-full rounded bg-green-500/20 py-2 text-black text-center transition hover:bg-green-500/30"
               >
                 Login
               </button>

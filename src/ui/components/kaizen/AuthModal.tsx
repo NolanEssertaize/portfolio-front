@@ -55,7 +55,7 @@ export default function AuthModal({ open, onClose, initialTab = 'login' }: AuthM
                 />
                 <button
                   onClick={() => console.log('login')}
-                  className="w-full rounded-md bg-green-500/20 py-2 text-green-300 hover:bg-green-500/30"
+                  className="w-full rounded-md bg-green-500/20 py-2 text-black text-center hover:bg-green-500/30"
                 >
                   Continue
                 </button>
@@ -68,7 +68,7 @@ export default function AuthModal({ open, onClose, initialTab = 'login' }: AuthM
                 <p>Continue as guest with limited quota.</p>
                 <button
                   onClick={() => console.log('startGuestTrial')}
-                  className="w-full rounded-md bg-green-500/20 py-2 text-green-300 hover:bg-green-500/30"
+                  className="w-full rounded-md bg-green-500/20 py-2 text-black text-center hover:bg-green-500/30"
                 >
                   Continue as Guest
                 </button>
