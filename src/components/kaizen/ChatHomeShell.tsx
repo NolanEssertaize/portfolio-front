@@ -1,42 +1,58 @@
 'use client';
-
+import { useEffect, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import Sidebar from './Sidebar';
 import ChatPane from './ChatPane';
-import MyDataPanel from './MyDataPanel';
+import { useKaizen } from './KaizenContext';
+import { buildLessonRequest } from './request';
+import { Button } from './ui';
+import Link from 'next/link';
+import { routes } from './routes';
 
-export default function ChatHomeShell() {
+type Props = { initialThreadId?: string };
+
+export default function ChatHomeShell({ initialThreadId }: Props) {
+  const { profile, messagesByThread, activeThreadId, setActiveThreadId, threads } = useKaizen();
+  const [drawer, setDrawer] = useState(false);
+  const prefersReduced = useReducedMotion();
+
+  useEffect(() => { if (initialThreadId) setActiveThreadId(initialThreadId); }, [initialThreadId, setActiveThreadId]);
+
+  const handleGenerate = () => {
+    const req = buildLessonRequest({
+      profile,
+      chatHistory: activeThreadId ? messagesByThread[activeThreadId] || [] : [],
+      sessionId: activeThreadId || crypto.randomUUID(),
+    });
+    console.log('LessonRequest', req);
+    // TODO: fetch('/api/lessons/generate', { method: 'POST', body: JSON.stringify(req) })
+  };
+
+  const threadExists = activeThreadId ? threads.some(t => t.id === activeThreadId) : true;
+  if (initialThreadId && !threadExists)
+    return (
+      <div className="p-8 text-center">
+        <p className="mb-4">Thread not found — create a new chat</p>
+        <Link href={routes.home} className="underline text-green-400">Go home</Link>
+      </div>
+    );
+
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-900 text-white font-sans">
-      <header className="sticky top-0 z-10 bg-white/10 backdrop-blur border-b border-white/20">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between p-4 text-sm">
-          <a href="/kaizen/home" className="font-bold text-green-400">
-            Kaizen
-          </a>
-          <div className="space-x-4">
-            <a href="/kaizen/home" className="hover:underline">
-              Home
-            </a>
-            <a href="/kaizen/introduction" className="hover:underline">
-              Intro
-            </a>
-          </div>
-        </nav>
-      </header>
-      <main className="flex flex-1 flex-col md:flex-row">
-        <section className="flex-1 border-b md:border-b-0 md:border-r border-white/10">
-          <ChatPane />
-        </section>
-        <aside className="w-full md:w-80 lg:w-96">
-          <MyDataPanel />
-        </aside>
-      </main>
-      <footer className="border-t border-white/10 bg-white/5 backdrop-blur p-4 text-center text-xs">
-        <a href="#" className="mx-2 underline hover:no-underline">
-          Privacy
-        </a>
-        <a href="#" className="mx-2 underline hover:no-underline">
-          Terms
-        </a>
-      </footer>
+    <div className="flex flex-1 h-full min-h-0">
+      <aside className="hidden md:block w-72 shrink-0 border-r border-white/10 h-full"><Sidebar /></aside>
+      <AnimatePresence>
+        {drawer && (
+          <motion.aside initial={{ x: -300 }} animate={{ x: 0 }} exit={{ x: -300 }} transition={{ duration: prefersReduced ? 0 : 0.2 }} className="fixed inset-y-0 left-0 z-20 w-72 bg-black/80 backdrop-blur-md border-r border-white/10 md:hidden">
+            <Sidebar onNavigate={() => setDrawer(false)} />
+          </motion.aside>
+        )}
+      </AnimatePresence>
+      <div className="flex-1 flex flex-col min-h-0">
+        <div className="flex justify-end p-2 border-b border-white/10">
+          <Button onClick={handleGenerate} className="text-xs px-2 py-1">Generate Lesson (Preview)</Button>
+        </div>
+        <ChatPane onOpenSidebar={() => setDrawer(true)} />
+      </div>
     </div>
   );
 }
