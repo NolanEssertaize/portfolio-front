@@ -1,0 +1,38 @@
+"use client";
+
+import Link from "next/link";
+import GlassPanel from "@ui/components/dna/glass/GlassPanel";
+import { Button } from "@ui/components/dna/button";
+import { Heading, Text } from "@ui/components/dna/typography";
+import Typewriter from "@ui/components/dna/animations/Typewriter";
+
+export default function HeroSection(){
+  return (
+    <section id="hero" className="relative py-24 md:py-32 overflow-hidden">
+      <div className="container mx-auto px-4 hero-fade-in">
+        <div className="mx-auto max-w-3xl text-center">
+          <GlassPanel className="mx-auto">
+            <Heading as="h1" className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900">
+              <Typewriter text={"ESSERTAIZE Nolan's portfolio."}/>
+            </Heading>
+            <Text className="mt-4 text-lg md:text-xl text-gray-700">
+              <Typewriter text={"Secure, data‑driven, and fast to ship — from idea to production."}/>
+            </Text>
+            <div className="mt-8 flex items-center justify-center gap-3">
+              <Link href="/contact" aria-label="Start a project">
+                <Button variant="primary" size="lg" animation="roll-replace">
+                  Start a project
+                </Button>
+              </Link>
+              <Link href="#projects" aria-label="See case studies">
+                <Button variant="ghost" size="lg" animation="roll-replace">
+                  See case studies
+                </Button>
+              </Link>
+            </div>
+          </GlassPanel>
+        </div>
+      </div>
+    </section>
+  );
+}

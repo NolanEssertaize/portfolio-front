@@ -1,10 +1,20 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import ClientThemeProvider from '@/components/portfolio/ClientThemeProvider'
 
 export const metadata: Metadata = {
-    title: 'ESSERTAIZE - Portfolio',
-    description: 'Professional portfolio with AI integration',
+  title: "Nolan Essertaize – SaaS engineering for SMEs",
+  description:
+    "Secure, data-driven, and fast to ship. From idea to production.",
+  openGraph: {
+    title: "Nolan Essertaize – SaaS engineering for SMEs",
+    description:
+      "Secure, data-driven, and fast to ship. From idea to production.",
+    url: "https://nolanessertaize.com",
+    siteName: "Nolan Essertaize",
+  },
+  alternates: {
+    canonical: "https://nolanessertaize.com",
+  },
 }
 
 export default function RootLayout({
@@ -35,7 +45,7 @@ export default function RootLayout({
                 />
             </head>
             <body className="antialiased">
-                <ClientThemeProvider>{children}</ClientThemeProvider>
+                {children}
             </body>
         </html>
     )
