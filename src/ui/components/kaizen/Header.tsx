@@ -43,7 +43,7 @@ export default function Header({ items, onStart }: HeaderProps) {
   return (
     <header className="fixed top-0 z-50 w-full bg-white backdrop-blur-xl">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <span className="text-lg font-semibold text-black">Kaizen</span>
+        <a href="#" className="text-lg font-semibold text-black">Kaizen 改善</a>
         <button
           className="sm:hidden"
           onClick={() => setOpen((v) => !v)}
