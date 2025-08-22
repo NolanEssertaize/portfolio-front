@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function KaizenHomePage() {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 to-black text-white font-sans">
+    <div className="h-screen flex flex-col bg-gradient-to-br from-gray-900 to-black text-white font-sans">
       <header className="border-b border-white/10 bg-white/5 backdrop-blur">
         <nav className="mx-auto max-w-7xl flex justify-between p-4 text-sm">
           <Link href="/kaizen/home" className="font-bold text-green-400">Kaizen</Link>
