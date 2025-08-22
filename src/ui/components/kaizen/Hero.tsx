@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import SideCircuit from './SideCircuit';
 import Container from './Container';
@@ -22,15 +23,26 @@ export default function Hero({ content, onPrimary, onSecondary }: HeroProps) {
   const leftMove = useTransform(scrollYProgress, [0, 1], ['-5%', '0%']);
   const rightMove = useTransform(scrollYProgress, [0, 1], ['5%', '0%']);
 
-  const backgroundChars = [
-    { char: '改', top: '5%', left: '10%', size: 'text-7xl' },
-    { char: '善', top: '20%', left: '80%', size: 'text-5xl' },
-    { char: '改', top: '40%', left: '50%', size: 'text-6xl' },
-    { char: '善', top: '65%', left: '15%', size: 'text-4xl' },
-    { char: '改', top: '80%', left: '70%', size: 'text-5xl' },
-    { char: '善', top: '55%', left: '60%', size: 'text-3xl' },
-    { char: '改', top: '10%', left: '55%', size: 'text-4xl' },
-  ];
+  const backgroundChars = useMemo(() => {
+    const sizes = [
+      { class: 'text-3xl', duration: 30 },
+      { class: 'text-4xl', duration: 25 },
+      { class: 'text-5xl', duration: 20 },
+      { class: 'text-6xl', duration: 15 },
+      { class: 'text-7xl', duration: 10 },
+    ];
+
+    return Array.from({ length: 30 }).map((_, i) => {
+      const size = sizes[Math.floor(Math.random() * sizes.length)];
+      return {
+        char: i % 2 === 0 ? '改' : '善',
+        size: size.class,
+        top: Math.random() * 100,
+        duration: size.duration,
+        delay: Math.random() * -size.duration,
+      };
+    });
+  }, []);
 
   return (
     <section
@@ -39,13 +51,16 @@ export default function Hero({ content, onPrimary, onSecondary }: HeroProps) {
     >
       <div className="pointer-events-none absolute inset-0">
         {backgroundChars.map((item, idx) => (
-          <span
+          <motion.span
             key={idx}
             className={`absolute select-none text-green-400/60 ${item.size}`}
-            style={{ top: item.top, left: item.left, textShadow: '0 0 6px rgba(34,197,94,0.8)' }}
+            initial={{ top: `${item.top}%`, left: '-10%' }}
+            animate={{ left: '110%' }}
+            transition={{ duration: item.duration, repeat: Infinity, ease: 'linear', delay: item.delay }}
+            style={{ textShadow: '0 0 6px rgba(34,197,94,0.8)' }}
           >
             {item.char}
-          </span>
+          </motion.span>
         ))}
       </div>
       <SideCircuit style={{ x: prefersReducedMotion ? 0 : leftMove }} />
