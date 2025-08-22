@@ -22,11 +22,32 @@ export default function Hero({ content, onPrimary, onSecondary }: HeroProps) {
   const leftMove = useTransform(scrollYProgress, [0, 1], ['-5%', '0%']);
   const rightMove = useTransform(scrollYProgress, [0, 1], ['5%', '0%']);
 
+  const backgroundChars = [
+    { char: '改', top: '5%', left: '10%', size: 'text-7xl' },
+    { char: '善', top: '20%', left: '80%', size: 'text-5xl' },
+    { char: '改', top: '40%', left: '50%', size: 'text-6xl' },
+    { char: '善', top: '65%', left: '15%', size: 'text-4xl' },
+    { char: '改', top: '80%', left: '70%', size: 'text-5xl' },
+    { char: '善', top: '55%', left: '60%', size: 'text-3xl' },
+    { char: '改', top: '10%', left: '55%', size: 'text-4xl' },
+  ];
+
   return (
     <section
       id="intro"
-      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-gray-900 to-black"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-white to-black"
     >
+      <div className="pointer-events-none absolute inset-0">
+        {backgroundChars.map((item, idx) => (
+          <span
+            key={idx}
+            className={`absolute select-none text-green-400/60 ${item.size}`}
+            style={{ top: item.top, left: item.left, textShadow: '0 0 6px rgba(34,197,94,0.8)' }}
+          >
+            {item.char}
+          </span>
+        ))}
+      </div>
       <SideCircuit style={{ x: prefersReducedMotion ? 0 : leftMove }} />
       <SideCircuit mirrored style={{ x: prefersReducedMotion ? 0 : rightMove }} />
       <Container>
