@@ -12,7 +12,7 @@ interface HeaderProps {
   onStart: () => void;
 }
 
-export default function Header({ items, onStart }: HeaderProps) {
+export default function Header({ items = [], onStart }: HeaderProps) {
   const [active, setActive] = useState(items[0]?.id);
   const [open, setOpen] = useState(false);
 

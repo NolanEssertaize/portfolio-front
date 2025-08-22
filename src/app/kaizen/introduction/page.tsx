@@ -19,23 +19,10 @@ import AuthModal from '@/ui/components/kaizen/AuthModal';
 
 export default function KaizenIntroductionPage() {
   const [modalOpen, setModalOpen] = useState(false);
-  const navItems = [
-    { id: 'intro', label: 'Intro' },
-    { id: 'how', label: 'How it works' },
-    { id: 'benefits', label: 'Benefits' },
-    { id: 'features', label: 'Features' },
-    { id: 'pricing', label: 'Pricing' },
-    { id: 'security', label: 'Security & Privacy' },
-    { id: 'demo', label: 'Demo' },
-    { id: 'testimonials', label: 'Testimonials' },
-    { id: 'faq', label: 'FAQ' },
-    { id: 'roadmap', label: 'Roadmap' },
-    { id: 'contact', label: 'Contact' },
-  ];
 
   return (
     <div className="font-sans overflow-x-hidden text-black">
-      <Header items={navItems} onStart={() => setModalOpen(true)} />
+      <Header items={[]} onStart={() => setModalOpen(true)} />
       <main>
         <Hero
           content={defaultContent.hero}
