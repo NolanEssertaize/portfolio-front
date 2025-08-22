@@ -40,7 +40,7 @@ export default function Pricing({ tiers, note }: PricingProps) {
               </ul>
               <button
                 onClick={() => console.log(tier.cta)}
-                className="rounded-md bg-green-500/20 px-4 py-2 text-sm text-green-300 hover:bg-green-500/30"
+                className="rounded-md bg-green-500/20 px-4 py-2 text-sm text-black text-center hover:bg-green-500/30"
               >
                 {tier.cta}
               </button>

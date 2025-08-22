@@ -70,7 +70,7 @@ export default function Header({ items, onStart }: HeaderProps) {
         <div className="hidden sm:block">
           <button
             onClick={onStart}
-            className="rounded-md bg-green-500/20 px-4 py-2 text-sm text-green-300 shadow hover:bg-green-500/30"
+            className="rounded-md bg-green-500/20 px-4 py-2 text-sm text-black text-center shadow hover:bg-green-500/30"
           >
             Start
           </button>

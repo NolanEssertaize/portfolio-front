@@ -22,7 +22,7 @@ export default function FinalCTA({ content, onPrimary }: Props) {
           <div className="mb-4 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <button
               onClick={onPrimary}
-              className="rounded-xl border border-green-400/50 bg-green-500/20 px-8 py-3 font-medium text-green-300 shadow hover:bg-green-500/30"
+              className="rounded-xl border border-green-400/50 bg-green-500/20 px-8 py-3 font-medium text-black text-center shadow hover:bg-green-500/30"
             >
               {content.primary}
             </button>

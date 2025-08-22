@@ -58,7 +58,7 @@ export default function Hero({ content, onPrimary, onSecondary }: HeroProps) {
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <button
               onClick={onPrimary}
-              className="rounded-xl border border-green-400/50 bg-green-500/20 px-8 py-3 font-medium text-green-300 shadow hover:bg-green-500/30"
+              className="rounded-xl border border-green-400/50 bg-green-500/20 px-8 py-3 font-medium text-black text-center shadow hover:bg-green-500/30"
             >
               {content.primaryCta}
             </button>
