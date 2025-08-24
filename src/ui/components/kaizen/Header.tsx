@@ -7,12 +7,26 @@ interface NavItem {
   label: string;
 }
 
-interface HeaderProps {
-  items: NavItem[];
-  onStart: () => void;
+interface LinkItem {
+  href: string;
+  label: string;
 }
 
-export default function Header({ items = [], onStart }: HeaderProps) {
+interface HeaderProps {
+  items?: NavItem[];
+  links?: LinkItem[];
+  onStart?: () => void;
+  showStart?: boolean;
+  homeHref?: string;
+}
+
+export default function Header({
+  items = [],
+  links = [],
+  onStart = () => {},
+  showStart = true,
+  homeHref = '#',
+}: HeaderProps) {
   const [active, setActive] = useState(items[0]?.id);
   const [open, setOpen] = useState(false);
 
@@ -43,7 +57,7 @@ export default function Header({ items = [], onStart }: HeaderProps) {
   return (
     <header className="fixed top-0 z-50 w-full bg-white backdrop-blur-xl">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <a href="#" className="text-lg font-semibold text-black">Kaizen 改善</a>
+        <a href={homeHref} className="text-lg font-semibold text-black">Kaizen 改善</a>
         <button
           className="sm:hidden"
           onClick={() => setOpen((v) => !v)}
@@ -66,15 +80,27 @@ export default function Header({ items = [], onStart }: HeaderProps) {
               </button>
             </li>
           ))}
+          {links.map((link) => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                className="text-sm font-medium text-black hover:text-green-400"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
         </ul>
-        <div className="hidden sm:block">
-          <button
-            onClick={onStart}
-            className="rounded-md bg-green-500/20 px-4 py-2 text-sm text-black text-center shadow hover:bg-green-500/30"
-          >
-            Start
-          </button>
-        </div>
+        {showStart && (
+          <div className="hidden sm:block">
+            <button
+              onClick={onStart}
+              className="rounded-md bg-green-500/20 px-4 py-2 text-sm text-black text-center shadow hover:bg-green-500/30"
+            >
+              Start
+            </button>
+          </div>
+        )}
       </nav>
     </header>
   );
