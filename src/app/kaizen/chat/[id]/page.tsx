@@ -1,23 +1,24 @@
 import ChatHomeShell from '../../../../components/kaizen/ChatHomeShell';
 import { KaizenProvider } from '../../../../components/kaizen/KaizenContext';
-import Link from 'next/link';
+import { KAIZEN_PAGE_CLASS } from '../../../../components/kaizen/constants';
+import Header from '@/ui/components/kaizen/Header';
 
 export default function ChatThreadPage({ params }: { params: { id: string } }) {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 to-black text-white font-sans">
-      <header className="border-b border-white/10 bg-white/5 backdrop-blur">
-        <nav className="mx-auto max-w-7xl flex justify-between p-4 text-sm">
-          <Link href="/kaizen/home" className="font-bold text-green-400">Kaizen</Link>
-          <div className="space-x-4">
-            <Link href="/kaizen/introduction" className="hover:underline">Intro</Link>
-            <Link href="/kaizen/home" className="hover:underline">Home</Link>
-          </div>
-        </nav>
-      </header>
+    <div className={KAIZEN_PAGE_CLASS}>
+      <Header
+        items={[]}
+        links={[
+          { href: '/kaizen/introduction', label: 'Intro' },
+          { href: '/kaizen/home', label: 'Home' },
+        ]}
+        showStart={false}
+        homeHref="/kaizen/home"
+      />
       <KaizenProvider>
-        <main className="flex flex-1 min-h-0"><ChatHomeShell initialThreadId={params.id} /></main>
+        <main className="flex flex-1 min-h-0 pt-16"><ChatHomeShell initialThreadId={params.id} /></main>
       </KaizenProvider>
-      <footer className="border-t border-white/10 bg-white/5 backdrop-blur p-4 text-center text-xs">© Kaizen</footer>
+      <footer className="border-t border-black/10 bg-white p-4 text-center text-xs">© Kaizen</footer>
     </div>
   );
 }
