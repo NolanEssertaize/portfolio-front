@@ -6,7 +6,7 @@ const neon = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring
 export function GlassCard({ className = '', ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={`bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg ${className}`}
+      className={`bg-black/5 backdrop-blur-xl border border-black/10 rounded-2xl shadow-lg ${className}`}
       {...props}
     />
   );

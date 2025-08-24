@@ -39,17 +39,17 @@ export default function ChatHomeShell({ initialThreadId }: Props) {
 
   return (
     <div className="flex flex-1 h-full min-h-0">
-      <aside className="hidden md:block w-72 shrink-0 border-r border-white/10 h-full"><Sidebar /></aside>
+      <aside className="hidden md:block w-72 shrink-0 border-r border-black/10 h-full"><Sidebar /></aside>
       <AnimatePresence>
         {drawer && (
-          <motion.aside initial={{ x: -300 }} animate={{ x: 0 }} exit={{ x: -300 }} transition={{ duration: prefersReduced ? 0 : 0.2 }} className="fixed inset-y-0 left-0 z-20 w-72 bg-black/80 backdrop-blur-md border-r border-white/10 md:hidden">
+          <motion.aside initial={{ x: -300 }} animate={{ x: 0 }} exit={{ x: -300 }} transition={{ duration: prefersReduced ? 0 : 0.2 }} className="fixed inset-y-0 left-0 z-20 w-72 bg-white/80 backdrop-blur-md border-r border-black/10 md:hidden">
             <Sidebar onNavigate={() => setDrawer(false)} />
           </motion.aside>
         )}
       </AnimatePresence>
       <div className="flex-1 flex flex-col min-h-0">
-        <div className="flex justify-end p-2 border-b border-white/10">
-          <Button onClick={handleGenerate} className="text-xs px-2 py-1">Generate Lesson (Preview)</Button>
+        <div className="flex justify-start p-2 border-b border-black/10">
+          <Button onClick={handleGenerate} className="text-xs px-2 py-1">Home</Button>
         </div>
         <ChatPane onOpenSidebar={() => setDrawer(true)} />
       </div>
