@@ -2,39 +2,19 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import Sidebar from './Sidebar';
-import ChatPane from './ChatPane';
 import { useKaizen } from './KaizenContext';
-import { buildLessonRequest } from './request';
-import { Button } from './ui';
 import Link from 'next/link';
 import { routes } from './routes';
 
 type Props = { initialThreadId?: string };
 
 export default function ChatHomeShell({ initialThreadId }: Props) {
-  const { profile, messagesByThread, activeThreadId, setActiveThreadId, threads } = useKaizen();
+  const { activeThreadId, setActiveThreadId, threads } = useKaizen();
   const [drawer, setDrawer] = useState(false);
-  const [streak, setStreak] = useState(0);
   const prefersReduced = useReducedMotion();
 
   useEffect(() => { if (initialThreadId) setActiveThreadId(initialThreadId); }, [initialThreadId, setActiveThreadId]);
-  useEffect(() => {
-    const stored = typeof window !== 'undefined' ? localStorage.getItem('kaizen_streak') : null;
-    setStreak(stored ? Number(stored) : 0);
-  }, []);
 
-  const handleGenerate = () => {
-    const req = buildLessonRequest({
-      profile,
-      chatHistory: activeThreadId ? messagesByThread[activeThreadId] || [] : [],
-      sessionId: activeThreadId || crypto.randomUUID(),
-    });
-    console.log('LessonRequest', req);
-    // TODO: fetch('/api/lessons/generate', { method: 'POST', body: JSON.stringify(req) })
-    const next = streak + 1;
-    setStreak(next);
-    try { localStorage.setItem('kaizen_streak', String(next)); } catch {}
-  };
 
   const threadExists = activeThreadId ? threads.some(t => t.id === activeThreadId) : true;
   if (initialThreadId && !threadExists)
@@ -55,13 +35,6 @@ export default function ChatHomeShell({ initialThreadId }: Props) {
           </motion.aside>
         )}
       </AnimatePresence>
-      <div className="flex-1 flex flex-col min-h-0">
-        <div className="flex justify-between p-2 border-b border-black/10">
-          <div className="text-xs">Streak: {streak}</div>
-          <Button onClick={handleGenerate} className="text-xs px-2 py-1">Random Lesson</Button>
-        </div>
-        <ChatPane onOpenSidebar={() => setDrawer(true)} />
-      </div>
     </div>
   );
 }
